@@ -177,7 +177,7 @@ BEGIN
 		wms_asn_gate_no, 		wms_asn_reason_code, 	etlcreateddatetime
     )
     SELECT
-        wms_asn_ou, 			wms_asn_location, 		wms_asn_no, 			wms_asn_amendno, 		wms_asn_prefdoc_type, 
+        wms_asn_ou, 			wms_asn_location,		wms_asn_no, 			wms_asn_amendno, 		wms_asn_prefdoc_type, 
 		wms_asn_prefdoc_no, 	wms_asn_prefdoc_date, 	wms_asn_date, 			wms_asn_status, 		wms_asn_operation_status, 
 		wms_asn_ib_order, 		wms_asn_ship_frm, 		wms_asn_ship_date, 		wms_asn_dlv_loc, 		wms_asn_dlv_date, 
 		wms_asn_sup_asn_no, 	wms_asn_sup_asn_date, 	wms_asn_sent_by, 		wms_asn_rem, 			wms_asn_shp_ref_typ, 
