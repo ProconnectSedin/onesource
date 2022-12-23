@@ -1,0 +1,112 @@
+CREATE PROCEDURE dwh.usp_d_divloclist(IN p_sourceid character varying, IN p_dataflowflag character varying, IN p_targetobject character varying, OUT srccnt integer, OUT inscnt integer, OUT updcnt integer, OUT dltcount integer, INOUT flag1 character varying, OUT flag2 character varying)
+    LANGUAGE plpgsql
+    AS $$
+DECLARE 
+	p_etljobname VARCHAR(100);
+	p_envsourcecd VARCHAR(50);
+	p_datasourcecd VARCHAR(50);
+	p_batchid integer;
+	p_taskname VARCHAR(100);
+	p_packagename  VARCHAR(100);
+    p_errorid integer;
+	p_errordesc character varying;
+	p_errorline integer;
+	p_rawstorageflag integer;
+
+BEGIN
+
+	SELECT d.jobname,h.envsourcecode,h.datasourcecode,d.latestbatchid,d.targetprocedurename,h.rawstorageflag
+
+	INTO p_etljobname,p_envsourcecd,p_datasourcecd,p_batchid,p_taskname,p_rawstorageflag
+
+	FROM ods.controldetail d 
+	INNER JOIN ods.controlheader h
+		ON d.sourceid = h.sourceid
+	WHERE 	d.sourceid 		= p_sourceId 
+		AND d.dataflowflag 	= p_dataflowflag
+		AND d.targetobject 	= p_targetobject;
+
+    SELECT COUNT(1) INTO srccnt
+	FROM stg.stg_wms_div_location_list_dtl;
+
+	UPDATE dwh.d_divloclist t
+    SET 
+		div_hdr_key					= COALESCE(d.div_key,-1),
+		div_loc_hdr_key				= COALESCE(l.loc_key,-1),
+		div_loc_code            = wms_div_loc_code,
+		etlactiveind 			= 1,
+		etljobname 				= p_etljobname,
+		envsourcecd 			= p_envsourcecd ,
+		datasourcecd 			= p_datasourcecd ,
+		etlupdatedatetime 		= NOW()	
+    FROM stg.stg_wms_div_location_list_dtl s
+	LEFT JOIN dwh.d_division d
+		ON	d.div_ou  			= s.wms_div_ou
+		AND	d.div_code 			= s.wms_div_code
+	LEFT JOIN dwh.d_location l
+		ON  s.wms_div_loc_code 	= l.loc_code
+		AND s.wms_div_ou		= l.loc_ou
+    WHERE 	t.div_ou  			= s.wms_div_ou
+		AND t.div_code 			= s.wms_div_code
+		AND t.div_lineno 		= s.wms_div_lineno;
+    
+    
+    GET DIAGNOSTICS updcnt = ROW_COUNT;
+
+	INSERT INTO dwh.d_divloclist
+	(
+		div_hdr_key		, div_loc_hdr_key	,
+		div_ou			, div_code			, div_lineno	, div_loc_code	,
+		etlactiveind	, etljobname		, envsourcecd	, datasourcecd	, 
+		etlcreatedatetime
+	)
+	
+    SELECT
+		 COALESCE(d.div_key,-1)	, COALESCE(l.loc_key,-1),
+        	s.wms_div_ou		, s.wms_div_code		, s.wms_div_lineno	, s.wms_div_loc_code,
+					1			, p_etljobname			, p_envsourcecd		, p_datasourcecd	,
+				NOW()
+	FROM stg.stg_wms_div_location_list_dtl s
+	LEFT JOIN dwh.d_division d
+		ON	d.div_ou  			= s.wms_div_ou
+		AND	d.div_code 			= s.wms_div_code
+	LEFT JOIN dwh.d_location l
+		ON  s.wms_div_loc_code 	= l.loc_code
+		AND s.wms_div_ou		= l.loc_ou
+    LEFT JOIN dwh.d_divloclist t
+    	ON 	t.div_ou  			= s.wms_div_ou
+		AND t.div_code 			= s.wms_div_code
+		AND t.div_lineno 		= s.wms_div_lineno 
+    	WHERE t.div_ou IS NULL;
+    
+    GET DIAGNOSTICS inscnt = ROW_COUNT;
+	IF p_rawstorageflag = 1
+	THEN
+
+	
+	INSERT INTO raw.raw_wms_div_location_list_dtl
+	(
+		wms_div_ou, wms_div_code, wms_div_lineno, wms_div_loc_code, etlcreateddatetime
+	
+	)
+	SELECT 
+		 wms_div_ou, wms_div_code, wms_div_lineno, wms_div_loc_code, etlcreateddatetime
+	FROM stg.stg_wms_div_location_list_dtl;	
+	END IF; 
+	EXCEPTION  
+       WHEN others THEN       
+       
+      get stacked diagnostics
+        p_errorid   = returned_sqlstate,
+        p_errordesc = message_text;
+        
+    CALL ods.usp_etlerrorinsert(p_sourceid,p_targetobject,p_dataflowflag,
+                                p_batchid,p_taskname,'sp_ExceptionHandling',
+                                p_errorid,p_errordesc,null);
+    
+        
+       select 0 into inscnt;
+       select 0 into updcnt;  
+  
+END;
+$$;
