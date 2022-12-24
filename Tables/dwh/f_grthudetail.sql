@@ -1,0 +1,21 @@
+CREATE TABLE dwh.f_grthudetail (
+    gr_thu_dtl_key bigint NOT NULL,
+    gr_pln_key bigint NOT NULL,
+    gr_loc_key bigint NOT NULL,
+    gr_loc_code character varying(20) COLLATE public.nocase,
+    gr_pln_no character varying(40) COLLATE public.nocase,
+    gr_pln_ou integer,
+    gr_lineno integer,
+    gr_po_no character varying(40) COLLATE public.nocase,
+    gr_thu_id character varying(80) COLLATE public.nocase,
+    gr_thu_desc character varying(510) COLLATE public.nocase,
+    gr_thu_class character varying(80) COLLATE public.nocase,
+    gr_thu_qty numeric(13,2),
+    gr_pal_status character varying(80) COLLATE public.nocase,
+    etlactiveind integer,
+    etljobname character varying(200) COLLATE public.nocase,
+    envsourcecd character varying(50) COLLATE public.nocase,
+    datasourcecd character varying(50) COLLATE public.nocase,
+    etlcreatedatetime timestamp(3) without time zone,
+    etlupdatedatetime timestamp(3) without time zone
+);

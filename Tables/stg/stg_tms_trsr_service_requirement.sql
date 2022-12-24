@@ -1,0 +1,23 @@
+CREATE TABLE stg.stg_tms_trsr_service_requirement (
+    trsr_ouinstance integer NOT NULL,
+    trsr_tender_req_no character varying(72) NOT NULL COLLATE public.nocase,
+    trsr_line_no character varying(512) COLLATE public.nocase,
+    trsr_service character varying(160) COLLATE public.nocase,
+    trsr_geo character varying(160) COLLATE public.nocase,
+    trsr_required_date_time timestamp without time zone,
+    trsr_created_by character varying(120) COLLATE public.nocase,
+    trsr_created_date timestamp without time zone,
+    trsr_last_modified_by character varying(120) COLLATE public.nocase,
+    trsr_last_modified_date timestamp without time zone,
+    trsr_timestamp integer,
+    trsr_remarks character varying(512) COLLATE public.nocase,
+    trsr_for_period numeric,
+    trsr_period_uom character varying(160) COLLATE public.nocase,
+    trsr_ref_doc_no character varying(160) COLLATE public.nocase,
+    trsr_ref_doc_type character varying(160) COLLATE public.nocase,
+    trsr_tender_to character varying(1020) COLLATE public.nocase,
+    trsr_job_type character varying(160) COLLATE public.nocase,
+    trsr_job_id character varying(160) COLLATE public.nocase,
+    trsr_job_desc character varying(160) COLLATE public.nocase,
+    etlcreateddatetime timestamp(3) without time zone DEFAULT now()
+);

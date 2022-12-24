@@ -1,0 +1,23 @@
+CREATE TABLE stg.stg_tms_pletd_exec_thu_details_history (
+    pletd_ouinstance integer NOT NULL,
+    pletd_execution_plan_id character varying(160) NOT NULL COLLATE public.nocase,
+    pletd_line_no character varying(512) NOT NULL COLLATE public.nocase,
+    pletd_thu_line_no character varying(512) NOT NULL COLLATE public.nocase,
+    pletd_thu_available_qty numeric,
+    pletd_thu_draft_qty numeric,
+    pletd_thu_confirmed_qty numeric,
+    pletd_thu_available_weight numeric,
+    pletd_thu_draft_weight numeric,
+    pletd_thu_confirmed_weight numeric,
+    pletd_thu_available_volume integer,
+    pletd_thu_draft_volume integer,
+    pletd_thu_confirmed_volume integer,
+    pletd_created_by character varying(120) COLLATE public.nocase,
+    pletd_created_date character varying(100) COLLATE public.nocase,
+    pletd_modified_by character varying(120) COLLATE public.nocase,
+    pletd_modified_date character varying(100) COLLATE public.nocase,
+    pletd_reason_code character varying(160) COLLATE public.nocase,
+    pletd_remarks character varying(160) COLLATE public.nocase,
+    pletd_version integer,
+    etlcreateddatetime timestamp(3) without time zone DEFAULT now()
+);

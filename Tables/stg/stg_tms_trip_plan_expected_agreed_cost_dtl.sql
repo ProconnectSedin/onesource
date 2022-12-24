@@ -1,0 +1,22 @@
+CREATE TABLE stg.stg_tms_trip_plan_expected_agreed_cost_dtl (
+    tpeacd_ouinstance integer,
+    tpeacd_trip character varying(160) COLLATE public.nocase,
+    tpeacd_resource_type character varying(160) COLLATE public.nocase,
+    tpeacd_resource_id character varying(1020) COLLATE public.nocase,
+    tpeacd_vendor_id character varying(160) COLLATE public.nocase,
+    tpeacd_status character varying(160) COLLATE public.nocase,
+    tpeacd_contract_id character varying(1020) COLLATE public.nocase,
+    tpeacd_amendment_no integer,
+    tpeacd_tariff_id character varying(1020) COLLATE public.nocase,
+    tpeacd_quantity numeric,
+    tpeacd_base_rate numeric,
+    tpeacd_base_cost numeric,
+    tpeacd_agreed_rate numeric,
+    tpeacd_agreed_cost numeric,
+    tpeacd_created_by character varying(120) COLLATE public.nocase,
+    tpeacd_created_date timestamp without time zone,
+    tpeacd_modified_by character varying(120) COLLATE public.nocase,
+    tpeacd_modified_date timestamp without time zone,
+    tpeacd_timestamp integer,
+    etlcreateddatetime timestamp(3) without time zone DEFAULT now()
+);

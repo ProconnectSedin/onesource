@@ -1,0 +1,23 @@
+CREATE TABLE click.f_outboundsladetail (
+    sla_ob_key bigint NOT NULL,
+    sla_ordkey bigint NOT NULL,
+    sla_lockey bigint NOT NULL,
+    sla_ou integer,
+    sla_loccode character varying(20) COLLATE public.nocase,
+    sla_ordertype character varying(20) COLLATE public.nocase,
+    sla_shipmenttype character varying(20) COLLATE public.nocase,
+    sla_sono character varying(20) COLLATE public.nocase,
+    sla_orderdate date,
+    sla_ordtime time without time zone,
+    sla_cutofftime time without time zone,
+    sla_pickexecdt timestamp without time zone,
+    sla_packexecdt timestamp without time zone,
+    sla_pickexpdt timestamp without time zone,
+    sla_pickontimeflag integer,
+    sla_packexpdt timestamp without time zone,
+    sla_packontimeflag integer,
+    sla_category character varying(20) COLLATE public.nocase,
+    sla_processexpdt timestamp without time zone,
+    sla_procontimeflag integer,
+    sla_loadeddatetime timestamp without time zone DEFAULT CURRENT_DATE
+);

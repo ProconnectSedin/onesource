@@ -1,0 +1,20 @@
+CREATE TABLE dwh.f_packitemserialdetail (
+    pack_itm_sl_dtl_key bigint NOT NULL,
+    pack_itm_sl_dtl_loc_key bigint NOT NULL,
+    pack_itm_sl_dtl_itm_hdr_key bigint NOT NULL,
+    pack_itm_sl_dtl_thu_key bigint NOT NULL,
+    item_sl_loc_code character varying(20) COLLATE public.nocase,
+    item_sl_exec_no character varying(40) COLLATE public.nocase,
+    item_sl_ou integer,
+    item_sl_line_no integer,
+    item_sl_thuid character varying(80) COLLATE public.nocase,
+    item_sl_itm character varying(80) COLLATE public.nocase,
+    item_sl_serno character varying(60) COLLATE public.nocase,
+    item_thu_serno character varying(60) COLLATE public.nocase,
+    etlactiveind integer,
+    etljobname character varying(200) COLLATE public.nocase,
+    envsourcecd character varying(50) COLLATE public.nocase,
+    datasourcecd character varying(50) COLLATE public.nocase,
+    etlcreatedatetime timestamp(3) without time zone,
+    etlupdatedatetime timestamp(3) without time zone
+);

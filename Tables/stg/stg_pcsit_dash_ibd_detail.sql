@@ -1,0 +1,22 @@
+CREATE TABLE stg.stg_pcsit_dash_ibd_detail (
+    created_date timestamp without time zone,
+    client_name character varying(50) COLLATE public.nocase,
+    service_type character varying(50) COLLATE public.nocase,
+    key_search2 character varying(50) COLLATE public.nocase,
+    key_search3 character varying(50) COLLATE public.nocase,
+    asn character varying(16000) COLLATE public.nocase,
+    taskstatus character varying(50) COLLATE public.nocase,
+    status character varying(10) NOT NULL COLLATE public.nocase,
+    grnstatus character varying(120) COLLATE public.nocase,
+    schservice character varying(120) COLLATE public.nocase,
+    pono character varying(120) COLLATE public.nocase,
+    cust_id integer NOT NULL,
+    wms_asn_type character varying(120) COLLATE public.nocase,
+    wms_asn_no character varying(120) COLLATE public.nocase,
+    wipasnno character varying(120) COLLATE public.nocase,
+    ramcolocation character varying(120) COLLATE public.nocase,
+    padate timestamp without time zone,
+    cutoffflag character varying(80) COLLATE public.nocase,
+    cutoffdate timestamp without time zone,
+    etlcreateddatetime timestamp(3) without time zone DEFAULT now()
+);

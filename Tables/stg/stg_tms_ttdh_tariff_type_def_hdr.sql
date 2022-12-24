@@ -1,0 +1,22 @@
+CREATE TABLE stg.stg_tms_ttdh_tariff_type_def_hdr (
+    tms_ttdh_tariff_type character varying(160) COLLATE public.nocase,
+    tms_ttdh_ou integer NOT NULL,
+    tms_ttdh_desc character varying(16000) COLLATE public.nocase,
+    tms_ttdh_tariff_type_code character varying(32) NOT NULL COLLATE public.nocase,
+    tms_ttdh_business_type character varying(160) COLLATE public.nocase,
+    tms_ttdh_contract_type character varying(160) COLLATE public.nocase,
+    tms_ttdh_status character varying(160) COLLATE public.nocase,
+    tms_ttdh_derived_operator character varying(160) COLLATE public.nocase,
+    tms_ttdh_retrive_config character varying(160) COLLATE public.nocase,
+    tms_ttdh_refdoctype character varying(160) COLLATE public.nocase,
+    tms_ttdh_triggdoctype character varying(160) COLLATE public.nocase,
+    tms_ttdh_pickfirstval character(4) COLLATE public.nocase,
+    tms_ttdh_created_by character varying(120) COLLATE public.nocase,
+    tms_ttdh_created_date timestamp without time zone,
+    tms_ttdh_modified_by character varying(120) COLLATE public.nocase,
+    tms_ttdh_modified_date timestamp without time zone,
+    tms_ttdh_timestamp integer,
+    tms_ttdh_source character varying(160) COLLATE public.nocase,
+    tms_ttdh_charges_at character varying(160) COLLATE public.nocase,
+    etlcreateddatetime timestamp(3) without time zone DEFAULT now()
+);

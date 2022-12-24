@@ -1,0 +1,22 @@
+CREATE TABLE dwh.f_dispatchconsdetail (
+    disp_con_dtl_key bigint NOT NULL,
+    disp_con_loc_key bigint NOT NULL,
+    disp_con_customer_key bigint NOT NULL,
+    disp_location character varying(20) COLLATE public.nocase,
+    disp_ou integer,
+    disp_lineno integer,
+    disp_profile_code character varying(40) COLLATE public.nocase,
+    disp_customer character varying(40) COLLATE public.nocase,
+    disp_lsp character varying(40) COLLATE public.nocase,
+    disp_ship_mode character varying(510) COLLATE public.nocase,
+    disp_route character varying(510) COLLATE public.nocase,
+    disp_ship_point character varying(510) COLLATE public.nocase,
+    disp_thuid character varying(510) COLLATE public.nocase,
+    disp_delivery_date character varying(510) COLLATE public.nocase,
+    etlactiveind integer,
+    etljobname character varying(200) COLLATE public.nocase,
+    envsourcecd character varying(50) COLLATE public.nocase,
+    datasourcecd character varying(50) COLLATE public.nocase,
+    etlcreatedatetime timestamp(3) without time zone,
+    etlupdatedatetime timestamp(3) without time zone
+);

@@ -1,0 +1,20 @@
+CREATE TABLE click.f_outboundpickpackdetail (
+    pickpack_key bigint NOT NULL,
+    pickpack_ordkey bigint NOT NULL,
+    pickpack_lockey bigint NOT NULL,
+    pickpack_ou integer,
+    pickpack_sono character varying(20) COLLATE public.nocase,
+    pickexecstatus character varying(20) COLLATE public.nocase,
+    picklineno integer,
+    pickqty numeric(21,8),
+    pickemployee bigint,
+    pickmechine bigint,
+    pickhttflag integer,
+    pickthuwgt numeric(21,8),
+    packexecstatus character varying(20) COLLATE public.nocase,
+    packlineno integer,
+    packqty numeric(21,8),
+    packtolqty numeric(21,8),
+    packemployee bigint,
+    pickpack_loadeddatetime timestamp without time zone DEFAULT CURRENT_DATE
+);

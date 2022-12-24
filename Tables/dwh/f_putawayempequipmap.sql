@@ -1,0 +1,21 @@
+CREATE TABLE dwh.f_putawayempequipmap (
+    pway_eqp_map_key bigint NOT NULL,
+    pway_eqp_map_loc_key bigint NOT NULL,
+    pway_eqp_map_eqp_key bigint NOT NULL,
+    pway_eqp_map_zone_key bigint NOT NULL,
+    pway_eqp_map_emp_hdr_key bigint NOT NULL,
+    putaway_loc_code character varying(20) COLLATE public.nocase,
+    putaway_ou integer,
+    putaway_lineno integer,
+    putaway_shift_code character varying(20) COLLATE public.nocase,
+    putaway_emp_code character varying(40) COLLATE public.nocase,
+    putaway_euip_code character varying(60) COLLATE public.nocase,
+    putaway_area character varying(20) COLLATE public.nocase,
+    putaway_zone character varying(20) COLLATE public.nocase,
+    etlactiveind integer,
+    etljobname character varying(200) COLLATE public.nocase,
+    envsourcecd character varying(50) COLLATE public.nocase,
+    datasourcecd character varying(50) COLLATE public.nocase,
+    etlcreatedatetime timestamp(3) without time zone,
+    etlupdatedatetime timestamp(3) without time zone
+);

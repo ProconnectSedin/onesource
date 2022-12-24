@@ -1,0 +1,21 @@
+CREATE TABLE raw.raw_wms_stock_item_tracking_gr_load_dtl (
+    raw_id bigint NOT NULL,
+    wms_stk_ou integer NOT NULL,
+    wms_stk_location character varying(40) NOT NULL COLLATE public.nocase,
+    wms_stk_item character varying(128) NOT NULL COLLATE public.nocase,
+    wms_stk_customer character varying(72) NOT NULL COLLATE public.nocase,
+    wms_stk_date timestamp without time zone NOT NULL,
+    wms_stk_uid_serial_no character varying(112) NOT NULL COLLATE public.nocase,
+    wms_stk_lot_no character varying(112) NOT NULL COLLATE public.nocase,
+    wms_stk_su character varying(40) COLLATE public.nocase,
+    wms_stk_gr_thu_id character varying(160) COLLATE public.nocase,
+    wms_stk_gr_thu_serial_no character varying(112) COLLATE public.nocase,
+    wms_stk_pack_thu_id character varying(160) COLLATE public.nocase,
+    wms_stk_pack_thu_serial_no character varying(112) NOT NULL COLLATE public.nocase,
+    wms_stk_opn_bal numeric,
+    wms_stk_received numeric,
+    wms_stk_issued numeric,
+    wms_stk_cls_bal numeric,
+    wms_stk_write_off_qty numeric,
+    etlcreateddatetime timestamp(3) without time zone DEFAULT now()
+);
