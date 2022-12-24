@@ -13,11 +13,9 @@ Respository for onesource schemas and Procedures
 
 `git checkout development` #switch to new branch
 
-🚨 IMPORTANT: Please be descriptive in your commit messages
+You can also switch branch by clicking on the git icon in the bottom left of VS Code
 
-To switch branch in VS Code
-Run `git checkout development` to switch to development branch
-There is also a git icon in the bottom left corner. You can switch branches by clicking on it
+🚨 IMPORTANT: Please be descriptive in your commit messages
 
 Changes in the development brach can be merged from github.com by creating a pull request from Pull requests tab
 
