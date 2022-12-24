@@ -10,6 +10,7 @@ Respository for onesource schemas and Procedures
 
 ### Creating and switching branches
 `git branch development` # create new branch
+
 `git checkout development` #switch to new branch
 
 🚨 IMPORTANT: Please be descriptive in your commit messages
