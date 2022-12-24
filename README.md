@@ -15,8 +15,8 @@ Respository for onesource schemas and Procedures
 
 You can also switch branch by clicking on the git icon in the bottom left of VS Code
 
-IMPORTANT 🚨: Please be descriptive in your commit messages
-
 Changes in the development brach can be merged from github.com by creating a pull request from Pull requests tab
+
+IMPORTANT 🚨: Please be descriptive in your commit messages
 
 Run `git add .` to add all changed files if you have too many files to add
