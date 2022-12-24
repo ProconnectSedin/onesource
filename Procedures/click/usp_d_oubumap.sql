@@ -1,4 +1,4 @@
-CREATE PROCEDURE click.usp_d_oubumap()
+CREATE OR REPLACE PROCEDURE click.usp_d_oubumap()
     LANGUAGE plpgsql
     AS $$
 

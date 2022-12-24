@@ -1,4 +1,4 @@
-CREATE PROCEDURE click.usp_d_employeeunavdate()
+CREATE OR REPLACE PROCEDURE click.usp_d_employeeunavdate()
     LANGUAGE plpgsql
     AS $$
 

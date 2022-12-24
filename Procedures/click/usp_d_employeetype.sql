@@ -1,4 +1,4 @@
-CREATE PROCEDURE click.usp_d_employeetype()
+CREATE OR REPLACE PROCEDURE click.usp_d_employeetype()
     LANGUAGE plpgsql
     AS $$
 

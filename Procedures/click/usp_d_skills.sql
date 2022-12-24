@@ -1,4 +1,4 @@
-CREATE PROCEDURE click.usp_d_skills()
+CREATE OR REPLACE PROCEDURE click.usp_d_skills()
     LANGUAGE plpgsql
     AS $$
 

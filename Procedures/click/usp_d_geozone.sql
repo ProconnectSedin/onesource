@@ -1,4 +1,4 @@
-CREATE PROCEDURE click.usp_d_geozone()
+CREATE OR REPLACE PROCEDURE click.usp_d_geozone()
     LANGUAGE plpgsql
     AS $$
 

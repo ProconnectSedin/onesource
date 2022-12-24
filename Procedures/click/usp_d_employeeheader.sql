@@ -1,4 +1,4 @@
-CREATE PROCEDURE click.usp_d_employeeheader()
+CREATE OR REPLACE PROCEDURE click.usp_d_employeeheader()
     LANGUAGE plpgsql
     AS $$
 

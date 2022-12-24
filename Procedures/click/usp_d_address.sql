@@ -1,4 +1,4 @@
-CREATE PROCEDURE click.usp_d_address()
+CREATE OR REPLACE PROCEDURE click.usp_d_address()
     LANGUAGE plpgsql
     AS $$
 

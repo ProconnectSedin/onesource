@@ -1,4 +1,4 @@
-CREATE PROCEDURE click.usp_update_dimension_key()
+CREATE OR REPLACE PROCEDURE click.usp_update_dimension_key()
     LANGUAGE plpgsql
     AS $$
 

@@ -1,4 +1,4 @@
-CREATE PROCEDURE click.usp_d_vehiclereginfo()
+CREATE OR REPLACE PROCEDURE click.usp_d_vehiclereginfo()
     LANGUAGE plpgsql
     AS $$
 

@@ -1,4 +1,4 @@
-CREATE PROCEDURE click.usp_d_route()
+CREATE OR REPLACE PROCEDURE click.usp_d_route()
     LANGUAGE plpgsql
     AS $$
 

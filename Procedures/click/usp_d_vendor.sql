@@ -1,4 +1,4 @@
-CREATE PROCEDURE click.usp_d_vendor()
+CREATE OR REPLACE PROCEDURE click.usp_d_vendor()
     LANGUAGE plpgsql
     AS $$
 

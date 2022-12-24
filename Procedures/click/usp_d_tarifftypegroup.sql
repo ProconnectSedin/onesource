@@ -1,4 +1,4 @@
-CREATE PROCEDURE click.usp_d_tarifftypegroup()
+CREATE OR REPLACE PROCEDURE click.usp_d_tarifftypegroup()
     LANGUAGE plpgsql
     AS $$
 

@@ -1,4 +1,4 @@
-CREATE PROCEDURE click.usp_d_operationalaccountdetail()
+CREATE OR REPLACE PROCEDURE click.usp_d_operationalaccountdetail()
     LANGUAGE plpgsql
     AS $$
 

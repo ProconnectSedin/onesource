@@ -1,4 +1,4 @@
-CREATE PROCEDURE click.usp_d_warehouse()
+CREATE OR REPLACE PROCEDURE click.usp_d_warehouse()
     LANGUAGE plpgsql
     AS $$
 

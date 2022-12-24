@@ -1,4 +1,4 @@
-CREATE PROCEDURE click.usp_d_customerportalusermap()
+CREATE OR REPLACE PROCEDURE click.usp_d_customerportalusermap()
     LANGUAGE plpgsql
     AS $$
 

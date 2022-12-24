@@ -1,4 +1,4 @@
-CREATE PROCEDURE click.usp_d_opscomponentlookup()
+CREATE OR REPLACE PROCEDURE click.usp_d_opscomponentlookup()
     LANGUAGE plpgsql
     AS $$
 

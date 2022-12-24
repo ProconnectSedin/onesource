@@ -1,4 +1,4 @@
-CREATE PROCEDURE click.usp_d_date()
+CREATE OR REPLACE PROCEDURE click.usp_d_date()
     LANGUAGE plpgsql
     AS $$
 

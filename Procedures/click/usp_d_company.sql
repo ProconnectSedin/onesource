@@ -1,4 +1,4 @@
-CREATE PROCEDURE click.usp_d_company()
+CREATE OR REPLACE PROCEDURE click.usp_d_company()
     LANGUAGE plpgsql
     AS $$
 

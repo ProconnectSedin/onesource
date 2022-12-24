@@ -1,4 +1,4 @@
-CREATE PROCEDURE click.usp_d_financebook()
+CREATE OR REPLACE PROCEDURE click.usp_d_financebook()
     LANGUAGE plpgsql
     AS $$
 

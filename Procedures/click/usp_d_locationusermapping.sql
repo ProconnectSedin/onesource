@@ -1,4 +1,4 @@
-CREATE PROCEDURE click.usp_d_locationusermapping()
+CREATE OR REPLACE PROCEDURE click.usp_d_locationusermapping()
     LANGUAGE plpgsql
     AS $$
 
