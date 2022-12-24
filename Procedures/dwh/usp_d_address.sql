@@ -84,7 +84,7 @@ BEGIN
     
     GET DIAGNOSTICS inscnt = ROW_COUNT;
 	
-	IF p_rawstorageflag = 1
+	IF p_rawstorageflag 	= 1
 	THEN
 
 	INSERT INTO raw.raw_emod_addr_mst
