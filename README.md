@@ -19,4 +19,6 @@ Changes in the development brach can be merged from github.com by creating a pul
 
 IMPORTANT 🚨: Please be descriptive in your commit messages
 
+### When you have too many files to add
 Run `git add .` to add all changed files if you have too many files to add
+![Too many files](https://i.imgur.com/k3eYtNA.png)
