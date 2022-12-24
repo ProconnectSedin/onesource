@@ -7,3 +7,7 @@ Respository for onesource schemas and Procedures
 * git push
 
 ⚠️ git pull before commit, otherwise you may face a merge conflict
+
+### Creating and switching branches
+git branch development # create new branch
+git checkout development #switch to new branch
