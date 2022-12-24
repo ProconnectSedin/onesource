@@ -1,4 +1,4 @@
-CREATE PROCEDURE click.usp_f_bin_utilization()
+CREATE OR REPLACE PROCEDURE click.usp_f_bin_utilization()
     LANGUAGE plpgsql
     AS $$
 

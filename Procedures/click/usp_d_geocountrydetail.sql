@@ -1,4 +1,4 @@
-CREATE PROCEDURE click.usp_d_geocountrydetail()
+CREATE OR REPLACE PROCEDURE click.usp_d_geocountrydetail()
     LANGUAGE plpgsql
     AS $$
 

@@ -1,4 +1,4 @@
-CREATE PROCEDURE ods.usp_etlerrorinsert(IN p_sourceid character varying, IN p_targetobject character varying, IN p_dataflowflag character varying, IN p_batchid integer, IN p_taskname character varying, IN p_packagename character varying, IN p_errorid integer, IN p_errordesc character varying, IN p_errorline integer)
+CREATE OR REPLACE PROCEDURE ods.usp_etlerrorinsert(IN p_sourceid character varying, IN p_targetobject character varying, IN p_dataflowflag character varying, IN p_batchid integer, IN p_taskname character varying, IN p_packagename character varying, IN p_errorid integer, IN p_errordesc character varying, IN p_errorline integer)
     LANGUAGE plpgsql
     AS $$
 

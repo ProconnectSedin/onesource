@@ -1,4 +1,4 @@
-CREATE PROCEDURE click.usp_d_employeelicense()
+CREATE OR REPLACE PROCEDURE click.usp_d_employeelicense()
     LANGUAGE plpgsql
     AS $$
 

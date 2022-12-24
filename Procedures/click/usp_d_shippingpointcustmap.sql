@@ -1,4 +1,4 @@
-CREATE PROCEDURE click.usp_d_shippingpointcustmap()
+CREATE OR REPLACE PROCEDURE click.usp_d_shippingpointcustmap()
     LANGUAGE plpgsql
     AS $$
 

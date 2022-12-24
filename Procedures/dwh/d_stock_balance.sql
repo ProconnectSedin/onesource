@@ -1,4 +1,4 @@
-CREATE PROCEDURE dwh.d_stock_balance()
+CREATE OR REPLACE PROCEDURE dwh.d_stock_balance()
     LANGUAGE plpgsql
     AS $$
 

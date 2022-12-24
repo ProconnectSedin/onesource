@@ -1,4 +1,4 @@
-CREATE PROCEDURE click.usp_d_itemsuppliermap()
+CREATE OR REPLACE PROCEDURE click.usp_d_itemsuppliermap()
     LANGUAGE plpgsql
     AS $$
 

@@ -1,4 +1,4 @@
-CREATE PROCEDURE click.usp_d_currency()
+CREATE OR REPLACE PROCEDURE click.usp_d_currency()
     LANGUAGE plpgsql
     AS $$
 

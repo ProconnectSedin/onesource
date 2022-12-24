@@ -1,4 +1,4 @@
-CREATE PROCEDURE click.usp_update()
+CREATE OR REPLACE PROCEDURE click.usp_update()
     LANGUAGE plpgsql
     AS $$
 

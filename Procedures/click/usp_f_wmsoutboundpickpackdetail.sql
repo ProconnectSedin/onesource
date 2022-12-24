@@ -1,4 +1,4 @@
-CREATE PROCEDURE click.usp_f_wmsoutboundpickpackdetail()
+CREATE OR REPLACE PROCEDURE click.usp_f_wmsoutboundpickpackdetail()
     LANGUAGE plpgsql
     AS $$
 DECLARE 

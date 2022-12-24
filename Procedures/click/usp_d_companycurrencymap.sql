@@ -1,4 +1,4 @@
-CREATE PROCEDURE click.usp_d_companycurrencymap()
+CREATE OR REPLACE PROCEDURE click.usp_d_companycurrencymap()
     LANGUAGE plpgsql
     AS $$
 

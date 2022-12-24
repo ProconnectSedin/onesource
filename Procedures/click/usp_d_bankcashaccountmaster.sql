@@ -1,4 +1,4 @@
-CREATE PROCEDURE click.usp_d_bankcashaccountmaster()
+CREATE OR REPLACE PROCEDURE click.usp_d_bankcashaccountmaster()
     LANGUAGE plpgsql
     AS $$
 

@@ -1,4 +1,4 @@
-CREATE PROCEDURE click.usp_d_uom()
+CREATE OR REPLACE PROCEDURE click.usp_d_uom()
     LANGUAGE plpgsql
     AS $$
 

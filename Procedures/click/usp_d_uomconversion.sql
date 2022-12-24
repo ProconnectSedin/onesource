@@ -1,4 +1,4 @@
-CREATE PROCEDURE click.usp_d_uomconversion()
+CREATE OR REPLACE PROCEDURE click.usp_d_uomconversion()
     LANGUAGE plpgsql
     AS $$
 

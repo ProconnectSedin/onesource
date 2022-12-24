@@ -1,4 +1,4 @@
-CREATE PROCEDURE click.usp_d_stage()
+CREATE OR REPLACE PROCEDURE click.usp_d_stage()
     LANGUAGE plpgsql
     AS $$
 

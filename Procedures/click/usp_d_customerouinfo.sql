@@ -1,4 +1,4 @@
-CREATE PROCEDURE click.usp_d_customerouinfo()
+CREATE OR REPLACE PROCEDURE click.usp_d_customerouinfo()
     LANGUAGE plpgsql
     AS $$
 

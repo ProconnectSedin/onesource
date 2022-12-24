@@ -1,4 +1,4 @@
-CREATE PROCEDURE click.usp_d_division()
+CREATE OR REPLACE PROCEDURE click.usp_d_division()
     LANGUAGE plpgsql
     AS $$
 
