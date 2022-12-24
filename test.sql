@@ -1,1 +1,1 @@
-create table tmp.jenkins_test (id int);
+create table tmp.jenkins();
