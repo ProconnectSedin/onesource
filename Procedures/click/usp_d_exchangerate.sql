@@ -1,4 +1,4 @@
-CREATE PROCEDURE click.usp_d_exchangerate()
+CREATE OR REPLACE PROCEDURE click.usp_d_exchangerate()
     LANGUAGE plpgsql
     AS $$
 

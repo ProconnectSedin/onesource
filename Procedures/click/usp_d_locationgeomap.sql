@@ -1,4 +1,4 @@
-CREATE PROCEDURE click.usp_d_locationgeomap()
+CREATE OR REPLACE PROCEDURE click.usp_d_locationgeomap()
     LANGUAGE plpgsql
     AS $$
 

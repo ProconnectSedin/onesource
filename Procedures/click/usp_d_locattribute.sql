@@ -1,4 +1,4 @@
-CREATE PROCEDURE click.usp_d_locattribute()
+CREATE OR REPLACE PROCEDURE click.usp_d_locattribute()
     LANGUAGE plpgsql
     AS $$
 

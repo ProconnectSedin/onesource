@@ -1,0 +1,22 @@
+CREATE TABLE dwh.f_tripvendortariffrevcostheader (
+    tvtrch_key bigint NOT NULL,
+    tvtrch_trip_plan_hrd_key bigint NOT NULL,
+    tvtrch_ouinstance integer,
+    tvtrch_trip_plan_id character varying(80) COLLATE public.nocase,
+    tvtrch_unique_id character varying(300) COLLATE public.nocase,
+    tvtrch_stage_of_derivation character varying(80) COLLATE public.nocase,
+    tvtrch_buy_sell_type character varying(80) COLLATE public.nocase,
+    tvtrch_rate numeric(13,2),
+    tvtrch_trip_plan_hdr_sk character varying(300) COLLATE public.nocase,
+    tvtrch_created_by character varying(80) COLLATE public.nocase,
+    tvtrch_created_date character varying(80) COLLATE public.nocase,
+    tvtrch_modified_by character varying(80) COLLATE public.nocase,
+    tvtrch_modified_date timestamp without time zone,
+    tvtrch_time_stamp integer,
+    etlactiveind integer,
+    etljobname character varying(200) COLLATE public.nocase,
+    envsourcecd character varying(50) COLLATE public.nocase,
+    datasourcecd character varying(50) COLLATE public.nocase,
+    etlcreatedatetime timestamp(3) without time zone,
+    etlupdatedatetime timestamp(3) without time zone
+);

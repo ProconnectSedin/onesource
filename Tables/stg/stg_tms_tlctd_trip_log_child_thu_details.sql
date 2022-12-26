@@ -1,0 +1,22 @@
+CREATE TABLE stg.stg_tms_tlctd_trip_log_child_thu_details (
+    tlctd_ouinstance integer NOT NULL,
+    tlctd_trip_plan_id character varying(72) NOT NULL COLLATE public.nocase,
+    tlctd_trip_plan_line_id character varying(512) COLLATE public.nocase,
+    tlctd_thu_line_no character varying(512) COLLATE public.nocase,
+    tlctd_child_thu_id character varying(160) COLLATE public.nocase,
+    tlctd_serial_no character varying(160) COLLATE public.nocase,
+    tlctd_child_thu_qty numeric,
+    tlctd_created_date character varying(100) COLLATE public.nocase,
+    tlctd_created_by character varying(120) COLLATE public.nocase,
+    tlctd_modified_date character varying(100) COLLATE public.nocase,
+    tlctd_modified_by character varying(120) COLLATE public.nocase,
+    tlctd_timestamp integer,
+    tlctd_main_thu_serial_no character varying(160) COLLATE public.nocase,
+    tlctd_serial_line_no character varying(512) NOT NULL COLLATE public.nocase,
+    tlctd_seq_no integer,
+    tlctd_approval_for_hzmt_cmpltd character varying(160) COLLATE public.nocase,
+    tlctd_dg_class character varying(160) COLLATE public.nocase,
+    tlctd_hs_code character varying(160) COLLATE public.nocase,
+    tlctd_un_code character varying(160) COLLATE public.nocase,
+    etlcreateddatetime timestamp(3) without time zone DEFAULT now()
+);

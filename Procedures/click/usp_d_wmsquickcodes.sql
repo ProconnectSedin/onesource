@@ -1,4 +1,4 @@
-CREATE PROCEDURE click.usp_d_wmsquickcodes()
+CREATE OR REPLACE PROCEDURE click.usp_d_wmsquickcodes()
     LANGUAGE plpgsql
     AS $$
 

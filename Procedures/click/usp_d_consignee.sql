@@ -1,4 +1,4 @@
-CREATE PROCEDURE click.usp_d_consignee()
+CREATE OR REPLACE PROCEDURE click.usp_d_consignee()
     LANGUAGE plpgsql
     AS $$
 

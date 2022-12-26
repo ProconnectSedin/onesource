@@ -1,4 +1,4 @@
-CREATE PROCEDURE click.usp_d_divloclist()
+CREATE OR REPLACE PROCEDURE click.usp_d_divloclist()
     LANGUAGE plpgsql
     AS $$
 

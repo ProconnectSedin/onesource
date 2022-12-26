@@ -1,4 +1,4 @@
-CREATE PROCEDURE click.usp_dimensions()
+CREATE OR REPLACE PROCEDURE click.usp_dimensions()
     LANGUAGE plpgsql
     AS $$
 

@@ -1,0 +1,21 @@
+CREATE TABLE dwh.f_brconsignmentskudetail (
+    brcsd_key bigint NOT NULL,
+    br_key bigint NOT NULL,
+    brcsd_ou integer,
+    brcsd_br_id character varying(40) COLLATE public.nocase,
+    brcsd_thu_line_no character varying(300) COLLATE public.nocase,
+    brcsd_serial_no character varying(80) COLLATE public.nocase,
+    brcsd_sku_line_no character varying(300) COLLATE public.nocase,
+    brcsd_sku_id character varying(80) COLLATE public.nocase,
+    brcsd_sku_rate numeric(13,2),
+    brcsd_sku_quantity numeric(13,2),
+    brcsd_sku_value numeric(13,2),
+    brcsd_created_by character varying(60) COLLATE public.nocase,
+    brcsd_created_date timestamp without time zone,
+    etlactiveind integer,
+    etljobname character varying(200) COLLATE public.nocase,
+    envsourcecd character varying(50) COLLATE public.nocase,
+    datasourcecd character varying(50) COLLATE public.nocase,
+    etlcreatedatetime timestamp(3) without time zone,
+    etlupdatedatetime timestamp(3) without time zone
+);

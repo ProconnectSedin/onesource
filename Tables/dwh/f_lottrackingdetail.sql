@@ -1,0 +1,23 @@
+CREATE TABLE dwh.f_lottrackingdetail (
+    stk_lottrk_dtl_key bigint NOT NULL,
+    stk_loc_key bigint NOT NULL,
+    stk_item_key bigint NOT NULL,
+    stk_customer_key bigint NOT NULL,
+    stk_ou integer,
+    stk_location character varying(20) COLLATE public.nocase,
+    stk_item character varying(80) COLLATE public.nocase,
+    stk_customer character varying(40) COLLATE public.nocase,
+    stk_date timestamp without time zone,
+    stk_lot_no character varying(60) COLLATE public.nocase,
+    stk_opn_bal numeric(20,2),
+    stk_received numeric(20,2),
+    stk_issued numeric(20,2),
+    stk_cls_bal numeric(20,2),
+    stk_write_off_qty numeric(20,2),
+    etlactiveind integer,
+    etljobname character varying(200) COLLATE public.nocase,
+    envsourcecd character varying(50) COLLATE public.nocase,
+    datasourcecd character varying(50) COLLATE public.nocase,
+    etlcreatedatetime timestamp(3) without time zone,
+    etlupdatedatetime timestamp(3) without time zone
+);

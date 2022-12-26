@@ -1,4 +1,4 @@
-CREATE PROCEDURE click.usp_d_bintypes()
+CREATE OR REPLACE PROCEDURE click.usp_d_bintypes()
     LANGUAGE plpgsql
     AS $$
 

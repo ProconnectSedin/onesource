@@ -1,0 +1,21 @@
+CREATE TABLE dwh.d_inboundtat (
+    d_inboundtat_key bigint NOT NULL,
+    id integer,
+    ou integer,
+    locationcode character varying(30) COLLATE public.nocase,
+    ordertype character varying(30) COLLATE public.nocase,
+    servicetype character varying(30) COLLATE public.nocase,
+    cutofftime time without time zone,
+    processtat character varying(10) COLLATE public.nocase,
+    grtat character varying(10) COLLATE public.nocase,
+    putawaytat character varying(10) COLLATE public.nocase,
+    openingtime time without time zone,
+    closingtime time without time zone,
+    etlactiveind integer,
+    etljobname character varying(200) COLLATE public.nocase,
+    envsourcecd character varying(50) COLLATE public.nocase,
+    datasourcecd character varying(50) COLLATE public.nocase,
+    etlcreatedatetime timestamp(3) without time zone,
+    etlupdatedatetime timestamp(3) without time zone,
+    location_key bigint
+);

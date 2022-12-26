@@ -1,4 +1,4 @@
-CREATE PROCEDURE dwh.usp_booking_his_amendno_update()
+CREATE OR REPLACE PROCEDURE dwh.usp_booking_his_amendno_update()
     LANGUAGE plpgsql
     AS $$
 

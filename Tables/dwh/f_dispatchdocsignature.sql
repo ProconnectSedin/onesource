@@ -1,0 +1,22 @@
+CREATE TABLE dwh.f_dispatchdocsignature (
+    dds_key bigint NOT NULL,
+    ddh_key bigint NOT NULL,
+    dds_ouinstance integer,
+    dds_trip_id character varying(80) COLLATE public.nocase,
+    dds_seqno integer,
+    dds_dispatch_doc_no character varying(40) COLLATE public.nocase,
+    dds_name character varying(80) COLLATE public.nocase,
+    dds_signature character varying COLLATE public.nocase,
+    dds_remarks character varying(512) COLLATE public.nocase,
+    dds_feedback character varying(50) COLLATE public.nocase,
+    dds_signature_status character varying(50) COLLATE public.nocase,
+    dds_id_type character varying(80) COLLATE public.nocase,
+    dds_id_no character varying(80) COLLATE public.nocase,
+    dds_designation character varying(80) COLLATE public.nocase,
+    etlactiveind integer,
+    etljobname character varying(200) COLLATE public.nocase,
+    envsourcecd character varying(50) COLLATE public.nocase,
+    datasourcecd character varying(50) COLLATE public.nocase,
+    etlcreatedatetime timestamp(3) without time zone,
+    etlupdatedatetime timestamp(3) without time zone
+);

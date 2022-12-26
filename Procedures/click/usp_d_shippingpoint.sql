@@ -1,4 +1,4 @@
-CREATE PROCEDURE click.usp_d_shippingpoint()
+CREATE OR REPLACE PROCEDURE click.usp_d_shippingpoint()
     LANGUAGE plpgsql
     AS $$
 

@@ -1,0 +1,23 @@
+CREATE TABLE dwh.f_tripthudetail (
+    plttd_trip_thu_key bigint NOT NULL,
+    plttd_thu_key bigint NOT NULL,
+    plttd_ouinstance integer,
+    plttd_trip_plan_id character varying(160) COLLATE public.nocase,
+    plttd_trip_plan_line_no character varying(512) COLLATE public.nocase,
+    plttd_thu_line_no character varying(512) COLLATE public.nocase,
+    plttd_thu_qty numeric,
+    plttd_thu_weight numeric,
+    plttd_thu_vol numeric,
+    plttd_created_by character varying(120) COLLATE public.nocase,
+    plttd_created_date character varying(100) COLLATE public.nocase,
+    plttd_modified_by character varying(120) COLLATE public.nocase,
+    plttd_modified_date character varying(100) COLLATE public.nocase,
+    plttd_dispatch_doc_no character varying(1020) COLLATE public.nocase,
+    plttd_thu_id character varying(1020) COLLATE public.nocase,
+    etlactiveind integer,
+    etljobname character varying(200) COLLATE public.nocase,
+    envsourcecd character varying(50) COLLATE public.nocase,
+    datasourcecd character varying(50) COLLATE public.nocase,
+    etlcreatedatetime timestamp(3) without time zone,
+    etlupdatedatetime timestamp(3) without time zone
+);

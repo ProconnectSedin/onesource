@@ -1,4 +1,4 @@
-CREATE PROCEDURE click.usp_d_bulocationmap()
+CREATE OR REPLACE PROCEDURE click.usp_d_bulocationmap()
     LANGUAGE plpgsql
     AS $$
 

@@ -1,4 +1,4 @@
-CREATE PROCEDURE click.usp_d_wmsgeozonedetail()
+CREATE OR REPLACE PROCEDURE click.usp_d_wmsgeozonedetail()
     LANGUAGE plpgsql
     AS $$
 

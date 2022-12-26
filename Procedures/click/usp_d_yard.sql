@@ -1,4 +1,4 @@
-CREATE PROCEDURE click.usp_d_yard()
+CREATE OR REPLACE PROCEDURE click.usp_d_yard()
     LANGUAGE plpgsql
     AS $$
 

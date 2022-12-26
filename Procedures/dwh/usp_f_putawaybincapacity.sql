@@ -1,0 +1,155 @@
+-- PROCEDURE: dwh.usp_f_putawaybincapacity(character varying, character varying, character varying, character varying)
+
+-- DROP PROCEDURE IF EXISTS dwh.usp_f_putawaybincapacity(character varying, character varying, character varying, character varying);
+
+CREATE OR REPLACE PROCEDURE dwh.usp_f_putawaybincapacity(
+	IN p_sourceid character varying,
+	IN p_dataflowflag character varying,
+	IN p_targetobject character varying,
+	OUT srccnt integer,
+	OUT inscnt integer,
+	OUT updcnt integer,
+	OUT dltcount integer,
+	INOUT flag1 character varying,
+	OUT flag2 character varying)
+LANGUAGE 'plpgsql'
+AS $BODY$
+DECLARE 
+	p_etljobname VARCHAR(100);
+	p_envsourcecd VARCHAR(50);
+	p_datasourcecd VARCHAR(50);
+    p_batchid INTEGER;
+	p_taskname VARCHAR(100);
+	p_packagename  VARCHAR(100);
+    p_errorid INTEGER;
+	p_errordesc character varying;
+	p_errorline INTEGER;	
+    p_depsource VARCHAR(100);
+    p_rawstorageflag integer;
+
+BEGIN
+
+	SELECT d.jobname,h.envsourcecode,h.datasourcecode,d.latestbatchid,d.targetprocedurename, h.rawstorageflag,h.depsource
+	INTO p_etljobname, p_envsourcecd, p_datasourcecd, p_batchid, p_taskname, p_rawstorageflag,p_depsource
+	FROM ods.controldetail d 
+	INNER JOIN ods.controlheader h
+		ON d.sourceid = h.sourceid
+	WHERE 	d.sourceid 		= p_sourceId 
+		AND d.dataflowflag 	= p_dataflowflag
+		AND d.targetobject 	= p_targetobject;
+
+    IF EXISTS(SELECT 1 FROM ods.controlheader WHERE sourceid = p_depsource AND status = 'Completed' 
+					AND CAST(COALESCE(lastupdateddate,createddate) AS DATE) >= NOW()::DATE)
+	THEN
+    
+    SELECT COUNT(1) INTO srccnt FROM stg.stg_wms_putaway_bin_capacity_dtl;
+
+	UPDATE dwh.F_PutawayBinCapacity t
+    SET 
+		  pway_pln_dtl_key			    = fh.pway_pln_dtl_key,
+		  pway_bin_cap_loc_key			= COALESCE(l.loc_key,-1)
+		, pway_bin_cap_itm_hdr_key		= COALESCE(i.itm_hdr_key,-1)
+		, pway_item_ln_no               = s.wms_pway_item_ln_no 
+		, pway_item               		= s.wms_pway_item 
+		, pway_bin                  	= s.wms_pway_bin 
+		, pway_occu_capacity            = s.wms_pway_occu_capacity 
+    	, etlactiveind 					= 1
+		, etljobname 					= p_etljobname
+		, envsourcecd 					= p_envsourcecd
+		, datasourcecd 					= p_datasourcecd
+		, etlupdatedatetime 			= NOW()	
+    FROM stg.stg_wms_putaway_bin_capacity_dtl s
+    INNER JOIN 	dwh.f_putawayplandetail fh 
+			ON  s.wms_pway_loc_code = fh.pway_loc_code 
+			AND s.wms_pway_pln_no 	= fh.pway_pln_no 
+			AND s.wms_pway_pln_ou 	= fh.pway_pln_ou
+	LEFT JOIN dwh.d_location l 		
+		ON  s.wms_pway_loc_code 		= l.loc_code 
+        AND s.wms_pway_pln_ou        	= l.loc_ou
+	LEFT JOIN dwh.d_itemheader i 		
+		ON 	s.wms_pway_item  			= i.itm_code 
+        AND s.wms_pway_pln_ou        	= i.itm_ou	
+    WHERE  	s.wms_pway_pln_no 				= t.pway_pln_no
+		AND	s.wms_pway_pln_ou 				= t.pway_pln_ou
+        AND s.wms_pway_loc_code             = t.pway_loc_code
+		AND	s.wms_pway_lineno 				= t.pway_lineno;
+    
+    
+    GET DIAGNOSTICS updcnt = ROW_COUNT;
+
+	INSERT INTO dwh.F_PutawayBinCapacity
+	(
+			pway_pln_dtl_key,           pway_bin_cap_loc_key		, pway_bin_cap_itm_hdr_key			
+            , pway_loc_code				, pway_pln_no					, pway_pln_ou				, pway_lineno
+			, pway_item_ln_no			, pway_item						, pway_bin					, pway_occu_capacity
+			, etlactiveind				, etljobname					, envsourcecd				, datasourcecd	            
+			, etlcreatedatetime
+	)
+	
+	SELECT 
+		   fh.pway_pln_dtl_key,             COALESCE(l.loc_key,-1)	        , COALESCE(i.itm_hdr_key,-1)                     		
+		   , wms_pway_loc_code				, wms_pway_pln_no				, wms_pway_pln_ou			, wms_pway_lineno
+		   , wms_pway_item_ln_no			, wms_pway_item					, wms_pway_bin				, wms_pway_occu_capacity
+		   , 1 AS etlactiveind			    , p_etljobname				    , p_envsourcecd				, p_datasourcecd	                
+		   , NOW()
+	FROM stg.stg_wms_putaway_bin_capacity_dtl s
+    INNER JOIN 	dwh.f_putawayplandetail fh 
+			ON  s.wms_pway_loc_code = fh.pway_loc_code 
+			AND s.wms_pway_pln_no 	= fh.pway_pln_no 
+			AND s.wms_pway_pln_ou 	= fh.pway_pln_ou
+	LEFT JOIN dwh.d_location l 		
+		ON  s.wms_pway_loc_code 		= l.loc_code 
+        AND s.wms_pway_pln_ou        	= l.loc_ou
+	LEFT JOIN dwh.d_itemheader i 		
+		ON 	s.wms_pway_item  			= i.itm_code 
+        AND s.wms_pway_pln_ou        	= i.itm_ou		
+	LEFT JOIN dwh.f_putawaybincapacity t  	
+		ON  t.pway_loc_code 			= s.wms_pway_loc_code
+		AND	t.pway_pln_no 				= s.wms_pway_pln_no
+		AND	t.pway_pln_ou 				= s.wms_pway_pln_ou
+		AND t.pway_lineno              = s.wms_pway_lineno
+    WHERE t.pway_pln_no IS NULL;
+    
+    GET DIAGNOSTICS inscnt = ROW_COUNT;
+    IF p_rawstorageflag = 1
+    THEN
+	
+	INSERT INTO raw.raw_wms_putaway_bin_capacity_dtl
+	(
+		wms_pway_loc_code, 			wms_pway_pln_no, 			wms_pway_pln_ou, 		wms_pway_lineno, 
+		wms_pway_item_ln_no, 		wms_pway_item, 				wms_pway_bin, 			wms_pway_occu_capacity, 
+		etlcreateddatetime
+	
+	)
+	SELECT 
+		wms_pway_loc_code, 			wms_pway_pln_no, 			wms_pway_pln_ou, 		wms_pway_lineno, 
+		wms_pway_item_ln_no, 		wms_pway_item, 				wms_pway_bin, 			wms_pway_occu_capacity, 
+		etlcreateddatetime
+	FROM stg.stg_wms_putaway_bin_capacity_dtl;
+    END IF;	
+	ELSE	
+		 p_errorid   := 0;
+		 select 0 into inscnt;
+       	 select 0 into updcnt;
+		 select 0 into srccnt;	
+		 
+		 IF p_depsource IS NULL
+		 THEN 
+		 p_errordesc := 'The Dependent source cannot be NULL.';
+		 ELSE
+		 p_errordesc := 'The Dependent source '|| p_depsource || ' is not successfully executed. Please execute the source '|| p_depsource || ' then re-run the source '|| p_sourceid||'.';
+		 END IF;
+		 CALL ods.usp_etlerrorinsert(p_sourceid,p_targetobject,p_dataflowflag,p_batchid,p_taskname,'sp_ExceptionHandling',p_errorid,p_errordesc,NULL);
+	END IF;	
+	
+	EXCEPTION WHEN others THEN
+        get stacked diagnostics
+            p_errorid   = returned_sqlstate,
+            p_errordesc = message_text;
+    CALL ods.usp_etlerrorinsert(p_sourceid, p_targetobject, p_dataflowflag, p_batchid,p_taskname, 'sp_ExceptionHandling', p_errorid, p_errordesc, null);
+       select 0 into inscnt;
+       select 0 into updcnt;	
+END;
+$BODY$;
+ALTER PROCEDURE dwh.usp_f_putawaybincapacity(character varying, character varying, character varying, character varying)
+    OWNER TO proconnect;

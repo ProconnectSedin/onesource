@@ -1,4 +1,4 @@
-CREATE PROCEDURE click.usp_d_equipment()
+CREATE OR REPLACE PROCEDURE click.usp_d_equipment()
     LANGUAGE plpgsql
     AS $$
 

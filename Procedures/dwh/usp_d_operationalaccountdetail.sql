@@ -1,4 +1,4 @@
-CREATE PROCEDURE dwh.usp_d_operationalaccountdetail(IN p_sourceid character varying, IN p_dataflowflag character varying, IN p_targetobject character varying, OUT srccnt integer, OUT inscnt integer, OUT updcnt integer, OUT dltcount integer, INOUT flag1 character varying, OUT flag2 character varying)
+CREATE OR REPLACE PROCEDURE dwh.usp_d_operationalaccountdetail(IN p_sourceid character varying, IN p_dataflowflag character varying, IN p_targetobject character varying, OUT srccnt integer, OUT inscnt integer, OUT updcnt integer, OUT dltcount integer, INOUT flag1 character varying, OUT flag2 character varying)
     LANGUAGE plpgsql
     AS $$
 

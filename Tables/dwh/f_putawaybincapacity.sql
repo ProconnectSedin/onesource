@@ -1,0 +1,20 @@
+CREATE TABLE dwh.f_putawaybincapacity (
+    pway_bin_cap_key bigint NOT NULL,
+    pway_pln_dtl_key bigint NOT NULL,
+    pway_bin_cap_loc_key bigint NOT NULL,
+    pway_bin_cap_itm_hdr_key bigint NOT NULL,
+    pway_loc_code character varying(20) COLLATE public.nocase,
+    pway_pln_no character varying(40) COLLATE public.nocase,
+    pway_pln_ou integer,
+    pway_lineno integer,
+    pway_item_ln_no integer,
+    pway_item character varying(80) COLLATE public.nocase,
+    pway_bin character varying(20) COLLATE public.nocase,
+    pway_occu_capacity numeric(20,2),
+    etlactiveind integer,
+    etljobname character varying(200) COLLATE public.nocase,
+    envsourcecd character varying(50) COLLATE public.nocase,
+    datasourcecd character varying(50) COLLATE public.nocase,
+    etlcreatedatetime timestamp(3) without time zone,
+    etlupdatedatetime timestamp(3) without time zone
+);

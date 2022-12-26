@@ -1,4 +1,4 @@
-CREATE PROCEDURE click.usp_d_oumaster()
+CREATE OR REPLACE PROCEDURE click.usp_d_oumaster()
     LANGUAGE plpgsql
     AS $$
 

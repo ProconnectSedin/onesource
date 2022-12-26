@@ -1,7 +1,36 @@
-CREATE PROCEDURE dwh.usp_d_company(IN p_sourceid character varying, IN p_dataflowflag character varying, IN p_targetobject character varying, OUT srccnt integer, OUT inscnt integer, OUT updcnt integer, OUT dltcount integer, INOUT flag1 character varying, OUT flag2 character varying)
-    LANGUAGE plpgsql
-    AS $$
-DECLARE 
+CREATE OR REPLACE PROCEDURE dwh.usp_d_company(
+	IN p_sourceid character varying,
+	IN p_dataflowflag character varying,
+	IN p_targetobject character varying,
+	OUT srccnt integer,
+	OUT inscnt integer,
+	OUT updcnt integer,
+	OUT dltcount integer,
+	INOUT flag1 character varying,
+	OUT flag2 character varying)
+LANGUAGE 'plpgsql'
+AS $BODY$
+/*****************************************************************************************************************/
+/* PROCEDURE		:	dwh.usp_d_company														 				 */
+/* DESCRIPTION		:	This sp is used to load d_company table from stg_company        			 			 */
+/*						Load Strategy: Insert/Update 															 */
+/*						Sources: emod_company_mst							 		 									 */
+/*****************************************************************************************************************/
+/* DEVELOPMENT HISTORY																							 */
+/*****************************************************************************************************************/
+/* AUTHOR    		:	Suresh P																						 */
+/* DATE				:	24-OCT-2022																				 */
+/*****************************************************************************************************************/
+/* MODIFICATION HISTORY																							 */
+/*****************************************************************************************************************/
+/* MODIFIED BY		:																							 */
+/* DATE				:														 									 */
+/* DESCRIPTION		:													  										 */
+/*****************************************************************************************************************/
+/* EXECUTION SAMPLE :	CALL dwh.usp_d_company 'emod_company_mst','STGtoDW','d_company',0,0,0,0,''				 */
+/*****************************************************************************************************************/
+
+DECLARE
 	p_etljobname VARCHAR(100);
 	p_envsourcecd VARCHAR(50);
 	p_datasourcecd VARCHAR(50);
@@ -12,8 +41,12 @@ DECLARE
 	p_errordesc character varying;
 	p_errorline integer;
 	p_rawstorageflag integer;
+	
+
 
 BEGIN
+
+-- DEPLOYMENT THROUGH GITHUB
 
 	SELECT d.jobname,h.envsourcecode,h.datasourcecode,d.latestbatchid,d.targetprocedurename,h.rawstorageflag
  
@@ -130,4 +163,6 @@ BEGIN
        select 0 into inscnt;
        select 0 into updcnt; 
 END;
-$$;
+$BODY$;
+ALTER PROCEDURE dwh.usp_d_company(character varying, character varying, character varying, character varying)
+    OWNER TO proconnect;

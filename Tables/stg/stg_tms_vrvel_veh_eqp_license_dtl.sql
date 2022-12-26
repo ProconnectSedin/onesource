@@ -1,0 +1,20 @@
+CREATE TABLE stg.stg_tms_vrvel_veh_eqp_license_dtl (
+    vrvel_ouinstance integer NOT NULL,
+    vrvel_tend_req_no character varying(72) NOT NULL COLLATE public.nocase,
+    vrvel_line_no character varying(512) NOT NULL COLLATE public.nocase,
+    vrvel_resp_line_no character varying(512) NOT NULL COLLATE public.nocase,
+    vrvel_license_plate_no character varying(160) COLLATE public.nocase,
+    vrvel_created_by character varying(120) COLLATE public.nocase,
+    vrvel_created_date timestamp without time zone,
+    vrvel_last_modified_by character varying(120) COLLATE public.nocase,
+    vrvel_last_modified_date timestamp without time zone,
+    vrvel_timestamp integer,
+    vrvel_is_assigned character varying(48) COLLATE public.nocase,
+    vrvel_tend_rpt_dt_time character varying(100) COLLATE public.nocase,
+    vrvel_tend_cont_person1 character varying(160) COLLATE public.nocase,
+    vrvel_tend_cont_det1 character varying(160) COLLATE public.nocase,
+    vrvel_tend_cont_person2 character varying(160) COLLATE public.nocase,
+    vrvel_tend_cont_det2 character varying(160) COLLATE public.nocase,
+    vrvel_vendor_id character varying(160) COLLATE public.nocase,
+    etlcreateddatetime timestamp(3) without time zone DEFAULT now()
+);
