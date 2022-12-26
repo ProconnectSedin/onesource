@@ -7,4 +7,4 @@ CREATE TABLE tmp.f_shipment_details_pick_tmp (
     agent_id character varying(40) COLLATE public.nocase,
     from_pincode character varying(40),
     to_pincode character varying(40)
-);
+); 
