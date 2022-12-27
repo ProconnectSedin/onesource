@@ -76,3 +76,6 @@ CREATE TABLE stg.stg_tcal_tran_hdr (
     invrefnum character varying(64) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_tcal_tran_hdr
+    ADD CONSTRAINT tcal_tran_hdr_pkey PRIMARY KEY (tran_no, tax_type, tran_type, tran_ou);

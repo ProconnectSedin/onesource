@@ -18,3 +18,9 @@ CREATE TABLE click.d_oubumap (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE ONLY click.d_oubumap
+    ADD CONSTRAINT d_oubumap_pkey PRIMARY KEY (d_oubumap_key);
+
+ALTER TABLE ONLY click.d_oubumap
+    ADD CONSTRAINT d_oubumap_ukey UNIQUE (ou_id, bu_id, company_code, serial_no);

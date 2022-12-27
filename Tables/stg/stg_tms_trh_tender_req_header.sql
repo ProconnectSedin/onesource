@@ -30,3 +30,6 @@ CREATE TABLE stg.stg_tms_trh_tender_req_header (
     trh_workflow_status_mtr character varying(1020) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_tms_trh_tender_req_header
+    ADD CONSTRAINT pk_tms_trh_tender_req_header PRIMARY KEY (trh_ouinstance, trh_tender_req_no);

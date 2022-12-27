@@ -29,3 +29,24 @@ CREATE TABLE dwh.f_contractdetailhistory (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_contractdetailhistory ALTER COLUMN cont_dtl_hst_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_contractdetailhistory_cont_dtl_hst_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_contractdetailhistory
+    ADD CONSTRAINT f_contractdetailhistory_pkey PRIMARY KEY (cont_dtl_hst_key);
+
+ALTER TABLE ONLY dwh.f_contractdetailhistory
+    ADD CONSTRAINT f_contractdetailhistory_ukey UNIQUE (cont_id, cont_lineno, cont_ou, cont_amendno);
+
+CREATE INDEX f_contractdetailhistory_key_idx ON dwh.f_contractdetailhistory USING btree (cont_id, cont_lineno, cont_ou, cont_amendno);
+
+CREATE INDEX f_contractdetailhistory_key_idx1 ON dwh.f_contractdetailhistory USING btree (cont_hdr_hst_key);
+
+CREATE INDEX f_contractdetailhistory_key_idx2 ON dwh.f_contractdetailhistory USING btree (cont_id, cont_ou, cont_amendno);

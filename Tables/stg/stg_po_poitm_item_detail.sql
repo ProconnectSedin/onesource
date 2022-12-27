@@ -59,3 +59,8 @@ CREATE TABLE stg.stg_po_poitm_item_detail (
     poitm_availableqty numeric,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_po_poitm_item_detail
+    ADD CONSTRAINT pkpo_poitm_item_detail PRIMARY KEY (poitm_pono, poitm_poamendmentno, poitm_polineno, poitm_poou);
+
+CREATE INDEX stg_po_poitm_item_detail_key_idx1 ON stg.stg_po_poitm_item_detail USING btree (poitm_pono, poitm_poamendmentno, poitm_polineno, poitm_poou);

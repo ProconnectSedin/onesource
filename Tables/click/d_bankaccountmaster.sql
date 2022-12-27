@@ -26,3 +26,9 @@ CREATE TABLE click.d_bankaccountmaster (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE ONLY click.d_bankaccountmaster
+    ADD CONSTRAINT d_bankaccountmaster_pkey PRIMARY KEY (bank_acc_mst_key);
+
+ALTER TABLE ONLY click.d_bankaccountmaster
+    ADD CONSTRAINT d_bankaccountmaster_ukey UNIQUE (company_code, bank_ref_no, bank_acc_no, serial_no);

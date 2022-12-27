@@ -23,3 +23,18 @@ CREATE TABLE dwh.d_customergrouphdr (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.d_customergrouphdr ALTER COLUMN cgh_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.d_customergrouphdr_cgh_key_seq
+    START WITH -1
+    INCREMENT BY 1
+    MINVALUE -1
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.d_customergrouphdr
+    ADD CONSTRAINT d_customergrouphdr_pkey PRIMARY KEY (cgh_key);
+
+ALTER TABLE ONLY dwh.d_customergrouphdr
+    ADD CONSTRAINT d_customergrouphdr_ukey UNIQUE (cgh_cust_group_code, cgh_group_type_code, cgh_control_group_flag, cgh_lo);

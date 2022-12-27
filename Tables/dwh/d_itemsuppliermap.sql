@@ -12,3 +12,18 @@ CREATE TABLE dwh.d_itemsuppliermap (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.d_itemsuppliermap ALTER COLUMN itm_supp_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.d_itemsuppliermap_itm_supp_key_seq
+    START WITH -1
+    INCREMENT BY 1
+    MINVALUE -1
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.d_itemsuppliermap
+    ADD CONSTRAINT d_itemsuppliermap_pkey PRIMARY KEY (itm_supp_key);
+
+ALTER TABLE ONLY dwh.d_itemsuppliermap
+    ADD CONSTRAINT d_itemsuppliermap_ukey UNIQUE (itm_ou, itm_code, itm_lineno);

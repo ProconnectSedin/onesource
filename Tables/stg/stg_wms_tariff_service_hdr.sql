@@ -16,3 +16,6 @@ CREATE TABLE stg.stg_wms_tariff_service_hdr (
     wms_tf_ser_modified_dt timestamp without time zone,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_tariff_service_hdr
+    ADD CONSTRAINT wms_tariff_service_hdr_pk PRIMARY KEY (wms_tf_ser_id, wms_tf_ser_ou);

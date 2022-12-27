@@ -39,3 +39,8 @@ CREATE TABLE stg.stg_sur_receipt_dtl (
     ifb_recon_jvno character varying(72) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_sur_receipt_dtl
+    ADD CONSTRAINT sur_receipt_dtl_pkey PRIMARY KEY (ou_id, receipt_type, receipt_no, refdoc_lineno, tran_type);
+
+CREATE INDEX stg_sur_receipt_dtl_idx ON stg.stg_sur_receipt_dtl USING btree (ou_id, receipt_type, receipt_no, refdoc_lineno, tran_type);

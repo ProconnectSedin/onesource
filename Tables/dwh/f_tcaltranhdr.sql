@@ -62,3 +62,23 @@ CREATE TABLE dwh.f_tcaltranhdr (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_tcaltranhdr ALTER COLUMN f_tcaltranhdr_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_tcaltranhdr_f_tcaltranhdr_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_tcaltranhdr
+    ADD CONSTRAINT f_tcaltranhdr_pkey PRIMARY KEY (f_tcaltranhdr_key);
+
+ALTER TABLE ONLY dwh.f_tcaltranhdr
+    ADD CONSTRAINT f_tcaltranhdr_ukey UNIQUE (tran_no, tax_type, tran_type, tran_ou);
+
+ALTER TABLE ONLY dwh.f_tcaltranhdr
+    ADD CONSTRAINT f_tcaltranhdr_company_key_fkey FOREIGN KEY (company_key) REFERENCES dwh.d_company(company_key);
+
+CREATE INDEX f_tcaltranhdr_key_idx ON dwh.f_tcaltranhdr USING btree (tran_no, tax_type, tran_type, tran_ou);

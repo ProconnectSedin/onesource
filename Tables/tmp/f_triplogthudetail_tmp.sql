@@ -7,3 +7,5 @@ CREATE TABLE tmp.f_triplogthudetail_tmp (
     tltd_volume numeric(25,2),
     tltd_volume_uom character varying(40)
 );
+
+CREATE INDEX f_triplogthudetail_tmp_ndx ON tmp.f_triplogthudetail_tmp USING btree (tltd_ouinstance, tltd_trip_plan_id, tltd_trip_sequence, tltd_trip_plan_line_id);

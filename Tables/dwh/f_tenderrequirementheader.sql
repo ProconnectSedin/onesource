@@ -37,3 +37,23 @@ CREATE TABLE dwh.f_tenderrequirementheader (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_tenderrequirementheader ALTER COLUMN trh_hdr_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_tenderrequirementheader_trh_hdr_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_tenderrequirementheader
+    ADD CONSTRAINT f_tenderrequirementheader_pkey PRIMARY KEY (trh_hdr_key);
+
+ALTER TABLE ONLY dwh.f_tenderrequirementheader
+    ADD CONSTRAINT f_tenderrequirementheader_ukey UNIQUE (trh_ouinstance, trh_tender_req_no);
+
+ALTER TABLE ONLY dwh.f_tenderrequirementheader
+    ADD CONSTRAINT f_tenderrequirementheader_trh_date_key_fkey FOREIGN KEY (trh_date_key) REFERENCES dwh.d_date(datekey);
+
+CREATE INDEX f_tenderrequirementheader_key_idx ON dwh.f_tenderrequirementheader USING btree (trh_date_key);

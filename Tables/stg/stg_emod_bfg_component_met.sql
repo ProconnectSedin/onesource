@@ -13,3 +13,6 @@ CREATE TABLE stg.stg_emod_bfg_component_met (
     modifieddate timestamp without time zone,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_emod_bfg_component_met
+    ADD CONSTRAINT emod_bfg_component_met_pkey PRIMARY KEY (bfg_code, component_id);

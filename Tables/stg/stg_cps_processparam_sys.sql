@@ -15,3 +15,6 @@ CREATE TABLE stg.stg_cps_processparam_sys (
     parameter_value numeric,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_cps_processparam_sys
+    ADD CONSTRAINT cps_processparam_sys_pkey PRIMARY KEY (company_code, ou_id, parameter_type, parameter_category, parameter_code, language_id);

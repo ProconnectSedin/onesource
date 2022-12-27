@@ -17,3 +17,6 @@ CREATE TABLE stg.stg_emod_company_currency_map (
     modifieddate timestamp without time zone,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_emod_company_currency_map
+    ADD CONSTRAINT emod_company_currency_map_pkey PRIMARY KEY (serial_no, company_code, currency_code);

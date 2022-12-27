@@ -21,3 +21,6 @@ CREATE TABLE stg.stg_fbp_account_balance (
     ari_upd_flag character varying(48) DEFAULT 'N'::character varying COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_fbp_account_balance
+    ADD CONSTRAINT fbp_account_balance_pkey PRIMARY KEY (ou_id, company_code, fb_id, fin_year, fin_period, account_code, currency_code);

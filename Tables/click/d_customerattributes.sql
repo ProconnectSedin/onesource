@@ -13,3 +13,9 @@ CREATE TABLE click.d_customerattributes (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE ONLY click.d_customerattributes
+    ADD CONSTRAINT d_customerattributes_pkey PRIMARY KEY (wms_cust_attr_key);
+
+ALTER TABLE ONLY click.d_customerattributes
+    ADD CONSTRAINT d_customerattributes_ukey UNIQUE (wms_cust_attr_cust_code, wms_cust_attr_lineno, wms_cust_attr_ou);

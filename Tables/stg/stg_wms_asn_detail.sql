@@ -78,3 +78,16 @@ CREATE TABLE stg.stg_wms_asn_detail (
     wms_asn_lottable6 character varying(1020) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_asn_detail
+    ADD CONSTRAINT wms_asn_detail_pk PRIMARY KEY (wms_asn_ou, wms_asn_location, wms_asn_no, wms_asn_lineno);
+
+CREATE INDEX wms_asn_detail_idx ON stg.stg_wms_asn_detail USING btree (wms_asn_location, wms_asn_ou);
+
+CREATE INDEX wms_asn_detail_idx1 ON stg.stg_wms_asn_detail USING btree (wms_asn_itm_code, wms_asn_ou);
+
+CREATE INDEX wms_asn_detail_idx2 ON stg.stg_wms_asn_detail USING btree (wms_asn_thu_id, wms_asn_ou);
+
+CREATE INDEX wms_asn_detail_idx3 ON stg.stg_wms_asn_detail USING btree (wms_asn_order_uom, wms_asn_ou);
+
+CREATE INDEX wms_asn_detail_idx4 ON stg.stg_wms_asn_detail USING btree (wms_asn_location, wms_asn_ou, wms_asn_no);

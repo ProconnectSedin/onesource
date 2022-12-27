@@ -28,3 +28,20 @@ CREATE TABLE dwh.f_notesheader (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_notesheader ALTER COLUMN notes_hdr_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_notesheader_notes_hdr_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_notesheader
+    ADD CONSTRAINT f_notesheader_pkey PRIMARY KEY (notes_hdr_key);
+
+ALTER TABLE ONLY dwh.f_notesheader
+    ADD CONSTRAINT f_notesheader_ukey UNIQUE (notes_compkey);
+
+CREATE INDEX f_notesheader_key_idx ON dwh.f_notesheader USING btree (notes_compkey);

@@ -43,3 +43,6 @@ CREATE TABLE stg.stg_dim_dest_tran_dtl (
     ref_doc_lineno integer,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_dim_dest_tran_dtl
+    ADD CONSTRAINT pk__dim_dest__12c9edbd320367e1 PRIMARY KEY (tran_no, tran_ou, tran_type, line_no);

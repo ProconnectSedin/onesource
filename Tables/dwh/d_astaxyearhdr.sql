@@ -20,3 +20,18 @@ CREATE TABLE dwh.d_astaxyearhdr (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.d_astaxyearhdr ALTER COLUMN taxyr_hdr_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.d_astaxyearhdr_taxyr_hdr_key_seq
+    START WITH -1
+    INCREMENT BY 1
+    MINVALUE -1
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.d_astaxyearhdr
+    ADD CONSTRAINT d_astaxyearhdr_pkey PRIMARY KEY (taxyr_hdr_key);
+
+ALTER TABLE ONLY dwh.d_astaxyearhdr
+    ADD CONSTRAINT d_astaxyearhdr_ukey UNIQUE (taxyr_code);

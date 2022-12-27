@@ -68,3 +68,5 @@ CREATE TABLE stg.stg_tms_brctd_br_thu_wise_contract_tariff_dtls (
     brctd_chargeable_qty numeric,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+CREATE INDEX stg_tms_brctd_br_thu_wise_contract_tariff_dtls_key_idx1 ON stg.stg_tms_brctd_br_thu_wise_contract_tariff_dtls USING btree (brctd_ou, brctd_br_id, brctd_tariff_id);

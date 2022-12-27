@@ -14,3 +14,6 @@ CREATE TABLE stg.stg_wms_eqp_grp_hdr (
     wms_egrp_userdefined3 character varying(1020) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_eqp_grp_hdr
+    ADD CONSTRAINT wms_eqp_grp_hdr_pk PRIMARY KEY (wms_egrp_ou, wms_egrp_id);

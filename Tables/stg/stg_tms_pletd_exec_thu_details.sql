@@ -31,3 +31,7 @@ CREATE TABLE stg.stg_tms_pletd_exec_thu_details (
     pletd_pickup_shotclosure_qty numeric,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+CREATE INDEX stg_tms_pletd_exec_thu_details_idx ON stg.stg_tms_pletd_exec_thu_details USING btree (pletd_ouinstance, pletd_execution_plan_id, pletd_line_no);
+
+CREATE INDEX stg_tms_pletd_exec_thu_details_key_idx2 ON stg.stg_tms_pletd_exec_thu_details USING btree (pletd_ouinstance, pletd_execution_plan_id, pletd_line_no, pletd_dispatch_docno, pletd_thu_line_no);

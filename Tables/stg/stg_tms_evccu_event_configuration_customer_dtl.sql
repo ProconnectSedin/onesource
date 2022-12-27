@@ -13,3 +13,6 @@ CREATE TABLE stg.stg_tms_evccu_event_configuration_customer_dtl (
     evccu_leg_behaviour character varying(160) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_tms_evccu_event_configuration_customer_dtl
+    ADD CONSTRAINT pk_tms_evccu_event_configuration_customer_dtl PRIMARY KEY (evccu_ouinstance, evccu_guid);

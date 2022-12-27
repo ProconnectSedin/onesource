@@ -40,3 +40,18 @@ CREATE TABLE dwh.d_shippingpoint (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.d_shippingpoint ALTER COLUMN shp_pt_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.d_shippingpoint_shp_pt_key_seq
+    START WITH -1
+    INCREMENT BY 1
+    MINVALUE -1
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.d_shippingpoint
+    ADD CONSTRAINT d_shippingpoint_pkey PRIMARY KEY (shp_pt_key);
+
+ALTER TABLE ONLY dwh.d_shippingpoint
+    ADD CONSTRAINT d_shippingpoint_ukey UNIQUE (shp_pt_ou, shp_pt_id);

@@ -48,3 +48,23 @@ CREATE TABLE dwh.f_sdinappostingsdtl (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_sdinappostingsdtl ALTER COLUMN f_sdinappostingsdtl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_sdinappostingsdtl_f_sdinappostingsdtl_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_sdinappostingsdtl
+    ADD CONSTRAINT f_sdinappostingsdtl_pkey PRIMARY KEY (f_sdinappostingsdtl_key);
+
+ALTER TABLE ONLY dwh.f_sdinappostingsdtl
+    ADD CONSTRAINT f_sdinappostingsdtl_ukey UNIQUE (tran_type, tran_ou, tran_no, posting_line_no, s_timestamp);
+
+ALTER TABLE ONLY dwh.f_sdinappostingsdtl
+    ADD CONSTRAINT f_sdinappostingsdtl_account_key_fkey FOREIGN KEY (account_key) REFERENCES dwh.d_operationalaccountdetail(opcoa_key);
+
+CREATE INDEX f_sdinappostingsdtl_key_idx ON dwh.f_sdinappostingsdtl USING btree (tran_type, tran_ou, tran_no, posting_line_no, s_timestamp);

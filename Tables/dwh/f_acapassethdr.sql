@@ -34,3 +34,20 @@ CREATE TABLE dwh.f_acapassethdr (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_acapassethdr ALTER COLUMN f_acapassethdr_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_acapassethdr_f_acapassethdr_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_acapassethdr
+    ADD CONSTRAINT f_acapassethdr_pkey PRIMARY KEY (f_acapassethdr_key);
+
+ALTER TABLE ONLY dwh.f_acapassethdr
+    ADD CONSTRAINT f_acapassethdr_ukey UNIQUE (ou_id, cap_number, asset_number);
+
+CREATE INDEX f_acapassethdr_key_idx ON dwh.f_acapassethdr USING btree (ou_id, cap_number, asset_number);

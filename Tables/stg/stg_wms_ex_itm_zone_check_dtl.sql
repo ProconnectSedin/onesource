@@ -10,3 +10,6 @@ CREATE TABLE stg.stg_wms_ex_itm_zone_check_dtl (
     wms_ex_zn_dest_type character varying(1020) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_ex_itm_zone_check_dtl
+    ADD CONSTRAINT wms_ex_itm_zone_check_dtl_pk PRIMARY KEY (wms_ex_zn_ou, wms_ex_zn_itm_code, wms_ex_zn_loc_code, wms_ex_zn_line_no);

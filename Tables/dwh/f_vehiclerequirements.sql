@@ -24,3 +24,15 @@ CREATE TABLE dwh.f_vehiclerequirements (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_vehiclerequirements ALTER COLUMN trvr_vhl_req_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_vehiclerequirements_trvr_vhl_req_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_vehiclerequirements
+    ADD CONSTRAINT f_vehiclerequirements_pkey PRIMARY KEY (trvr_vhl_req_key);

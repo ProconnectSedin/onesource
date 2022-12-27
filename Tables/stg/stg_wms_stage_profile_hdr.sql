@@ -15,3 +15,6 @@ CREATE TABLE stg.stg_wms_stage_profile_hdr (
     wms_stg_prof_userdefined3 character varying(1020) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_stage_profile_hdr
+    ADD CONSTRAINT wms_stage_profile_hdr_pk PRIMARY KEY (wms_stg_prof_code, wms_stg_prof_loc_code, wms_stg_prof_ou);

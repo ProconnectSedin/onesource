@@ -53,3 +53,20 @@ CREATE TABLE dwh.f_cidochdr (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_cidochdr ALTER COLUMN cid_hdr_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_cidochdr_cid_hdr_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_cidochdr
+    ADD CONSTRAINT f_cidochdr_pkey PRIMARY KEY (cid_hdr_key);
+
+ALTER TABLE ONLY dwh.f_cidochdr
+    ADD CONSTRAINT f_cidochdr_ukey UNIQUE (tran_ou, tran_type, tran_no, ctimestamp);
+
+CREATE INDEX f_cidochdr_key_idx ON dwh.f_cidochdr USING btree (customer_key, curr_key, company_key, fb_key);

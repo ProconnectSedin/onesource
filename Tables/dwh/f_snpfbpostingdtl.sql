@@ -42,3 +42,20 @@ CREATE TABLE dwh.f_snpfbpostingdtl (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_snpfbpostingdtl ALTER COLUMN snfb_pos_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_snpfbpostingdtl_snfb_pos_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_snpfbpostingdtl
+    ADD CONSTRAINT f_snpfbpostingdtl_pkey PRIMARY KEY (snfb_pos_key);
+
+ALTER TABLE ONLY dwh.f_snpfbpostingdtl
+    ADD CONSTRAINT f_snpfbpostingdtl_ukey UNIQUE (batch_id, ou_id, document_no, account_lineno, account_code, "timestamp");
+
+CREATE INDEX f_snpfbpostingdtl_key_idx ON dwh.f_snpfbpostingdtl USING btree (batch_id, ou_id, document_no, account_lineno, account_code, "timestamp");

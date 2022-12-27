@@ -120,3 +120,6 @@ CREATE TABLE stg.stg_wms_customer_hdr (
     wms_customer_tempid character varying(72) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_customer_hdr
+    ADD CONSTRAINT wms_customer_hdr_pk PRIMARY KEY (wms_customer_id, wms_customer_ou);

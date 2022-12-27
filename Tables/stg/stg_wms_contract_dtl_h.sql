@@ -22,3 +22,6 @@ CREATE TABLE stg.stg_wms_contract_dtl_h (
     wms_cont_draft_bill_grp character varying(160) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_contract_dtl_h
+    ADD CONSTRAINT wms_contract_dtl_h_pk PRIMARY KEY (wms_cont_id, wms_cont_lineno, wms_cont_ou, wms_cont_amendno);

@@ -70,3 +70,34 @@ CREATE TABLE dwh.f_bookingrequest (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_bookingrequest ALTER COLUMN br_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_bookingrequest_br_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_bookingrequest
+    ADD CONSTRAINT f_bookingrequest_pkey PRIMARY KEY (br_key);
+
+ALTER TABLE ONLY dwh.f_bookingrequest
+    ADD CONSTRAINT f_bookingrequest_ukey UNIQUE (br_ouinstance, br_request_id);
+
+ALTER TABLE ONLY dwh.f_bookingrequest
+    ADD CONSTRAINT f_bookingrequest_br_curr_key_fkey FOREIGN KEY (br_curr_key) REFERENCES dwh.d_currency(curr_key);
+
+ALTER TABLE ONLY dwh.f_bookingrequest
+    ADD CONSTRAINT f_bookingrequest_br_customer_key_fkey FOREIGN KEY (br_customer_key) REFERENCES dwh.d_customer(customer_key);
+
+ALTER TABLE ONLY dwh.f_bookingrequest
+    ADD CONSTRAINT f_bookingrequest_br_loc_key_fkey FOREIGN KEY (br_loc_key) REFERENCES dwh.d_location(loc_key);
+
+ALTER TABLE ONLY dwh.f_bookingrequest
+    ADD CONSTRAINT f_bookingrequest_br_rou_key_fkey FOREIGN KEY (br_rou_key) REFERENCES dwh.d_route(rou_key);
+
+CREATE INDEX f_bookingrequest_key_idx ON dwh.f_bookingrequest USING btree (br_curr_key, br_rou_key, br_loc_key, br_customer_key);
+
+CREATE INDEX f_bookingrequest_key_idx1 ON dwh.f_bookingrequest USING btree (br_ouinstance, br_request_id);

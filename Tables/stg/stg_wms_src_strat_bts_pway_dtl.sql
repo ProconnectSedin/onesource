@@ -12,3 +12,6 @@ CREATE TABLE stg.stg_wms_src_strat_bts_pway_dtl (
     wms_bts_timestamp integer,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_src_strat_bts_pway_dtl
+    ADD CONSTRAINT wms_src_strat_bts_pway_dtl_pk PRIMARY KEY (wms_bts_ou, wms_bts_loc_code, wms_bts_lineno, wms_bts_bin_seqno);

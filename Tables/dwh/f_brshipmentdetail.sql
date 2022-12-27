@@ -73,3 +73,25 @@ CREATE TABLE dwh.f_brshipmentdetail (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_brshipmentdetail ALTER COLUMN brsd_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_brshipmentdetail_brsd_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_brshipmentdetail
+    ADD CONSTRAINT f_brshipmentdetail_pkey PRIMARY KEY (brsd_key);
+
+ALTER TABLE ONLY dwh.f_brshipmentdetail
+    ADD CONSTRAINT f_brshipmentdetail_ukey UNIQUE (brsd_ouinstance, brsd_br_id);
+
+ALTER TABLE ONLY dwh.f_brshipmentdetail
+    ADD CONSTRAINT f_brshipmentdetail_brsd_br_key_fkey FOREIGN KEY (brsd_br_key) REFERENCES dwh.f_bookingrequest(br_key);
+
+CREATE INDEX f_brshipmentdetail_key_idx ON dwh.f_brshipmentdetail USING btree (brsd_ouinstance, brsd_br_id);
+
+CREATE INDEX f_brshipmentdetail_key_idx1 ON dwh.f_brshipmentdetail USING btree (brsd_br_key);

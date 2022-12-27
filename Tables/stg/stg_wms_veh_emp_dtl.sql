@@ -7,3 +7,6 @@ CREATE TABLE stg.stg_wms_veh_emp_dtl (
     wms_veh_default integer,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_veh_emp_dtl
+    ADD CONSTRAINT wms_veh_emp_dtl_pk PRIMARY KEY (wms_veh_ou, wms_veh_id, wms_veh_line_no);

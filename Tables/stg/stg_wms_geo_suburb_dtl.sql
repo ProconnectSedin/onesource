@@ -16,3 +16,6 @@ CREATE TABLE stg.stg_wms_geo_suburb_dtl (
     wms_geo_suburb_range_uom character varying(160) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_geo_suburb_dtl
+    ADD CONSTRAINT wms_geo_suburb_dtl_pk PRIMARY KEY (wms_geo_country_code, wms_geo_state_code, wms_geo_city_code, wms_geo_postal_code, wms_geo_suburb_code, wms_geo_suburb_ou, wms_geo_suburb_lineno);

@@ -18,3 +18,15 @@ CREATE TABLE raw.raw_erate_exrate_mst (
     modifieddate timestamp without time zone,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE raw.raw_erate_exrate_mst ALTER COLUMN raw_id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME raw.raw_erate_exrate_mst_raw_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    MAXVALUE 922337203854775807
+    CACHE 1
+);
+
+ALTER TABLE ONLY raw.raw_erate_exrate_mst
+    ADD CONSTRAINT erate_exrate_mst_pkey PRIMARY KEY (raw_id);

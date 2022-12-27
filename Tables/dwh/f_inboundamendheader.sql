@@ -43,3 +43,25 @@ CREATE TABLE dwh.f_inboundamendheader (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_inboundamendheader ALTER COLUMN inb_amh_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_inboundamendheader_inb_amh_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_inboundamendheader
+    ADD CONSTRAINT f_inboundamendheader_pkey PRIMARY KEY (inb_amh_key);
+
+ALTER TABLE ONLY dwh.f_inboundamendheader
+    ADD CONSTRAINT f_inboundamendheader_ukey UNIQUE (inb_loc_code, inb_orderno, inb_ou, inb_amendno);
+
+ALTER TABLE ONLY dwh.f_inboundamendheader
+    ADD CONSTRAINT f_inboundamendheader_inb_loc_key_fkey FOREIGN KEY (inb_loc_key) REFERENCES dwh.d_location(loc_key);
+
+CREATE INDEX f_inboundamendheader_key_idx ON dwh.f_inboundamendheader USING btree (inb_loc_key);
+
+CREATE INDEX f_inboundamendheader_key_idx1 ON dwh.f_inboundamendheader USING btree (inb_loc_code, inb_orderno, inb_ou, inb_amendno);

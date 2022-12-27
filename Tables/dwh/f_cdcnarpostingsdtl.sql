@@ -44,3 +44,25 @@ CREATE TABLE dwh.f_cdcnarpostingsdtl (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_cdcnarpostingsdtl ALTER COLUMN cdcnarpostingsdtl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_cdcnarpostingsdtl_cdcnarpostingsdtl_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_cdcnarpostingsdtl
+    ADD CONSTRAINT f_cdcnarpostingsdtl_pkey PRIMARY KEY (cdcnarpostingsdtl_key);
+
+ALTER TABLE ONLY dwh.f_cdcnarpostingsdtl
+    ADD CONSTRAINT f_cdcnarpostingsdtl_ukey UNIQUE (tran_type, tran_ou, tran_no, posting_line_no);
+
+ALTER TABLE ONLY dwh.f_cdcnarpostingsdtl
+    ADD CONSTRAINT f_cdcnarpostingsdtl_cdcnarpostingsdtl_customer_key_fkey FOREIGN KEY (cdcnarpostingsdtl_customer_key) REFERENCES dwh.d_customer(customer_key);
+
+CREATE INDEX f_cdcnarpostingsdtl_key_idx ON dwh.f_cdcnarpostingsdtl USING btree (tran_type, tran_ou, tran_no, posting_line_no);
+
+CREATE INDEX f_cdcnarpostingsdtl_key_idx1 ON dwh.f_cdcnarpostingsdtl USING btree (cdcnarpostingsdtl_customer_key);

@@ -10,3 +10,6 @@ CREATE TABLE stg.stg_wms_load_rule_hdr (
     wms_load_allow_loading_from character varying(160) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_load_rule_hdr
+    ADD CONSTRAINT wms_load_rule_hdr_pk PRIMARY KEY (wms_load_rule_ou, wms_load_rule_location);

@@ -45,3 +45,28 @@ CREATE TABLE dwh.f_lotmasterdetail (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_lotmasterdetail ALTER COLUMN lot_mst_dtl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_lotmasterdetail_lot_mst_dtl_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_lotmasterdetail
+    ADD CONSTRAINT f_lotmasterdetail_pkey PRIMARY KEY (lot_mst_dtl_key);
+
+ALTER TABLE ONLY dwh.f_lotmasterdetail
+    ADD CONSTRAINT f_lotmasterdetail_ukey UNIQUE (lm_lotno_ou, lm_wh_code, lm_item_code, lm_lot_no, lm_serial_no, lm_trans_no);
+
+ALTER TABLE ONLY dwh.f_lotmasterdetail
+    ADD CONSTRAINT f_lotmasterdetail_lot_mst_dtl_itm_hdr_key_fkey FOREIGN KEY (lot_mst_dtl_itm_hdr_key) REFERENCES dwh.d_itemheader(itm_hdr_key);
+
+ALTER TABLE ONLY dwh.f_lotmasterdetail
+    ADD CONSTRAINT f_lotmasterdetail_lot_mst_dtl_wh_key_fkey FOREIGN KEY (lot_mst_dtl_wh_key) REFERENCES dwh.d_warehouse(wh_key);
+
+CREATE INDEX f_lotmasterdetail_key_idx ON dwh.f_lotmasterdetail USING btree (lot_mst_dtl_itm_hdr_key, lot_mst_dtl_wh_key);
+
+CREATE INDEX f_lotmasterdetail_key_idx1 ON dwh.f_lotmasterdetail USING btree (lm_lotno_ou, lm_wh_code, lm_item_code, lm_lot_no, lm_serial_no, lm_trans_no);

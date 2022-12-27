@@ -19,3 +19,22 @@ CREATE TABLE dwh.f_tariffrevcostheader (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_tariffrevcostheader ALTER COLUMN tarch_hdr_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_tariffrevcostheader_tarch_hdr_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_tariffrevcostheader
+    ADD CONSTRAINT f_tariffrevcostheader_pkey PRIMARY KEY (tarch_hdr_key);
+
+ALTER TABLE ONLY dwh.f_tariffrevcostheader
+    ADD CONSTRAINT f_tariffrevcostheader_ukey UNIQUE (tarch_ouinstance, tarch_trip_plan_id, tarch_unique_id, tarch_buy_sell_type, tarch_stage_of_derivation);
+
+CREATE INDEX f_tariffrevcostheader_key_idx ON dwh.f_tariffrevcostheader USING btree (tarch_ouinstance, tarch_trip_plan_id, tarch_unique_id, tarch_buy_sell_type, tarch_stage_of_derivation);
+
+CREATE INDEX f_tariffrevcostheader_key_idx1 ON dwh.f_tariffrevcostheader USING btree (tarch_trip_hdr_key);

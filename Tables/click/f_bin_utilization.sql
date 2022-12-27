@@ -18,3 +18,15 @@ CREATE TABLE click.f_bin_utilization (
     utilized_volume_pct numeric(25,2),
     utilized_area_pct numeric(25,2)
 );
+
+ALTER TABLE click.f_bin_utilization ALTER COLUMN bin_util_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME click.f_bin_utilization_bin_util_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY click.f_bin_utilization
+    ADD CONSTRAINT f_bin_utilization_pkey PRIMARY KEY (bin_util_key);

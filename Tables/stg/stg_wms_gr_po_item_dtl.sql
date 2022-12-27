@@ -37,3 +37,8 @@ CREATE TABLE stg.stg_wms_gr_po_item_dtl (
     wms_gr_item_attribute10 character varying(1020) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_gr_po_item_dtl
+    ADD CONSTRAINT wms_gr_po_item_dtl_pk PRIMARY KEY (wms_gr_loc_code, wms_gr_pln_no, wms_gr_pln_ou, wms_gr_lineno);
+
+CREATE INDEX stg_wms_gr_po_item_dtl_key_idx2 ON stg.stg_wms_gr_po_item_dtl USING btree (wms_gr_loc_code, wms_gr_pln_no, wms_gr_pln_ou, wms_gr_lineno);

@@ -46,3 +46,34 @@ CREATE TABLE dwh.f_gateexecdetail (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_gateexecdetail ALTER COLUMN gate_exec_dtl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_gateexecdetail_gate_exec_dtl_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_gateexecdetail
+    ADD CONSTRAINT f_gateexecdetail_pkey PRIMARY KEY (gate_exec_dtl_key);
+
+ALTER TABLE ONLY dwh.f_gateexecdetail
+    ADD CONSTRAINT f_gateexecdetail_ukey UNIQUE (gate_loc_code, gate_exec_no, gate_exec_ou);
+
+ALTER TABLE ONLY dwh.f_gateexecdetail
+    ADD CONSTRAINT f_gateexecdetail_gate_exec_dtl_emp_hdr_key_fkey FOREIGN KEY (gate_exec_dtl_emp_hdr_key) REFERENCES dwh.d_employeeheader(emp_hdr_key);
+
+ALTER TABLE ONLY dwh.f_gateexecdetail
+    ADD CONSTRAINT f_gateexecdetail_gate_exec_dtl_eqp_key_fkey FOREIGN KEY (gate_exec_dtl_eqp_key) REFERENCES dwh.d_equipment(eqp_key);
+
+ALTER TABLE ONLY dwh.f_gateexecdetail
+    ADD CONSTRAINT f_gateexecdetail_gate_exec_dtl_loc_key_fkey FOREIGN KEY (gate_exec_dtl_loc_key) REFERENCES dwh.d_location(loc_key);
+
+ALTER TABLE ONLY dwh.f_gateexecdetail
+    ADD CONSTRAINT f_gateexecdetail_gate_exec_dtl_veh_key_fkey FOREIGN KEY (gate_exec_dtl_veh_key) REFERENCES dwh.d_vehicle(veh_key);
+
+CREATE INDEX f_gateexecdetail_key_idx ON dwh.f_gateexecdetail USING btree (gate_exec_dtl_emp_hdr_key, gate_exec_dtl_eqp_key, gate_exec_dtl_veh_key, gate_exec_dtl_loc_key);
+
+CREATE INDEX f_gateexecdetail_key_idx1 ON dwh.f_gateexecdetail USING btree (gate_loc_code, gate_exec_no, gate_exec_ou);

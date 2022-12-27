@@ -46,3 +46,20 @@ CREATE TABLE dwh.f_cdiitemdtl (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_cdiitemdtl ALTER COLUMN cdi_itm_dtl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_cdiitemdtl_cdi_itm_dtl_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_cdiitemdtl
+    ADD CONSTRAINT f_cdiitemdtl_pkey PRIMARY KEY (cdi_itm_dtl_key);
+
+ALTER TABLE ONLY dwh.f_cdiitemdtl
+    ADD CONSTRAINT f_cdiitemdtl_ukey UNIQUE (tran_type, tran_ou, tran_no, line_no);
+
+CREATE INDEX f_cdiitemdtl_key_idx ON dwh.f_cdiitemdtl USING btree (uom_key);

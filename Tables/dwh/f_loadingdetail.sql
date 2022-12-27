@@ -33,3 +33,35 @@ CREATE TABLE dwh.f_loadingdetail (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_loadingdetail ALTER COLUMN loading_dtl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_loadingdetail_loading_dtl_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_loadingdetail
+    ADD CONSTRAINT f_loadingdetail_pkey PRIMARY KEY (loading_dtl_key);
+
+ALTER TABLE ONLY dwh.f_loadingdetail
+    ADD CONSTRAINT f_loadingdetail_ukey UNIQUE (loading_loc_code, loading_exec_no, loading_exec_ou, loading_lineno);
+
+ALTER TABLE ONLY dwh.f_loadingdetail
+    ADD CONSTRAINT f_loadingdetail_loading_dtl_loc_key_fkey FOREIGN KEY (loading_dtl_loc_key) REFERENCES dwh.d_location(loc_key);
+
+ALTER TABLE ONLY dwh.f_loadingdetail
+    ADD CONSTRAINT f_loadingdetail_loading_dtl_shp_pt_key_fkey FOREIGN KEY (loading_dtl_shp_pt_key) REFERENCES dwh.d_shippingpoint(shp_pt_key);
+
+ALTER TABLE ONLY dwh.f_loadingdetail
+    ADD CONSTRAINT f_loadingdetail_loading_dtl_stg_mas_key_fkey FOREIGN KEY (loading_dtl_stg_mas_key) REFERENCES dwh.d_stage(stg_mas_key);
+
+ALTER TABLE ONLY dwh.f_loadingdetail
+    ADD CONSTRAINT f_loadingdetail_loading_dtl_thu_key_fkey FOREIGN KEY (loading_dtl_thu_key) REFERENCES dwh.d_thu(thu_key);
+
+ALTER TABLE ONLY dwh.f_loadingdetail
+    ADD CONSTRAINT f_loadingdetail_loading_hdr_key_fkey FOREIGN KEY (loading_hdr_key) REFERENCES dwh.f_loadingheader(loading_hdr_key);
+
+CREATE INDEX f_loadingdetail_key_idx ON dwh.f_loadingdetail USING btree (loading_hdr_key, loading_dtl_loc_key, loading_dtl_stg_mas_key, loading_dtl_thu_key, loading_dtl_shp_pt_key);

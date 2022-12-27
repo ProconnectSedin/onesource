@@ -9,3 +9,6 @@ CREATE TABLE stg.stg_tms_component_met (
     tms_sequenceno integer,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_tms_component_met
+    ADD CONSTRAINT tms_component_met_pk PRIMARY KEY (tms_componentname, tms_paramcategory, tms_paramtype, tms_paramcode, tms_paramdesc, tms_langid);

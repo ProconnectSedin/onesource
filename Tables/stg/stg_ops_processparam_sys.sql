@@ -13,3 +13,6 @@ CREATE TABLE stg.stg_ops_processparam_sys (
     modifieddate timestamp without time zone,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_ops_processparam_sys
+    ADD CONSTRAINT ops_processparam_sys_pkey PRIMARY KEY (ou_id, parameter_type, parameter_category, parameter_code, language_id);

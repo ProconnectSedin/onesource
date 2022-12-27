@@ -26,3 +26,6 @@ CREATE TABLE stg.stg_tms_brctcd_consgt_thu_child_details (
     ctcd_timestamp integer,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_tms_brctcd_consgt_thu_child_details
+    ADD CONSTRAINT pk_tms_brctcd_consgt_thu_child_details PRIMARY KEY (ctcd_ouinstance, ctcd_br_line_no, ctcd_child_thu_line_no);

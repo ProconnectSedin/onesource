@@ -31,3 +31,6 @@ CREATE TABLE stg.stg_tms_brrd_br_recurring_details (
     brrd_last_modified_by character varying(120) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_tms_brrd_br_recurring_details
+    ADD CONSTRAINT pk_tms_brrd_br_recurring_details PRIMARY KEY (brrd_ouinstance, brrd_br_id);

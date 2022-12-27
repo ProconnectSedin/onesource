@@ -25,3 +25,25 @@ CREATE TABLE dwh.f_binplanheader (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_binplanheader ALTER COLUMN bin_hdr_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_binplanheader_bin_hdr_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_binplanheader
+    ADD CONSTRAINT f_binplanheader_pkey PRIMARY KEY (bin_hdr_key);
+
+ALTER TABLE ONLY dwh.f_binplanheader
+    ADD CONSTRAINT f_binplanheader_ukey UNIQUE (bin_loc_code, bin_pln_no, bin_pln_ou);
+
+ALTER TABLE ONLY dwh.f_binplanheader
+    ADD CONSTRAINT f_binplanheader_bin_loc_key_fkey FOREIGN KEY (bin_loc_key) REFERENCES dwh.d_location(loc_key);
+
+CREATE INDEX f_binplanheader_key_idx ON dwh.f_binplanheader USING btree (bin_loc_key);
+
+CREATE INDEX f_binplanheader_key_idx1 ON dwh.f_binplanheader USING btree (bin_loc_code, bin_pln_no, bin_pln_ou);

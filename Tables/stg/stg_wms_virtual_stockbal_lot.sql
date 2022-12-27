@@ -31,3 +31,6 @@ CREATE TABLE stg.stg_wms_virtual_stockbal_lot (
     sbl_reason_code character varying(160) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_virtual_stockbal_lot
+    ADD CONSTRAINT wms_virtual_stockbal_lot_pk PRIMARY KEY (sbl_wh_code, sbl_ouinstid, sbl_line_no);

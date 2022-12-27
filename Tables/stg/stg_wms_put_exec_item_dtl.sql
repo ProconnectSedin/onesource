@@ -36,3 +36,8 @@ CREATE TABLE stg.stg_wms_put_exec_item_dtl (
     wms_put_su2_conv_flg character varying(32) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_put_exec_item_dtl
+    ADD CONSTRAINT wms_put_exec_item_dtl_pk PRIMARY KEY (wms_pway_loc_code, wms_pway_exec_no, wms_pway_exec_ou, wms_pway_exec_lineno);
+
+CREATE INDEX stg_wms_put_exec_item_dtl_key_idx1 ON stg.stg_wms_put_exec_item_dtl USING btree (wms_pway_loc_code, wms_pway_exec_no, wms_pway_exec_ou, wms_pway_exec_lineno);

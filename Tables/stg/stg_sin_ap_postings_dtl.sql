@@ -49,3 +49,6 @@ CREATE TABLE stg.stg_sin_ap_postings_dtl (
     rowtype character varying(100) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_sin_ap_postings_dtl
+    ADD CONSTRAINT sin_ap_postings_dtl_pkey PRIMARY KEY (tran_type, tran_ou, tran_no, posting_line_no);

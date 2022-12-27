@@ -63,3 +63,25 @@ CREATE TABLE dwh.f_sinitemdtl (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_sinitemdtl ALTER COLUMN si_sinitm_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_sinitemdtl_si_sinitm_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_sinitemdtl
+    ADD CONSTRAINT f_sinitemdtl_pkey PRIMARY KEY (si_sinitm_key);
+
+ALTER TABLE ONLY dwh.f_sinitemdtl
+    ADD CONSTRAINT f_sinitemdtl_ukey UNIQUE (tran_type, tran_ou, tran_no, line_no, ipv_flag, epv_flag);
+
+ALTER TABLE ONLY dwh.f_sinitemdtl
+    ADD CONSTRAINT f_sinitemdtl_si_sinitm_inv_key_fkey FOREIGN KEY (si_sinitm_inv_key) REFERENCES dwh.f_sininvoicehdr(si_inv_key);
+
+CREATE INDEX f_sinitemdtl_key_idx ON dwh.f_sinitemdtl USING btree (tran_type, tran_ou, tran_no, line_no, ipv_flag, epv_flag);
+
+CREATE INDEX f_sinitemdtl_key_idx1 ON dwh.f_sinitemdtl USING btree (si_sinitm_inv_key);

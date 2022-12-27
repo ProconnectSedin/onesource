@@ -20,3 +20,9 @@ CREATE TABLE click.d_uom (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE ONLY click.d_uom
+    ADD CONSTRAINT d_uom_pkey PRIMARY KEY (uom_key);
+
+ALTER TABLE ONLY click.d_uom
+    ADD CONSTRAINT d_uom_ukey UNIQUE (mas_ouinstance, mas_uomcode);

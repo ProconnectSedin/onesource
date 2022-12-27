@@ -18,3 +18,5 @@ CREATE TABLE stg.stg_wms_outbound_sch_dtl_h (
     wms_oub_sch_packed_qty numeric,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+CREATE INDEX stg_wms_outbound_sch_dtl_h_key_idx2 ON stg.stg_wms_outbound_sch_dtl_h USING btree (wms_oub_sch_loc_code, wms_oub_sch_ou, wms_oub_outbound_ord, wms_oub_sch_amendno, wms_oub_sch_lineno, wms_oub_item_lineno);

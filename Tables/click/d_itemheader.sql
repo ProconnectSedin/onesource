@@ -67,3 +67,13 @@ CREATE TABLE click.d_itemheader (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE ONLY click.d_itemheader
+    ADD CONSTRAINT d_itemheader_pkey PRIMARY KEY (itm_hdr_key);
+
+ALTER TABLE ONLY click.d_itemheader
+    ADD CONSTRAINT d_itemheader_ukey UNIQUE (itm_code, itm_ou);
+
+CREATE INDEX d_itemheader_idx ON click.d_itemheader USING btree (itm_ou, itm_code);
+
+CREATE INDEX d_itemheader_idx1 ON click.d_itemheader USING btree (itm_customer, itm_ou);

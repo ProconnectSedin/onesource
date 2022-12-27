@@ -19,3 +19,24 @@ CREATE TABLE raw.raw_wms_lnm_lh_lotnohistory (
     lh_seqno_unique bigint NOT NULL,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE raw.raw_wms_lnm_lh_lotnohistory ALTER COLUMN lh_seqno_unique ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME raw.raw_wms_lnm_lh_lotnohistory_lh_seqno_unique_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE raw.raw_wms_lnm_lh_lotnohistory ALTER COLUMN raw_id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME raw.raw_wms_lnm_lh_lotnohistory_raw_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY raw.raw_wms_lnm_lh_lotnohistory
+    ADD CONSTRAINT raw_wms_lnm_lh_lotnohistory_pkey PRIMARY KEY (raw_id);

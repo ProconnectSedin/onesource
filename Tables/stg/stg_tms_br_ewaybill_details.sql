@@ -15,3 +15,5 @@ CREATE TABLE stg.stg_tms_br_ewaybill_details (
     ewbd_shipper_invoice_no character varying(160) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+CREATE INDEX stg_tms_br_ewaybill_details_key_idx1 ON stg.stg_tms_br_ewaybill_details USING btree (ewbd_br_no, ewbd_ouinstance);

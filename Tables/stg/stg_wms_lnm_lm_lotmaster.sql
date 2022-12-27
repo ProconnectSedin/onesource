@@ -54,3 +54,6 @@ CREATE TABLE stg.stg_wms_lnm_lm_lotmaster (
     wms_lm_new_lottables10 character varying(112) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_lnm_lm_lotmaster
+    ADD CONSTRAINT wms_lnm_lm_lotmaster_pk PRIMARY KEY (lm_lotno_ou, lm_wh_code, lm_item_code, lm_lot_no, lm_serial_no, lm_trans_no);

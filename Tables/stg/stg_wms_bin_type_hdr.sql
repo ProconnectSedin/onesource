@@ -30,3 +30,6 @@ CREATE TABLE stg.stg_wms_bin_type_hdr (
     wms_bin_typ_prmtd_no_ethu integer,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_bin_type_hdr
+    ADD CONSTRAINT wms_bin_type_hdr_pk PRIMARY KEY (wms_bin_typ_ou, wms_bin_typ_code, wms_bin_typ_loc_code);

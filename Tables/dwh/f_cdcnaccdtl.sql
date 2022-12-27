@@ -32,3 +32,18 @@ CREATE TABLE dwh.f_cdcnaccdtl (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_cdcnaccdtl ALTER COLUMN cd_cn_accdtl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_cdcnaccdtl_cd_cn_accdtl_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_cdcnaccdtl
+    ADD CONSTRAINT f_cdcnaccdtl_pkey PRIMARY KEY (cd_cn_accdtl_key);
+
+ALTER TABLE ONLY dwh.f_cdcnaccdtl
+    ADD CONSTRAINT f_cdcnaccdtl_ukey UNIQUE (tran_type, tran_ou, tran_no, line_no);

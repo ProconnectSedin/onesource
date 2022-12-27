@@ -25,3 +25,23 @@ CREATE TABLE dwh.f_fbpvoucherdtl (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_fbpvoucherdtl ALTER COLUMN fbp_dtl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_fbpvoucherdtl_fbp_dtl_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_fbpvoucherdtl
+    ADD CONSTRAINT f_fbpvoucherdtl_pkey PRIMARY KEY (fbp_dtl_key);
+
+ALTER TABLE ONLY dwh.f_fbpvoucherdtl
+    ADD CONSTRAINT f_fbpvoucherdtl_ukey UNIQUE (parent_key, current_key, company_code, ou_id, fb_id, fb_voucher_no, serial_no);
+
+ALTER TABLE ONLY dwh.f_fbpvoucherdtl
+    ADD CONSTRAINT f_fbpvoucherdtl_fbp_company_key_fkey FOREIGN KEY (fbp_company_key) REFERENCES dwh.d_company(company_key);
+
+CREATE INDEX f_fbpvoucherdtl_key_idx ON dwh.f_fbpvoucherdtl USING btree (fbp_company_key);

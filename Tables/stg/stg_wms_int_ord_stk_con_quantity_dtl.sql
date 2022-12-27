@@ -13,3 +13,6 @@ CREATE TABLE stg.stg_wms_int_ord_stk_con_quantity_dtl (
     wms_in_ord_mas_qty_frm numeric,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_int_ord_stk_con_quantity_dtl
+    ADD CONSTRAINT wms_int_ord_stk_con_quantity_dtl_pk PRIMARY KEY (wms_in_ord_location, wms_in_ord_no, wms_in_ord_lineno, wms_in_ord_ou);

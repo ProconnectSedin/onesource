@@ -6,3 +6,6 @@ CREATE TABLE stg.stg_wms_timezone_details_met (
     wms_isapplicable character varying(32) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_timezone_details_met
+    ADD CONSTRAINT wms_timezone_details_met_pk PRIMARY KEY (wms_time_zone_id, wms_time_zone_display_name);

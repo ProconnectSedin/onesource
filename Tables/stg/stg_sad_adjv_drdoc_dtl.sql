@@ -25,3 +25,6 @@ CREATE TABLE stg.stg_sad_adjv_drdoc_dtl (
     tax_adj_jvno character varying(16000) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_sad_adjv_drdoc_dtl
+    ADD CONSTRAINT sad_adjv_drdoc_dtl_pkey PRIMARY KEY (ou_id, adj_voucher_no, dr_doc_ou, dr_doc_type, dr_doc_no, term_no);

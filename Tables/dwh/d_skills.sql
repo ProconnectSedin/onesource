@@ -18,3 +18,18 @@ CREATE TABLE dwh.d_skills (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.d_skills ALTER COLUMN skl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.d_skills_skl_key_seq
+    START WITH -1
+    INCREMENT BY 1
+    MINVALUE -1
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.d_skills
+    ADD CONSTRAINT d_skills_pkey PRIMARY KEY (skl_key);
+
+ALTER TABLE ONLY dwh.d_skills
+    ADD CONSTRAINT d_skills_ukey UNIQUE (skl_ou, skl_code, skl_type);

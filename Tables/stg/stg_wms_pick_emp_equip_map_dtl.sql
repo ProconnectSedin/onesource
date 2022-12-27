@@ -10,3 +10,8 @@ CREATE TABLE stg.stg_wms_pick_emp_equip_map_dtl (
     wms_pick_bin_level character varying(40) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_pick_emp_equip_map_dtl
+    ADD CONSTRAINT wms_pick_emp_equip_map_dtl_pkey PRIMARY KEY (wms_pick_loc_code, wms_pick_ou, wms_pick_lineno);
+
+CREATE INDEX stg_wms_pick_emp_equip_map_dtl_idx ON stg.stg_wms_pick_emp_equip_map_dtl USING btree (wms_pick_loc_code, wms_pick_ou, wms_pick_lineno);

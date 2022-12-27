@@ -45,3 +45,18 @@ CREATE TABLE dwh.d_customerlocationinfo (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.d_customerlocationinfo ALTER COLUMN clo_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.d_customerlocationinfo_clo_key_seq
+    START WITH -1
+    INCREMENT BY 1
+    MINVALUE -1
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.d_customerlocationinfo
+    ADD CONSTRAINT d_customerlocationinfo_pkey PRIMARY KEY (clo_key);
+
+ALTER TABLE ONLY dwh.d_customerlocationinfo
+    ADD CONSTRAINT d_customerlocationinfo_ukey UNIQUE (clo_lo, clo_cust_code);

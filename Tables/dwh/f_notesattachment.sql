@@ -30,3 +30,18 @@ CREATE TABLE dwh.f_notesattachment (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_notesattachment ALTER COLUMN note_atch_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_notesattachment_note_atch_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_notesattachment
+    ADD CONSTRAINT f_notesattachment_pkey PRIMARY KEY (note_atch_key);
+
+ALTER TABLE ONLY dwh.f_notesattachment
+    ADD CONSTRAINT f_notesattachment_ukey UNIQUE (sequence_no, notes_compkey, line_no, line_entity);

@@ -10,3 +10,15 @@ CREATE TABLE stg.stg_menu_master (
     imagename character varying(50) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE stg.stg_menu_master ALTER COLUMN menuid ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME stg.stg_menu_master_menuid_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY stg.stg_menu_master
+    ADD CONSTRAINT pcs_mobility_menu_master_tbl_pk PRIMARY KEY (menuid);

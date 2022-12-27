@@ -7,3 +7,6 @@ CREATE TABLE stg.stg_wms_loc_location_shift_dtl (
     wms_loc_shft_to_time timestamp without time zone,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_loc_location_shift_dtl
+    ADD CONSTRAINT wms_loc_location_shift_dtl_pk PRIMARY KEY (wms_loc_ou, wms_loc_code, wms_loc_shft_lineno);

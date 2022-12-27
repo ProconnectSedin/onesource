@@ -47,3 +47,8 @@ CREATE TABLE stg.stg_sad_adjvoucher_hdr (
     voucher_remarks character varying(1020) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_sad_adjvoucher_hdr
+    ADD CONSTRAINT sad_adjvoucher_hdr_pkey PRIMARY KEY (ou_id, adj_voucher_no);
+
+CREATE INDEX stg_sad_adjvoucher_hdr_idx ON stg.stg_sad_adjvoucher_hdr USING btree (ou_id, adj_voucher_no, stimestamp);

@@ -23,3 +23,20 @@ CREATE TABLE dwh.f_abbaccountbudgetdtl (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_abbaccountbudgetdtl ALTER COLUMN f_abbaccountbudgetdtl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_abbaccountbudgetdtl_f_abbaccountbudgetdtl_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_abbaccountbudgetdtl
+    ADD CONSTRAINT f_abbaccountbudgetdtl_pkey PRIMARY KEY (f_abbaccountbudgetdtl_key);
+
+ALTER TABLE ONLY dwh.f_abbaccountbudgetdtl
+    ADD CONSTRAINT f_abbaccountbudgetdtl_ukey UNIQUE (company_code, fb_id, fin_year_code, fin_period_code, account_code);
+
+CREATE INDEX f_abbaccountbudgetdtl_key_idx ON dwh.f_abbaccountbudgetdtl USING btree (company_code, fb_id, fin_year_code, fin_period_code, account_code);

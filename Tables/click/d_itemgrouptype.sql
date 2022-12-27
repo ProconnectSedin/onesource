@@ -18,3 +18,9 @@ CREATE TABLE click.d_itemgrouptype (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE ONLY click.d_itemgrouptype
+    ADD CONSTRAINT d_itemgrouptype_pkey PRIMARY KEY (item_igt_key);
+
+ALTER TABLE ONLY click.d_itemgrouptype
+    ADD CONSTRAINT d_itemgrouptype_ukey UNIQUE (item_igt_grouptype, item_igt_lo);

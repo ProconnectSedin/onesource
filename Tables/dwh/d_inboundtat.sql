@@ -19,3 +19,20 @@ CREATE TABLE dwh.d_inboundtat (
     etlupdatedatetime timestamp(3) without time zone,
     location_key bigint
 );
+
+ALTER TABLE dwh.d_inboundtat ALTER COLUMN d_inboundtat_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.d_inboundtat_d_inboundtat_key_seq
+    START WITH -1
+    INCREMENT BY 1
+    MINVALUE -1
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.d_inboundtat
+    ADD CONSTRAINT d_inboundtat_pkey PRIMARY KEY (d_inboundtat_key);
+
+ALTER TABLE ONLY dwh.d_inboundtat
+    ADD CONSTRAINT d_inboundtat_ukey UNIQUE (id, ou, locationcode, ordertype, servicetype);
+
+CREATE INDEX d_inboundtat_idx ON dwh.d_inboundtat USING btree (locationcode, ou, ordertype, servicetype);

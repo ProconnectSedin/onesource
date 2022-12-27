@@ -82,3 +82,11 @@ CREATE TABLE click.d_customer (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE ONLY click.d_customer
+    ADD CONSTRAINT d_customer_pkey PRIMARY KEY (customer_key);
+
+ALTER TABLE ONLY click.d_customer
+    ADD CONSTRAINT d_customer_ukey UNIQUE (customer_id, customer_ou);
+
+CREATE INDEX d_customer_idx ON click.d_customer USING btree (customer_id, customer_ou);

@@ -16,3 +16,6 @@ CREATE TABLE stg.stg_pcsit_prepared_shipment (
     stockroom character varying(50) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_pcsit_prepared_shipment
+    ADD CONSTRAINT pk_pcsit_prepared_shipment PRIMARY KEY (ou, type, locationcode, doc_no, thu_id, status);

@@ -74,3 +74,20 @@ CREATE TABLE dwh.f_sininvoicehdr (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_sininvoicehdr ALTER COLUMN si_inv_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_sininvoicehdr_si_inv_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_sininvoicehdr
+    ADD CONSTRAINT f_sininvoicehdr_pkey PRIMARY KEY (si_inv_key);
+
+ALTER TABLE ONLY dwh.f_sininvoicehdr
+    ADD CONSTRAINT f_sininvoicehdr_ukey UNIQUE (tran_type, tran_ou, tran_no, "timestamp", tms_flag, gen_from_mntfrght);
+
+CREATE INDEX f_sininvoicehdr_key_idx ON dwh.f_sininvoicehdr USING btree (tran_type, tran_ou, tran_no, "timestamp", tms_flag, gen_from_mntfrght);

@@ -35,3 +35,6 @@ CREATE TABLE stg.stg_fact_outbound_tripagent (
     ship_to_id character varying(200) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_fact_outbound_tripagent
+    ADD CONSTRAINT pk__fact_out__4e831314f65e5f64 PRIMARY KEY (refkey);

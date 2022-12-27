@@ -39,3 +39,35 @@ CREATE TABLE dwh.f_dispatchdetail (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_dispatchdetail ALTER COLUMN dispatch_dtl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_dispatchdetail_dispatch_dtl_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_dispatchdetail
+    ADD CONSTRAINT f_dispatchdetail_pkey PRIMARY KEY (dispatch_dtl_key);
+
+ALTER TABLE ONLY dwh.f_dispatchdetail
+    ADD CONSTRAINT f_dispatchdetail_ukey UNIQUE (dispatch_loc_code, dispatch_ld_sheet_no, dispatch_ld_sheet_ou, dispatch_lineno);
+
+ALTER TABLE ONLY dwh.f_dispatchdetail
+    ADD CONSTRAINT f_dispatchdetail_dispatch_dtl_customer_key_fkey FOREIGN KEY (dispatch_dtl_customer_key) REFERENCES dwh.d_customer(customer_key);
+
+ALTER TABLE ONLY dwh.f_dispatchdetail
+    ADD CONSTRAINT f_dispatchdetail_dispatch_dtl_loc_key_fkey FOREIGN KEY (dispatch_dtl_loc_key) REFERENCES dwh.d_location(loc_key);
+
+ALTER TABLE ONLY dwh.f_dispatchdetail
+    ADD CONSTRAINT f_dispatchdetail_dispatch_dtl_shp_pt_key_fkey FOREIGN KEY (dispatch_dtl_shp_pt_key) REFERENCES dwh.d_shippingpoint(shp_pt_key);
+
+ALTER TABLE ONLY dwh.f_dispatchdetail
+    ADD CONSTRAINT f_dispatchdetail_dispatch_dtl_thu_key_fkey FOREIGN KEY (dispatch_dtl_thu_key) REFERENCES dwh.d_thu(thu_key);
+
+ALTER TABLE ONLY dwh.f_dispatchdetail
+    ADD CONSTRAINT f_dispatchdetail_dispatch_hdr_key_fkey FOREIGN KEY (dispatch_hdr_key) REFERENCES dwh.f_dispatchheader(dispatch_hdr_key);
+
+CREATE INDEX f_dispatchdetail_key_idx ON dwh.f_dispatchdetail USING btree (dispatch_hdr_key, dispatch_dtl_loc_key, dispatch_dtl_thu_key, dispatch_dtl_shp_pt_key, dispatch_dtl_customer_key);

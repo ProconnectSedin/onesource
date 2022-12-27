@@ -25,3 +25,6 @@ CREATE TABLE stg.stg_wms_gr_exec_reset_dtl (
     wms_gr_po_sno character varying(72) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_gr_exec_reset_dtl
+    ADD CONSTRAINT wms_gr_exec_reset_dtl_pk PRIMARY KEY (wms_gr_loc_code, wms_gr_ou, wms_gr_exec_no, wms_gr_lineno);

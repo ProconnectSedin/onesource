@@ -31,3 +31,15 @@ CREATE TABLE ods.controldetail (
     executiontype character varying(40),
     intervaldays integer
 );
+
+ALTER TABLE ods.controldetail ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME ods.controldetail_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY ods.controldetail
+    ADD CONSTRAINT controldetail_pkey PRIMARY KEY (id);

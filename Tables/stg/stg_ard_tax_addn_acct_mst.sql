@@ -14,3 +14,6 @@ CREATE TABLE stg.stg_ard_tax_addn_acct_mst (
     subanalysis_code character varying(20) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_ard_tax_addn_acct_mst
+    ADD CONSTRAINT ard_tax_addn_acct_mst_pk PRIMARY KEY (company_code, tax_type, tax_community, usage_id, effective_from, sequence_no);

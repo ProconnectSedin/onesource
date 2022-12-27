@@ -9,3 +9,6 @@ CREATE TABLE stg.stg_wms_component_met (
     wms_sequenceno integer,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_component_met
+    ADD CONSTRAINT wms_component_met_pk PRIMARY KEY (wms_componentname, wms_paramcategory, wms_paramtype, wms_paramcode, wms_paramdesc, wms_langid);

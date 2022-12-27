@@ -17,3 +17,6 @@ CREATE TABLE stg.stg_erate_exrate_mst (
     modifieddate timestamp without time zone,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_erate_exrate_mst
+    ADD CONSTRAINT erate_exrate_mst_pkey PRIMARY KEY (ou_id, exchrate_type, from_currency, to_currency, inverse_typeno, start_date);

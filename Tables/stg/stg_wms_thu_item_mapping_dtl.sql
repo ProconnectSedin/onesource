@@ -15,3 +15,6 @@ CREATE TABLE stg.stg_wms_thu_item_mapping_dtl (
     wms_thu_serial_no2 character varying(112) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_thu_item_mapping_dtl
+    ADD CONSTRAINT wms_thu_item_mapping_dtl_pk PRIMARY KEY (wms_thu_loc_code, wms_thu_ou, wms_thu_serial_no, wms_thu_id, wms_thu_item, wms_thu_lot_no, wms_thu_itm_serial_no);

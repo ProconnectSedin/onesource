@@ -34,3 +34,30 @@ CREATE TABLE dwh.f_outbounditemdetailhistory (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_outbounditemdetailhistory ALTER COLUMN obd_idl_his_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_outbounditemdetailhistory_obd_idl_his_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_outbounditemdetailhistory
+    ADD CONSTRAINT f_outbounditemdetailhistory_pkey PRIMARY KEY (obd_idl_his_key);
+
+ALTER TABLE ONLY dwh.f_outbounditemdetailhistory
+    ADD CONSTRAINT f_outbounditemdetailhistory_ukey UNIQUE (oub_itm_loc_code, oub_itm_ou, oub_outbound_ord, oub_itm_amendno, oub_itm_lineno);
+
+ALTER TABLE ONLY dwh.f_outbounditemdetailhistory
+    ADD CONSTRAINT f_outbounditemdetailhistory_obd_itm_key_fkey FOREIGN KEY (obd_itm_key) REFERENCES dwh.d_itemheader(itm_hdr_key);
+
+ALTER TABLE ONLY dwh.f_outbounditemdetailhistory
+    ADD CONSTRAINT f_outbounditemdetailhistory_obd_loc_key_fkey FOREIGN KEY (obd_loc_key) REFERENCES dwh.d_location(loc_key);
+
+CREATE INDEX f_outbounditemdetailhistory_key_idx1 ON dwh.f_outbounditemdetailhistory USING btree (obd_itm_key, obd_loc_key);
+
+CREATE INDEX f_outbounditemdetailhistory_key_idx2 ON dwh.f_outbounditemdetailhistory USING btree (oub_itm_loc_code, oub_itm_ou, oub_outbound_ord, oub_itm_amendno, oub_itm_lineno);
+
+CREATE INDEX f_outbounditemdetailhistory_key_idx3 ON dwh.f_outbounditemdetailhistory USING btree (obh_hr_his_key);

@@ -26,3 +26,17 @@ CREATE TABLE dwh.d_excessitemsuconvdetail (
     etlupdatedatetime timestamp(3) without time zone,
     ex_itm_hdr_key bigint
 );
+
+ALTER TABLE dwh.d_excessitemsuconvdetail ALTER COLUMN d_ex_itm_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.d_excessitemsuconvdetail_d_ex_itm_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.d_excessitemsuconvdetail
+    ADD CONSTRAINT d_excessitemsuconvdetail_pkey PRIMARY KEY (d_ex_itm_key);
+
+CREATE INDEX d_excessitemsuconvdetail_idx ON dwh.d_excessitemsuconvdetail USING btree (ex_itm_ou, ex_itm_code);

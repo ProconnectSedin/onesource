@@ -41,3 +41,28 @@ CREATE TABLE dwh.f_binplandetails (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_binplandetails ALTER COLUMN bin_plan_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_binplandetails_bin_plan_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_binplandetails
+    ADD CONSTRAINT f_binplandetails_pkey PRIMARY KEY (bin_plan_key);
+
+ALTER TABLE ONLY dwh.f_binplandetails
+    ADD CONSTRAINT f_binplandetails_ukey UNIQUE (bin_loc_code, bin_pln_no, bin_pln_lineno, bin_pln_ou);
+
+ALTER TABLE ONLY dwh.f_binplandetails
+    ADD CONSTRAINT f_binplandetails_bin_hdr_key_fkey FOREIGN KEY (bin_hdr_key) REFERENCES dwh.f_binplanheader(bin_hdr_key);
+
+ALTER TABLE ONLY dwh.f_binplandetails
+    ADD CONSTRAINT f_binplandetails_bin_loc_dl_key_fkey FOREIGN KEY (bin_loc_dl_key) REFERENCES dwh.d_location(loc_key);
+
+CREATE INDEX f_binplandetails_key_idx ON dwh.f_binplandetails USING btree (bin_loc_dl_key);
+
+CREATE INDEX f_binplandetails_key_idx1 ON dwh.f_binplandetails USING btree (bin_loc_code, bin_pln_no, bin_pln_lineno, bin_pln_ou);

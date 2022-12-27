@@ -27,3 +27,6 @@ CREATE TABLE stg.stg_wms_loading_plan_dtl (
     wms_loading_so_no character varying(72) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_loading_plan_dtl
+    ADD CONSTRAINT wms_loading_plan_dtl_pk PRIMARY KEY (wms_loading_loc_code, wms_loading_ld_sheet_no, wms_loading_ld_sheet_ou, wms_loading_ld_sheet_lineno);

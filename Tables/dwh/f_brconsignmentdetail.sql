@@ -35,3 +35,31 @@ CREATE TABLE dwh.f_brconsignmentdetail (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_brconsignmentdetail ALTER COLUMN brcd_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_brconsignmentdetail_brcd_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_brconsignmentdetail
+    ADD CONSTRAINT f_brconsignmentdetail_pkey PRIMARY KEY (brcd_key);
+
+ALTER TABLE ONLY dwh.f_brconsignmentdetail
+    ADD CONSTRAINT f_brconsignmentdetail_ukey UNIQUE (cd_ouinstance, cd_br_id, cd_line_no);
+
+ALTER TABLE ONLY dwh.f_brconsignmentdetail
+    ADD CONSTRAINT f_brconsignmentdetail_br_key_fkey FOREIGN KEY (br_key) REFERENCES dwh.f_bookingrequest(br_key);
+
+ALTER TABLE ONLY dwh.f_brconsignmentdetail
+    ADD CONSTRAINT f_brconsignmentdetail_brcd_curr_key_fkey FOREIGN KEY (brcd_curr_key) REFERENCES dwh.d_currency(curr_key);
+
+ALTER TABLE ONLY dwh.f_brconsignmentdetail
+    ADD CONSTRAINT f_brconsignmentdetail_brcd_thu_key_fkey FOREIGN KEY (brcd_thu_key) REFERENCES dwh.d_thu(thu_key);
+
+CREATE INDEX f_brconsignmentdetail_key_idx ON dwh.f_brconsignmentdetail USING btree (br_key, brcd_thu_key, brcd_curr_key);
+
+CREATE INDEX f_brconsignmentdetail_key_idx1 ON dwh.f_brconsignmentdetail USING btree (cd_ouinstance, cd_br_id, cd_line_no);

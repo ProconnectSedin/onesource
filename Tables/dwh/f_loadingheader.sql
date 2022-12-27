@@ -41,3 +41,32 @@ CREATE TABLE dwh.f_loadingheader (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_loadingheader ALTER COLUMN loading_hdr_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_loadingheader_loading_hdr_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_loadingheader
+    ADD CONSTRAINT f_loadingheader_pkey PRIMARY KEY (loading_hdr_key);
+
+ALTER TABLE ONLY dwh.f_loadingheader
+    ADD CONSTRAINT f_loadingheader_ukey UNIQUE (loading_loc_code, loading_exec_no, loading_exec_ou);
+
+ALTER TABLE ONLY dwh.f_loadingheader
+    ADD CONSTRAINT f_loadingheader_loading_hdr_emp_hdr_key_fkey FOREIGN KEY (loading_hdr_emp_hdr_key) REFERENCES dwh.d_employeeheader(emp_hdr_key);
+
+ALTER TABLE ONLY dwh.f_loadingheader
+    ADD CONSTRAINT f_loadingheader_loading_hdr_eqp_key_fkey FOREIGN KEY (loading_hdr_eqp_key) REFERENCES dwh.d_equipment(eqp_key);
+
+ALTER TABLE ONLY dwh.f_loadingheader
+    ADD CONSTRAINT f_loadingheader_loading_hdr_loc_key_fkey FOREIGN KEY (loading_hdr_loc_key) REFERENCES dwh.d_location(loc_key);
+
+ALTER TABLE ONLY dwh.f_loadingheader
+    ADD CONSTRAINT f_loadingheader_loading_hdr_veh_key_fkey FOREIGN KEY (loading_hdr_veh_key) REFERENCES dwh.d_vehicle(veh_key);
+
+CREATE INDEX f_loadingheader_key_idx ON dwh.f_loadingheader USING btree (loading_hdr_emp_hdr_key, loading_hdr_eqp_key, loading_hdr_veh_key, loading_hdr_loc_key);

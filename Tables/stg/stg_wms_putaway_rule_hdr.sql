@@ -20,3 +20,6 @@ CREATE TABLE stg.stg_wms_putaway_rule_hdr (
     wms_putaway_oub_crdck character varying(32) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_putaway_rule_hdr
+    ADD CONSTRAINT wms_putaway_rule_hdr_pk PRIMARY KEY (wms_putaway_loc_code, wms_putaway_ou);

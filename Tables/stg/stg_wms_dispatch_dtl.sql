@@ -31,3 +31,6 @@ CREATE TABLE stg.stg_wms_dispatch_dtl (
     wms_dispatch_reasoncode_ml character varying(160) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_dispatch_dtl
+    ADD CONSTRAINT wms_dispatch_dtl_pk PRIMARY KEY (wms_dispatch_loc_code, wms_dispatch_ld_sheet_no, wms_dispatch_ld_sheet_ou, wms_dispatch_lineno);

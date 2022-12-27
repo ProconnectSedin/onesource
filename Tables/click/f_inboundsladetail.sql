@@ -30,3 +30,17 @@ CREATE TABLE click.f_inboundsladetail (
     pway_timediff_inmin integer,
     sla_loadeddatetime timestamp without time zone DEFAULT CURRENT_DATE
 );
+
+ALTER TABLE click.f_inboundsladetail ALTER COLUMN sla_ib_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME click.f_inboundsladetail_sla_ib_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY click.f_inboundsladetail
+    ADD CONSTRAINT f_inboundsladetail_pk PRIMARY KEY (sla_ib_key);
+
+CREATE INDEX f_inboundsladetail_ndx ON click.f_inboundsladetail USING btree (sla_ouid, sla_customerkey, sla_datekey, sla_lockey, sla_prefdocno);

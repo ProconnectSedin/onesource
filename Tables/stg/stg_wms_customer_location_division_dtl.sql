@@ -7,3 +7,6 @@ CREATE TABLE stg.stg_wms_customer_location_division_dtl (
     wms_customer_itm_val_contract integer,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_customer_location_division_dtl
+    ADD CONSTRAINT wms_customer_location_division_dtl_pk PRIMARY KEY (wms_customer_id, wms_customer_ou, wms_customer_lineno);

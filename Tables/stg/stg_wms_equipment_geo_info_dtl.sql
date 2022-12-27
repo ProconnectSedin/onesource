@@ -9,3 +9,6 @@ CREATE TABLE stg.stg_wms_equipment_geo_info_dtl (
     wms_eqp_valid_to timestamp without time zone,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_equipment_geo_info_dtl
+    ADD CONSTRAINT wms_equipment_geo_info_dtl_pk PRIMARY KEY (wms_eqp_ou, wms_eqp_equipment_id, wms_eqp_line_no);

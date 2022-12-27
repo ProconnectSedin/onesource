@@ -17,3 +17,6 @@ CREATE TABLE stg.stg_wms_pick_rules_hdr (
     wms_pick_auto_deconsol character varying(32) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_pick_rules_hdr
+    ADD CONSTRAINT wms_pick_rules_hdr_pkey PRIMARY KEY (wms_pick_loc_code, wms_pick_ou);

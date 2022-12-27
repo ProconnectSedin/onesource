@@ -39,3 +39,8 @@ CREATE TABLE stg.stg_wms_goods_issue_dtl (
     wms_gi_stock_status character varying(160) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_goods_issue_dtl
+    ADD CONSTRAINT wms_goods_issue_dtl_pk PRIMARY KEY (wms_gi_no, wms_gi_ou, wms_gi_loc_code, wms_gi_outbound_ord_no, wms_gi_line_no);
+
+CREATE INDEX stg_wms_goods_issue_dtl_key_idx2 ON stg.stg_wms_goods_issue_dtl USING btree (wms_gi_no, wms_gi_ou, wms_gi_loc_code, wms_gi_outbound_ord_no, wms_gi_line_no);

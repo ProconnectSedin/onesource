@@ -64,3 +64,11 @@ CREATE TABLE dwh.d_date (
     mmddyyyy character(10) NOT NULL COLLATE public.nocase,
     weekendindr boolean NOT NULL
 );
+
+ALTER TABLE ONLY dwh.d_date
+    ADD CONSTRAINT d_date_date_key_pk PRIMARY KEY (datekey);
+
+ALTER TABLE ONLY dwh.d_date
+    ADD CONSTRAINT d_date_ukey UNIQUE (dateactual);
+
+CREATE INDEX d_date_date_actual_idx ON dwh.d_date USING btree (datekey, dateactual);

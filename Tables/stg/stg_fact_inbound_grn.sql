@@ -78,3 +78,6 @@ CREATE TABLE stg.stg_fact_inbound_grn (
     gr_ins_more_itm_attb5 character varying(1020) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_fact_inbound_grn
+    ADD CONSTRAINT pk__fact_inb__b48ae12d31f2418c PRIMARY KEY (reference_no);

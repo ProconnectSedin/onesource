@@ -19,3 +19,9 @@ CREATE TABLE click.d_yard (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE ONLY click.d_yard
+    ADD CONSTRAINT d_yard_pkey PRIMARY KEY (yard_key);
+
+ALTER TABLE ONLY click.d_yard
+    ADD CONSTRAINT d_yard_ukey UNIQUE (yard_id, yard_loc_code, yard_ou);

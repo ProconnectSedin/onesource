@@ -20,3 +20,18 @@ CREATE TABLE dwh.d_tarifftype (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.d_tarifftype ALTER COLUMN tar_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.d_tarifftype_tar_key_seq
+    START WITH -1
+    INCREMENT BY 1
+    MINVALUE -1
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.d_tarifftype
+    ADD CONSTRAINT d_tarifftype_pkey PRIMARY KEY (tar_key);
+
+ALTER TABLE ONLY dwh.d_tarifftype
+    ADD CONSTRAINT d_tarifftype_ukey UNIQUE (tar_lineno, tar_ou);

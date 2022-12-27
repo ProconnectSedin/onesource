@@ -18,3 +18,6 @@ CREATE TABLE stg.stg_wms_mapnt_mapnotypeno (
     wms_mapnt_allocation_level character varying(160) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_mapnt_mapnotypeno
+    ADD CONSTRAINT wms_mapnt_mapnotypeno_pk PRIMARY KEY (wms_mapnt_notypeno, wms_mapnt_function, wms_mapnt_transaction, wms_mapnt_tran_type, wms_mapnt_line_no, wms_mapnt_ou);

@@ -12,3 +12,6 @@ CREATE TABLE stg.stg_uom_con_indconversion (
     con_convert_type character varying(32) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_uom_con_indconversion
+    ADD CONSTRAINT pk_uom_ind_conversion PRIMARY KEY (con_fromuomcode, con_touomcode);

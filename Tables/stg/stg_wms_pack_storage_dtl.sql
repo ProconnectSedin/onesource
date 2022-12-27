@@ -8,3 +8,8 @@ CREATE TABLE stg.stg_wms_pack_storage_dtl (
     wms_pack_order_type character varying(160) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_pack_storage_dtl
+    ADD CONSTRAINT wms_pack_storage_dtl_pk PRIMARY KEY (wms_pack_location, wms_pack_ou, wms_pack_lineno);
+
+CREATE INDEX stg_wms_pack_storage_dtl_idx ON stg.stg_wms_pack_storage_dtl USING btree (wms_pack_location, wms_pack_ou, wms_pack_lineno);

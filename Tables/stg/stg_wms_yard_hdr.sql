@@ -16,3 +16,6 @@ CREATE TABLE stg.stg_wms_yard_hdr (
     wms_yard_userdefined3 character varying(1020) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_yard_hdr
+    ADD CONSTRAINT wms_yard_hdr_pk PRIMARY KEY (wms_yard_id, wms_yard_loc_code, wms_yard_ou);

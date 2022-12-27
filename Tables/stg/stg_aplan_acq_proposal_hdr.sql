@@ -35,3 +35,8 @@ CREATE TABLE stg.stg_aplan_acq_proposal_hdr (
     cost_center character varying(40) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_aplan_acq_proposal_hdr
+    ADD CONSTRAINT aplan_acq_proposal_hdr_pkey PRIMARY KEY (ou_id, fb_id, financial_year, asset_class_code, currency_code, proposal_number);
+
+CREATE INDEX stg_aplan_acq_proposal_hdr_key_idx2 ON stg.stg_aplan_acq_proposal_hdr USING btree (ou_id, fb_id, financial_year, asset_class_code, currency_code, proposal_number, addnl_entity);

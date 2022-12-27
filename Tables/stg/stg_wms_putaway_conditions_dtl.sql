@@ -15,3 +15,6 @@ CREATE TABLE stg.stg_wms_putaway_conditions_dtl (
     wms_pway_destination_id character varying(1020) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_putaway_conditions_dtl
+    ADD CONSTRAINT wms_putaway_conditions_dtl_pk PRIMARY KEY (wms_pway_ou, wms_pway_loc_code, wms_pway_line_no);

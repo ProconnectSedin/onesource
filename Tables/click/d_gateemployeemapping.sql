@@ -17,3 +17,9 @@ CREATE TABLE click.d_gateemployeemapping (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE ONLY click.d_gateemployeemapping
+    ADD CONSTRAINT d_gateemployeemapping_pkey PRIMARY KEY (gate_emp_map_key);
+
+ALTER TABLE ONLY click.d_gateemployeemapping
+    ADD CONSTRAINT d_gateemployeemapping_ukey UNIQUE (gate_loc_code, gate_ou, gate_lineno);

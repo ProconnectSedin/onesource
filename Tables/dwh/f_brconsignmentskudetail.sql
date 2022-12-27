@@ -19,3 +19,25 @@ CREATE TABLE dwh.f_brconsignmentskudetail (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_brconsignmentskudetail ALTER COLUMN brcsd_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_brconsignmentskudetail_brcsd_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_brconsignmentskudetail
+    ADD CONSTRAINT f_brconsignmentskudetail_pkey PRIMARY KEY (brcsd_key);
+
+ALTER TABLE ONLY dwh.f_brconsignmentskudetail
+    ADD CONSTRAINT f_brconsignmentskudetail_ukey UNIQUE (brcsd_ou, brcsd_br_id, brcsd_thu_line_no, brcsd_sku_line_no);
+
+ALTER TABLE ONLY dwh.f_brconsignmentskudetail
+    ADD CONSTRAINT f_brconsignmentskudetail_br_key_fkey FOREIGN KEY (br_key) REFERENCES dwh.f_bookingrequest(br_key);
+
+CREATE INDEX f_brconsignmentskudetail_key_idx ON dwh.f_brconsignmentskudetail USING btree (br_key);
+
+CREATE INDEX f_brconsignmentskudetail_key_idx1 ON dwh.f_brconsignmentskudetail USING btree (brcsd_ou, brcsd_br_id, brcsd_thu_line_no, brcsd_sku_line_no);

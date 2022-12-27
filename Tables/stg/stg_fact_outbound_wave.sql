@@ -29,3 +29,6 @@ CREATE TABLE stg.stg_fact_outbound_wave (
     wave_replenish_flag character varying(48) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_fact_outbound_wave
+    ADD CONSTRAINT pk__fact_out__4cd9458e13a853f2 PRIMARY KEY (refkey);

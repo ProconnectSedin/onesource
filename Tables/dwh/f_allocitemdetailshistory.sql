@@ -42,3 +42,34 @@ CREATE TABLE dwh.f_allocitemdetailshistory (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_allocitemdetailshistory ALTER COLUMN allc_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_allocitemdetailshistory_allc_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_allocitemdetailshistory
+    ADD CONSTRAINT f_allocitemdetailshistory_pkey PRIMARY KEY (allc_key);
+
+ALTER TABLE ONLY dwh.f_allocitemdetailshistory
+    ADD CONSTRAINT f_allocitemdetailshistory_ukey UNIQUE (allc_ouinstid, allc_doc_no, allc_doc_ou, allc_doc_line_no, allc_alloc_line_no);
+
+ALTER TABLE ONLY dwh.f_allocitemdetailshistory
+    ADD CONSTRAINT f_allocitemdetailshistory_allc_itm_hdr_key_fkey FOREIGN KEY (allc_itm_hdr_key) REFERENCES dwh.d_itemheader(itm_hdr_key);
+
+ALTER TABLE ONLY dwh.f_allocitemdetailshistory
+    ADD CONSTRAINT f_allocitemdetailshistory_allc_thu_key_fkey FOREIGN KEY (allc_thu_key) REFERENCES dwh.d_thu(thu_key);
+
+ALTER TABLE ONLY dwh.f_allocitemdetailshistory
+    ADD CONSTRAINT f_allocitemdetailshistory_allc_wh_key_fkey FOREIGN KEY (allc_wh_key) REFERENCES dwh.d_warehouse(wh_key);
+
+ALTER TABLE ONLY dwh.f_allocitemdetailshistory
+    ADD CONSTRAINT f_allocitemdetailshistory_allc_zone_key_fkey FOREIGN KEY (allc_zone_key) REFERENCES dwh.d_zone(zone_key);
+
+CREATE INDEX f_allocitemdetailshistory_key_idx ON dwh.f_allocitemdetailshistory USING btree (allc_ouinstid, allc_doc_no, allc_doc_ou, allc_doc_line_no, allc_alloc_line_no);
+
+CREATE INDEX f_allocitemdetailshistory_key_idx1 ON dwh.f_allocitemdetailshistory USING btree (allc_itm_hdr_key, allc_thu_key, allc_wh_key, allc_zone_key);

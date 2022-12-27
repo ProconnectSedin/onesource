@@ -18,3 +18,6 @@ CREATE TABLE stg.stg_tms_trip_log_vas_details_hdr (
     tlvd_remarks character varying(1020) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_tms_trip_log_vas_details_hdr
+    ADD CONSTRAINT tms_trip_log_vas_details_hdr_pk PRIMARY KEY (tlvd_ouinstance, tlvd_trip_no, tlvd_guid);

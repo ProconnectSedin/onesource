@@ -24,3 +24,8 @@ CREATE TABLE stg.stg_wms_bin_plan_hdr (
     wms_bin_comp_flag character varying(72) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_bin_plan_hdr
+    ADD CONSTRAINT wms_bin_plan_hdr_pk PRIMARY KEY (wms_bin_loc_code, wms_bin_pln_no, wms_bin_pln_ou);
+
+CREATE INDEX stg_wms_bin_plan_hdr_key_idx2 ON stg.stg_wms_bin_plan_hdr USING btree (wms_bin_loc_code, wms_bin_pln_no, wms_bin_pln_ou);

@@ -22,3 +22,15 @@ CREATE TABLE dwh.d_finquickcodemet (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.d_finquickcodemet ALTER COLUMN d_finquickcodemet_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.d_finquickcodemet_d_finquickcodemet_key_seq
+    START WITH -1
+    INCREMENT BY 1
+    MINVALUE -1
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.d_finquickcodemet
+    ADD CONSTRAINT d_finquickcodemet_pkey PRIMARY KEY (d_finquickcodemet_key);

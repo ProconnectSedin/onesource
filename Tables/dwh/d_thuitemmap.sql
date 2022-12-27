@@ -18,3 +18,20 @@ CREATE TABLE dwh.d_thuitemmap (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.d_thuitemmap ALTER COLUMN thu_itm_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.d_thuitemmap_thu_itm_key_seq
+    START WITH -1
+    INCREMENT BY 1
+    MINVALUE -1
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.d_thuitemmap
+    ADD CONSTRAINT d_thuitemmap_pkey PRIMARY KEY (thu_itm_key);
+
+ALTER TABLE ONLY dwh.d_thuitemmap
+    ADD CONSTRAINT d_thuitemmap_ukey UNIQUE (thu_loc_code, thu_ou, thu_serial_no, thu_id, thu_item, thu_lot_no, thu_itm_serial_no);
+
+CREATE INDEX d_thuitemmap_idx ON dwh.d_thuitemmap USING btree (thu_loc_code, thu_ou, thu_serial_no, thu_id, thu_item, thu_lot_no, thu_itm_serial_no);

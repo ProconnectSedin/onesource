@@ -48,3 +48,28 @@ CREATE TABLE dwh.f_outbounditemdetail (
     oub_itm_volume numeric(20,2),
     oub_itm_weight numeric(20,2)
 );
+
+ALTER TABLE dwh.f_outbounditemdetail ALTER COLUMN obd_idl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_outbounditemdetail_obd_idl_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_outbounditemdetail
+    ADD CONSTRAINT f_outbounditemdetail_pkey PRIMARY KEY (obd_idl_key);
+
+ALTER TABLE ONLY dwh.f_outbounditemdetail
+    ADD CONSTRAINT f_outbounditemdetail_ukey UNIQUE (oub_itm_ou, oub_itm_loc_code, oub_outbound_ord, oub_itm_lineno);
+
+ALTER TABLE ONLY dwh.f_outbounditemdetail
+    ADD CONSTRAINT f_outbounditemdetail_obd_itm_key_fkey FOREIGN KEY (obd_itm_key) REFERENCES dwh.d_itemheader(itm_hdr_key);
+
+ALTER TABLE ONLY dwh.f_outbounditemdetail
+    ADD CONSTRAINT f_outbounditemdetail_obd_loc_key_fkey FOREIGN KEY (obd_loc_key) REFERENCES dwh.d_location(loc_key);
+
+CREATE INDEX f_outbounditemdetail_key_idx ON dwh.f_outbounditemdetail USING btree (obd_itm_key, obd_loc_key);
+
+CREATE INDEX f_outbounditemdetail_key_idx1 ON dwh.f_outbounditemdetail USING btree (oub_itm_ou, oub_itm_loc_code, oub_outbound_ord, oub_itm_lineno);

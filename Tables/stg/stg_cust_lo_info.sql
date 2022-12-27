@@ -49,3 +49,6 @@ CREATE TABLE stg.stg_cust_lo_info (
     clo_job_tilte character varying(32) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_cust_lo_info
+    ADD CONSTRAINT cust_lo_info_pk PRIMARY KEY (clo_lo, clo_cust_code);

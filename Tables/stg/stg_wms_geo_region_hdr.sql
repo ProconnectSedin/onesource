@@ -14,3 +14,6 @@ CREATE TABLE stg.stg_wms_geo_region_hdr (
     wms_geo_reg_userdefined3 character varying(1020) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_geo_region_hdr
+    ADD CONSTRAINT wms_geo_region_hdr_pk PRIMARY KEY (wms_geo_reg, wms_geo_reg_ou);

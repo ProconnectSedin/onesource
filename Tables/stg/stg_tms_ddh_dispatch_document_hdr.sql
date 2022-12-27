@@ -94,3 +94,8 @@ CREATE TABLE stg.stg_tms_ddh_dispatch_document_hdr (
     ddh_dispatch_doc_dvry_status character varying(160) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_tms_ddh_dispatch_document_hdr
+    ADD CONSTRAINT pk_tms_ddh_dispatch_document_hdr PRIMARY KEY (ddh_ouinstance, ddh_dispatch_doc_no);
+
+CREATE INDEX stg_tms_ddh_dispatch_document_hdr_key_idx1 ON stg.stg_tms_ddh_dispatch_document_hdr USING btree (ddh_ouinstance, ddh_dispatch_doc_no);
