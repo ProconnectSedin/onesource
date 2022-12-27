@@ -8,6 +8,9 @@ Respository for onesource schemas and Procedures
 
 ⚠️ git pull before commit, otherwise you may face a merge conflict
 
+### If you want to keep files in this folder but don't want to upload it to Github
+Just add the file name or pattern to .gitignore
+
 ### Creating and switching branches
 `git branch development` # create new branch
 
