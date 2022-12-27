@@ -6,7 +6,6 @@ Respository for onesource schemas and Procedures
 * git commit
 * git push
 
-
 ⚠️ git pull before commit, otherwise you may face a merge conflict
 
 ### If you want to keep files in this folder but don't want to upload it to Github
