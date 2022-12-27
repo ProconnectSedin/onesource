@@ -1,6 +1,19 @@
-CREATE OR REPLACE PROCEDURE ods.usp_source_target_count(IN p_sourceid character varying, IN p_dataflowflag character varying, IN p_targetobject character varying, OUT srccnt integer, OUT inscnt integer, OUT updcnt integer, OUT dltcount integer, INOUT flag1 character varying, OUT flag2 character varying)
-    LANGUAGE plpgsql
-    AS $$
+-- PROCEDURE: ods.usp_source_target_count(character varying, character varying, character varying, character varying)
+
+ DROP PROCEDURE IF EXISTS ods.usp_source_target_count(character varying, character varying, character varying, character varying);
+
+CREATE OR REPLACE PROCEDURE ods.usp_source_target_count(
+	IN p_sourceid character varying,
+	IN p_dataflowflag character varying,
+	IN p_targetobject character varying,
+	OUT srccnt integer,
+	OUT inscnt integer,
+	OUT updcnt integer,
+	OUT dltcount integer,
+	INOUT flag1 character varying,
+	OUT flag2 character varying)
+LANGUAGE 'plpgsql'
+AS $BODY$
 
 DECLARE
     p_etljobname VARCHAR(100);
@@ -65,13 +78,6 @@ BEGIN
 	 set diffcount = SourceDataCount - targetdatacount
 	 where 1=1;
 
-	 
-
-	 
-	 
-
-	
-	
 	  EXCEPTION WHEN others THEN
         get stacked diagnostics
             p_errorid   = returned_sqlstate,
@@ -80,4 +86,6 @@ BEGIN
        select 0 into inscnt;
        select 0 into updcnt;
 END;
-$$;
+$BODY$;
+ALTER PROCEDURE ods.usp_source_target_count(character varying, character varying, character varying, character varying)
+    OWNER TO proconnect;

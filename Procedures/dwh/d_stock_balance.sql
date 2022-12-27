@@ -29,6 +29,7 @@ CREATE TEMP TABLE STOCK_BALANCE
 	aging_in_days integer
 );
 
+
 insert into STOCK_BALANCE(wms_stock_date,wms_stock_location,wms_stock_zone,wms_stock_bin_type,wms_stock_bin,wms_stock_in_qty,wms_stock_out_qty)
 select stock_date,stock_location,stock_zone,stock_bin_type,stock_bin, sum(stock_in_qty),sum(stock_out_qty)
  from dwh.f_stockbinhistorydetail  

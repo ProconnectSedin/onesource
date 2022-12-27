@@ -1,6 +1,6 @@
 -- PROCEDURE: ods.usp_dwh_data_count()
 
--- DROP PROCEDURE IF EXISTS ods.usp_dwh_data_count();
+ DROP PROCEDURE IF EXISTS ods.usp_dwh_data_count();
 
 CREATE OR REPLACE PROCEDURE ods.usp_dwh_data_count(
 	)
@@ -22,10 +22,10 @@ while v_id <= v_max
 		select * from ods.usp_target_count(v_id);
  		v_id:=v_id+1;
    end loop;
-	 	   
+
 update ods.dwh_data_count set period ='NA' where period = '9999';
    
-		   
+
 END;
 $BODY$;
 ALTER PROCEDURE ods.usp_dwh_data_count()
