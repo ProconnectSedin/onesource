@@ -15,6 +15,7 @@ CREATE OR REPLACE PROCEDURE dwh.usp_f_inbounditemamenddetail(
 LANGUAGE 'plpgsql'
 AS $BODY$
 
+
 DECLARE
     p_etljobname VARCHAR(100);
     p_envsourcecd VARCHAR(50);
