@@ -14,6 +14,29 @@ CREATE OR REPLACE PROCEDURE dwh.usp_f_contractheaderweekly(
 	OUT flag2 character varying)
 LANGUAGE 'plpgsql'
 AS $BODY$
+
+/*****************************************************************************************************************/
+/* PROCEDURE		:	dwh.usp_f_contractheaderweekly														 				 */
+/* DESCRIPTION		:	This sp is used to load f_contractheaderweekly table from stg_wms_contract_hdr;        			 			 */
+/*						Load Strategy: Insert/Update 															 */
+/*						Sources: wms_contract_hdr_w;					 		 									 */
+/*****************************************************************************************************************/
+/* DEVELOPMENT HISTORY																							 */
+/*****************************************************************************************************************/
+/* AUTHOR    		:	AKASH V																						 */
+/* DATE				:	26-DEC-2022																				 */
+/*****************************************************************************************************************/
+/* MODIFICATION HISTORY																							 */
+/*****************************************************************************************************************/
+/* MODIFIED BY		:																							 */
+/* DATE				:														 									 */
+/* DESCRIPTION		:													  										 */
+/*****************************************************************************************************************/
+/* EXECUTION SAMPLE :CALL dwh.usp_f_contractheaderweekly('wms_contract_hdr_w','StgtoDW','f_contractheader',0,0,0,0,NULL,NULL);*/
+/*****************************************************************************************************************/
+
+
+
 DECLARE 
 	p_etljobname VARCHAR(100);
 	p_envsourcecd VARCHAR(50);

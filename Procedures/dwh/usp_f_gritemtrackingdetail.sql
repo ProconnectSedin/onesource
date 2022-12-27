@@ -1,5 +1,5 @@
 CREATE OR REPLACE PROCEDURE dwh.usp_f_gritemtrackingdetail(IN p_sourceid character varying, IN p_dataflowflag character varying, IN p_targetobject character varying, OUT srccnt integer, OUT inscnt integer, OUT updcnt integer, OUT dltcount integer, INOUT flag1 character varying, OUT flag2 character varying)
-    LANGUAGE plpgsql
+    LANGUAGE plpgsql 
     AS $$
 
 DECLARE

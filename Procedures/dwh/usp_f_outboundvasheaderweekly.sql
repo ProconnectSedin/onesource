@@ -14,6 +14,28 @@ CREATE OR REPLACE PROCEDURE dwh.usp_f_outboundvasheaderweekly(
 	OUT flag2 character varying)
 LANGUAGE 'plpgsql'
 AS $BODY$
+
+/*****************************************************************************************************************/
+/* PROCEDURE		:	dwh.usp_f_outboundvasheaderweekly														 				 */
+/* DESCRIPTION		:	This sp is used to load f_outboundvasheaderweekly table from stg_wms_outbound_vas_hdr        			 			 */
+/*						Load Strategy: Insert/Update 															 */
+/*						Sources: wms_outbound_vas_hdr_w					 		 									 */
+/*****************************************************************************************************************/
+/* DEVELOPMENT HISTORY																							 */
+/*****************************************************************************************************************/
+/* AUTHOR    		:	AKASH V																						 */
+/* DATE				:	26-DEC-2022																				 */
+/*****************************************************************************************************************/
+/* MODIFICATION HISTORY																							 */
+/*****************************************************************************************************************/
+/* MODIFIED BY		:																							 */
+/* DATE				:														 									 */
+/* DESCRIPTION		:													  										 */
+/*****************************************************************************************************************/
+/* EXECUTION SAMPLE :CALL dwh.usp_f_outboundvasheaderweekly('wms_outbound_vas_hdr_w','StgtoDW','f_outboundvasheader',0,0,0,0,NULL,NULL);*/
+/*****************************************************************************************************************/
+
+
 DECLARE 
 	p_etljobname VARCHAR(100);
 	p_envsourcecd VARCHAR(50);

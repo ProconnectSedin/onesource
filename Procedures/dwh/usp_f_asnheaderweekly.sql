@@ -14,6 +14,26 @@ CREATE OR REPLACE PROCEDURE dwh.usp_f_asnheaderweekly(
 	OUT flag2 character varying)
 LANGUAGE 'plpgsql'
 AS $BODY$
+/*****************************************************************************************************************/
+/* PROCEDURE		:	dwh.usp_f_asnheaderweekly														 				 */
+/* DESCRIPTION		:	This sp is used to load f_asndetailsweekly table from stg_wms_asn_header        			 			 */
+/*						Load Strategy: Insert/Update 															 */
+/*						Sources: wms_asn_header_w					 		 									 */
+/*****************************************************************************************************************/
+/* DEVELOPMENT HISTORY																							 */
+/*****************************************************************************************************************/
+/* AUTHOR    		:	AKASH V																						 */
+/* DATE				:	26-DEC-2022																				 */
+/*****************************************************************************************************************/
+/* MODIFICATION HISTORY																							 */
+/*****************************************************************************************************************/
+/* MODIFIED BY		:																							 */
+/* DATE				:														 									 */
+/* DESCRIPTION		:													  										 */
+/*****************************************************************************************************************/
+/* EXECUTION SAMPLE :CALL dwh.usp_f_asnheaderweekly('wms_asn_header_w','StgtoDW','f_asnheader',0,0,0,0,NULL,NULL);*/
+/*****************************************************************************************************************/
+
 DECLARE 
 	p_etljobname VARCHAR(100);
 	p_envsourcecd VARCHAR(50);
