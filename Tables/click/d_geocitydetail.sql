@@ -16,3 +16,9 @@ CREATE TABLE click.d_geocitydetail (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE ONLY click.d_geocitydetail
+    ADD CONSTRAINT d_d_geocitydtl_pkey PRIMARY KEY (geo_city_key);
+
+ALTER TABLE ONLY click.d_geocitydetail
+    ADD CONSTRAINT d_d_geocitydtl_ukey UNIQUE (geo_city_code, geo_city_ou, geo_country_code, geo_state_code, geo_city_lineno);

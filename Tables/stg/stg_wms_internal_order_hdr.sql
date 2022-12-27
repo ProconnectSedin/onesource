@@ -30,3 +30,6 @@ CREATE TABLE stg.stg_wms_internal_order_hdr (
     wms_in_chporcn_sell_bil_status character varying(32) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_internal_order_hdr
+    ADD CONSTRAINT wms_internal_order_hdr_pk PRIMARY KEY (wms_in_ord_location, wms_in_ord_no, wms_in_ord_ou);

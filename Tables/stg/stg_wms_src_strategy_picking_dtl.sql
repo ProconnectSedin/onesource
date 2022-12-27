@@ -15,3 +15,6 @@ CREATE TABLE stg.stg_wms_src_strategy_picking_dtl (
     wms_pic_seqno_rev integer,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_src_strategy_picking_dtl
+    ADD CONSTRAINT wms_src_strategy_picking_dtl_pk PRIMARY KEY (wms_pic_ou, wms_pic_loc_code, wms_pic_lineno, wms_pic_su_seqno);

@@ -17,3 +17,22 @@ CREATE TABLE dwh.d_outboundlocshiftdetail (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.d_outboundlocshiftdetail ALTER COLUMN obd_loc_dtl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.d_outboundlocshiftdetail_obd_loc_dtl_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.d_outboundlocshiftdetail
+    ADD CONSTRAINT d_outboundlocshiftdetail_pkey PRIMARY KEY (obd_loc_dtl_key);
+
+ALTER TABLE ONLY dwh.d_outboundlocshiftdetail
+    ADD CONSTRAINT d_outboundlocshiftdetail_obd_loc_sht_key_fkey FOREIGN KEY (obd_loc_sht_key) REFERENCES dwh.d_location(loc_key);
+
+CREATE INDEX d_outboundlocshiftdetail_key_idx ON dwh.d_outboundlocshiftdetail USING btree (obd_loc_sht_key);
+
+CREATE INDEX d_outboundlocshiftdetail_key_idx3 ON dwh.d_outboundlocshiftdetail USING btree (ou, locationcode, ordertype, servicetype);

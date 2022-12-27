@@ -67,3 +67,15 @@ CREATE TABLE raw.raw_si_doc_hdr (
     report_flag character varying(20) DEFAULT 'N'::character varying COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE raw.raw_si_doc_hdr ALTER COLUMN raw_id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME raw.raw_si_doc_hdr_raw_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY raw.raw_si_doc_hdr
+    ADD CONSTRAINT raw_si_doc_hdr_pkey PRIMARY KEY (raw_id);

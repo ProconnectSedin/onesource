@@ -12,3 +12,5 @@ CREATE TABLE stg.stg_pcsit_rdil_uncontrollable_tbl (
     activity character varying(100) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+CREATE INDEX stg_pcsit_rdil_uncontrollable_tbl_idx ON stg.stg_pcsit_rdil_uncontrollable_tbl USING btree (tranou, type, activity, locationcode, invoiceno, invoiceholdtype, invoicedate, guid, remarks);

@@ -22,3 +22,8 @@ CREATE TABLE stg.stg_wms_pack_hdr (
     wms_pack_short_pick integer,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_pack_hdr
+    ADD CONSTRAINT wms_pack_hdr_pk PRIMARY KEY (wms_pack_location, wms_pack_ou);
+
+CREATE INDEX stg_wms_pack_hdr_key_idx2 ON stg.stg_wms_pack_hdr USING btree (wms_pack_location, wms_pack_ou);

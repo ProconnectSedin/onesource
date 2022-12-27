@@ -16,3 +16,6 @@ CREATE TABLE stg.stg_wms_quick_code_master (
     wms_modified_by character varying(120) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_quick_code_master
+    ADD CONSTRAINT wms_quick_code_master_pk PRIMARY KEY (wms_code_ou, wms_code_type, wms_code);

@@ -164,3 +164,6 @@ CREATE TABLE stg.stg_cdi_invoice_hdr (
     tms_receipt_no character varying(72) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_cdi_invoice_hdr
+    ADD CONSTRAINT pk__cdi_invoice_hdr__3e9958de PRIMARY KEY (tran_type, tran_ou, tran_no);

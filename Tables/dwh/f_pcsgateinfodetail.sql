@@ -22,3 +22,17 @@ CREATE TABLE dwh.f_pcsgateinfodetail (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_pcsgateinfodetail ALTER COLUMN pcs_gtin_dtl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_pcsgateinfodetail_pcs_gtin_dtl_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_pcsgateinfodetail
+    ADD CONSTRAINT f_pcsgateinfodetail_pkey PRIMARY KEY (pcs_gtin_dtl_key);
+
+CREATE INDEX f_pcsgateinfodetail_key_idx ON dwh.f_pcsgateinfodetail USING btree (datekey);

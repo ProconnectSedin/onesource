@@ -92,3 +92,6 @@ CREATE TABLE stg.stg_snp_voucher_hdr (
     ifb_flag character varying(48) DEFAULT 'N'::character varying NOT NULL COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_snp_voucher_hdr
+    ADD CONSTRAINT snp_voucher_hdr_pkey PRIMARY KEY (ou_id, voucher_no, voucher_type, tran_type);

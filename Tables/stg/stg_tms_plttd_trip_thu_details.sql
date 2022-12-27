@@ -15,3 +15,5 @@ CREATE TABLE stg.stg_tms_plttd_trip_thu_details (
     plttd_thu_id character varying(1020) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+CREATE INDEX stg_tms_plttd_trip_thu_details_key_idx2 ON stg.stg_tms_plttd_trip_thu_details USING btree (plttd_ouinstance, plttd_trip_plan_id, plttd_trip_plan_line_no, plttd_thu_line_no, plttd_dispatch_doc_no);

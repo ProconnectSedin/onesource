@@ -98,3 +98,29 @@ CREATE TABLE dwh.f_tripplanningheader (
     plpth_trip_plan_datekey bigint,
     plpth_vehicle_key bigint
 );
+
+ALTER TABLE dwh.f_tripplanningheader ALTER COLUMN plpth_hdr_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_tripplanningheader_plpth_hdr_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_tripplanningheader
+    ADD CONSTRAINT f_tripplanningheader_pkey PRIMARY KEY (plpth_hdr_key);
+
+ALTER TABLE ONLY dwh.f_tripplanningheader
+    ADD CONSTRAINT f_tripplanningheader_ukey UNIQUE (plpth_ouinstance, plpth_trip_plan_id);
+
+ALTER TABLE ONLY dwh.f_tripplanningheader
+    ADD CONSTRAINT f_tripplanningheader_plpth_vehicle_key_fkey FOREIGN KEY (plpth_vehicle_key) REFERENCES dwh.d_vehicle(veh_key);
+
+CREATE INDEX f_tripplanningheader_key_idx ON dwh.f_tripplanningheader USING btree (plpth_ouinstance, plpth_trip_plan_id);
+
+CREATE INDEX f_tripplanningheader_key_idx2 ON dwh.f_tripplanningheader USING btree (plpth_trip_plan_date);
+
+CREATE INDEX f_tripplanningheader_key_idx3 ON dwh.f_tripplanningheader USING btree (plpth_trip_plan_datekey);
+
+CREATE INDEX f_tripplanningheader_key_idx4 ON dwh.f_tripplanningheader USING btree (plpth_vehicle_key);

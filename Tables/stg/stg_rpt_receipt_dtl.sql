@@ -30,3 +30,6 @@ CREATE TABLE stg.stg_rpt_receipt_dtl (
     project_code character varying(280) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_rpt_receipt_dtl
+    ADD CONSTRAINT rpt_receipt_dtl_pkey PRIMARY KEY (ou_id, receipt_no, dr_doc_no, dr_doc_ou, term_no, dr_tran_type);

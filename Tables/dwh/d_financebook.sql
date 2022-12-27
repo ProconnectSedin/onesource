@@ -20,3 +20,18 @@ CREATE TABLE dwh.d_financebook (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.d_financebook ALTER COLUMN fb_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.d_financebook_fb_key_seq
+    START WITH -1
+    INCREMENT BY 1
+    MINVALUE -1
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.d_financebook
+    ADD CONSTRAINT d_financebook_pkey PRIMARY KEY (fb_key);
+
+ALTER TABLE ONLY dwh.d_financebook
+    ADD CONSTRAINT d_financebook_ukey UNIQUE (fb_id, company_code, serial_no, fb_type);

@@ -35,3 +35,34 @@ CREATE TABLE dwh.f_goodsreceiptdetails (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_goodsreceiptdetails ALTER COLUMN gr_dtl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_goodsreceiptdetails_gr_dtl_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_goodsreceiptdetails
+    ADD CONSTRAINT f_goodsreceiptdetails_pkey PRIMARY KEY (gr_dtl_key);
+
+ALTER TABLE ONLY dwh.f_goodsreceiptdetails
+    ADD CONSTRAINT f_goodsreceiptdetails_ukey UNIQUE (gr_loc_code, gr_exec_no, gr_exec_ou);
+
+ALTER TABLE ONLY dwh.f_goodsreceiptdetails
+    ADD CONSTRAINT f_goodsreceiptdetails_gr_date_key_fkey FOREIGN KEY (gr_date_key) REFERENCES dwh.d_date(datekey);
+
+ALTER TABLE ONLY dwh.f_goodsreceiptdetails
+    ADD CONSTRAINT f_goodsreceiptdetails_gr_emp_hdr_key_fkey FOREIGN KEY (gr_emp_hdr_key) REFERENCES dwh.d_employeeheader(emp_hdr_key);
+
+ALTER TABLE ONLY dwh.f_goodsreceiptdetails
+    ADD CONSTRAINT f_goodsreceiptdetails_gr_loc_key_fkey FOREIGN KEY (gr_loc_key) REFERENCES dwh.d_location(loc_key);
+
+ALTER TABLE ONLY dwh.f_goodsreceiptdetails
+    ADD CONSTRAINT f_goodsreceiptdetails_gr_stg_mas_key_fkey FOREIGN KEY (gr_stg_mas_key) REFERENCES dwh.d_stage(stg_mas_key);
+
+CREATE INDEX f_goodsreceiptdetails_join_idx ON dwh.f_goodsreceiptdetails USING btree (gr_loc_code, gr_pln_no, gr_pln_ou, gr_exec_no, gr_exec_ou, gr_po_no);
+
+CREATE INDEX f_goodsreceiptdetails_key_idx ON dwh.f_goodsreceiptdetails USING btree (gr_loc_key, gr_emp_hdr_key, gr_date_key, gr_stg_mas_key);

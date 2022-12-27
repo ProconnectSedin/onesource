@@ -45,3 +45,20 @@ CREATE TABLE dwh.f_sinappostingsdtl (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_sinappostingsdtl ALTER COLUMN si_sindtl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_sinappostingsdtl_si_sindtl_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_sinappostingsdtl
+    ADD CONSTRAINT f_sinappostingsdtl_pkey PRIMARY KEY (si_sindtl_key);
+
+ALTER TABLE ONLY dwh.f_sinappostingsdtl
+    ADD CONSTRAINT f_sinappostingsdtl_ukey UNIQUE (tran_type, tran_ou, tran_no, posting_line_no, a_timestamp);
+
+CREATE INDEX f_sinappostingsdtl_key_idx ON dwh.f_sinappostingsdtl USING btree (tran_type, tran_ou, tran_no, posting_line_no, a_timestamp);

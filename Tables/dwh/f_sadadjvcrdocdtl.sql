@@ -34,3 +34,25 @@ CREATE TABLE dwh.f_sadadjvcrdocdtl (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_sadadjvcrdocdtl ALTER COLUMN sadadjvcrdocdtl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_sadadjvcrdocdtl_sadadjvcrdocdtl_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_sadadjvcrdocdtl
+    ADD CONSTRAINT f_sadadjvcrdocdtl_pkey PRIMARY KEY (sadadjvcrdocdtl_key);
+
+ALTER TABLE ONLY dwh.f_sadadjvcrdocdtl
+    ADD CONSTRAINT f_sadadjvcrdocdtl_ukey UNIQUE (ou_id, adj_voucher_no, cr_doc_ou, cr_doc_no, term_no, cr_doc_type);
+
+ALTER TABLE ONLY dwh.f_sadadjvcrdocdtl
+    ADD CONSTRAINT f_sadadjvcrdocdtl_sadadjvcrdocdtl_curr_key_fkey FOREIGN KEY (sadadjvcrdocdtl_curr_key) REFERENCES dwh.d_currency(curr_key);
+
+CREATE INDEX f_sadadjvcrdocdtl_key_idx ON dwh.f_sadadjvcrdocdtl USING btree (ou_id, adj_voucher_no, cr_doc_ou, cr_doc_no, term_no, cr_doc_type);
+
+CREATE INDEX f_sadadjvcrdocdtl_key_idx1 ON dwh.f_sadadjvcrdocdtl USING btree (sadadjvcrdocdtl_curr_key);

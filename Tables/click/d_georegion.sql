@@ -20,3 +20,9 @@ CREATE TABLE click.d_georegion (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE ONLY click.d_georegion
+    ADD CONSTRAINT d_georegion_pkey PRIMARY KEY (geo_reg_key);
+
+ALTER TABLE ONLY click.d_georegion
+    ADD CONSTRAINT d_georegion_ukey UNIQUE (geo_reg, geo_reg_ou);

@@ -29,3 +29,8 @@ CREATE TABLE stg.stg_tms_ddtcd_dispatch_document_thu_serial_dtl (
     ddtsd_customer_serial_no character varying(160) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_tms_ddtcd_dispatch_document_thu_serial_dtl
+    ADD CONSTRAINT pk_tms_ddtcd_dispatch_document_thu_serial_dtl PRIMARY KEY (ddtsd_ouinstance, ddtsd_dispatch_doc_no, ddtsd_thu_line_no, ddtsd_thu_serial_line_no);
+
+CREATE INDEX stg_tms_ddtcd_dispatch_document_thu_serial_dtl_key_idx1 ON stg.stg_tms_ddtcd_dispatch_document_thu_serial_dtl USING btree (ddtsd_ouinstance, ddtsd_dispatch_doc_no, ddtsd_thu_line_no, ddtsd_thu_serial_line_no);

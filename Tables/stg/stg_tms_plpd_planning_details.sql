@@ -41,3 +41,8 @@ CREATE TABLE stg.stg_tms_plpd_planning_details (
     plpd_plan_unique_id character varying(512) NOT NULL COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_tms_plpd_planning_details
+    ADD CONSTRAINT pk_tms_plpd_planning_details PRIMARY KEY (plpd_ouinstance, plpd_plan_run_no, plpd_plan_unique_id);
+
+CREATE INDEX stg_tms_plpd_planning_details_key_idx2 ON stg.stg_tms_plpd_planning_details USING btree (plpd_ouinstance, plpd_plan_run_no, plpd_plan_unique_id);

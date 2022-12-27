@@ -23,3 +23,6 @@ CREATE TABLE stg.stg_wms_stock_inprocess_tracking_serial_dtl (
     etlcreateddatetime timestamp(3) without time zone DEFAULT now(),
     CONSTRAINT wms_stock_inprocess_tracking_serial_dtl_chk CHECK ((wms_stk_quantity >= (0)::numeric))
 );
+
+ALTER TABLE ONLY stg.stg_wms_stock_inprocess_tracking_serial_dtl
+    ADD CONSTRAINT wms_stock_inprocess_tracking_serial_dtl_pk PRIMARY KEY (wms_stk_loc_code, wms_stk_ou, wms_stk_serial_line_no);

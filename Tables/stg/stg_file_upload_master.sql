@@ -9,3 +9,15 @@ CREATE TABLE stg.stg_file_upload_master (
     created_date timestamp without time zone DEFAULT now(),
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE stg.stg_file_upload_master ALTER COLUMN upload_id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME stg.stg_file_upload_master_upload_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY stg.stg_file_upload_master
+    ADD CONSTRAINT pk_file_upload_master PRIMARY KEY (upload_id);

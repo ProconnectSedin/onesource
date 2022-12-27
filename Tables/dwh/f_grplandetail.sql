@@ -37,3 +37,31 @@ CREATE TABLE dwh.f_grplandetail (
     etlupdatedatetime timestamp(3) without time zone,
     gr_emp_key bigint
 );
+
+ALTER TABLE dwh.f_grplandetail ALTER COLUMN gr_pln_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_grplandetail_gr_pln_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_grplandetail
+    ADD CONSTRAINT f_grplandetail_pkey PRIMARY KEY (gr_pln_key);
+
+ALTER TABLE ONLY dwh.f_grplandetail
+    ADD CONSTRAINT f_grplandetail_ukey UNIQUE (gr_loc_code, gr_pln_no, gr_pln_ou);
+
+ALTER TABLE ONLY dwh.f_grplandetail
+    ADD CONSTRAINT f_grplandetail_gr_date_key_fkey FOREIGN KEY (gr_date_key) REFERENCES dwh.d_date(datekey);
+
+ALTER TABLE ONLY dwh.f_grplandetail
+    ADD CONSTRAINT f_grplandetail_gr_emp_key_fkey FOREIGN KEY (gr_emp_key) REFERENCES dwh.d_employeeheader(emp_hdr_key);
+
+ALTER TABLE ONLY dwh.f_grplandetail
+    ADD CONSTRAINT f_grplandetail_gr_loc_key_fkey FOREIGN KEY (gr_loc_key) REFERENCES dwh.d_location(loc_key);
+
+CREATE INDEX f_grplandetail_key_idx ON dwh.f_grplandetail USING btree (gr_loc_key, gr_date_key);
+
+CREATE INDEX f_grplandetail_key_idx1 ON dwh.f_grplandetail USING btree (gr_loc_code, gr_pln_no, gr_pln_ou, gr_po_no, gr_asn_no);

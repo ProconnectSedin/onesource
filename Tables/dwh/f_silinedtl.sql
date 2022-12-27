@@ -36,3 +36,20 @@ CREATE TABLE dwh.f_silinedtl (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_silinedtl ALTER COLUMN si_line_dtl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_silinedtl_si_line_dtl_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_silinedtl
+    ADD CONSTRAINT f_silinedtl_pkey PRIMARY KEY (si_line_dtl_key);
+
+ALTER TABLE ONLY dwh.f_silinedtl
+    ADD CONSTRAINT f_silinedtl_ukey UNIQUE (tran_type, tran_ou, tran_no, line_no, row_type, ref_doc_no);
+
+CREATE INDEX f_silinedtl_key_idx ON dwh.f_silinedtl USING btree (tran_type, tran_ou, tran_no, line_no, ref_doc_no, row_type);

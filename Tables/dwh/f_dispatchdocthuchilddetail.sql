@@ -21,3 +21,25 @@ CREATE TABLE dwh.f_dispatchdocthuchilddetail (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_dispatchdocthuchilddetail ALTER COLUMN ddtcd_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_dispatchdocthuchilddetail_ddtcd_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_dispatchdocthuchilddetail
+    ADD CONSTRAINT f_dispatchdocthuchilddetail_pkey PRIMARY KEY (ddtcd_key);
+
+ALTER TABLE ONLY dwh.f_dispatchdocthuchilddetail
+    ADD CONSTRAINT f_dispatchdocthuchilddetail_ukey UNIQUE (ddtcd_ouinstance, ddtcd_dispatch_doc_no, ddtcd_thu_line_no, ddtcd_thu_child_line_no);
+
+ALTER TABLE ONLY dwh.f_dispatchdocthuchilddetail
+    ADD CONSTRAINT f_dispatchdocthuchilddetail_ddtd_key_fkey FOREIGN KEY (ddtd_key) REFERENCES dwh.f_dispatchdocthudetail(ddtd_key);
+
+CREATE INDEX f_dispatchdocthuchilddetail_key_idx ON dwh.f_dispatchdocthuchilddetail USING btree (ddtd_key);
+
+CREATE INDEX f_dispatchdocthuchilddetail_key_idx1 ON dwh.f_dispatchdocthuchilddetail USING btree (ddtcd_ouinstance, ddtcd_dispatch_doc_no, ddtcd_thu_line_no, ddtcd_thu_child_line_no);

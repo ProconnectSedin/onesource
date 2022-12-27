@@ -77,3 +77,6 @@ CREATE TABLE stg.stg_fact_outbound_load (
     loading_trip_planid character varying(72) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_fact_outbound_load
+    ADD CONSTRAINT pk__fact_out__4cd9458eb13accba PRIMARY KEY (refkey);

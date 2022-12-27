@@ -46,3 +46,33 @@ CREATE TABLE dwh.f_draftbillheader (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_draftbillheader ALTER COLUMN draft_bill_hdr_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_draftbillheader_draft_bill_hdr_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_draftbillheader
+    ADD CONSTRAINT f_draftbillheader_pkey PRIMARY KEY (draft_bill_hdr_key);
+
+ALTER TABLE ONLY dwh.f_draftbillheader
+    ADD CONSTRAINT f_draftbillheader_ukey UNIQUE (draft_bill_no, draft_bill_ou);
+
+ALTER TABLE ONLY dwh.f_draftbillheader
+    ADD CONSTRAINT f_draftbillheader_draft_curr_key_fkey FOREIGN KEY (draft_curr_key) REFERENCES dwh.d_currency(curr_key);
+
+ALTER TABLE ONLY dwh.f_draftbillheader
+    ADD CONSTRAINT f_draftbillheader_draft_cust_key_fkey FOREIGN KEY (draft_cust_key) REFERENCES dwh.d_customer(customer_key);
+
+ALTER TABLE ONLY dwh.f_draftbillheader
+    ADD CONSTRAINT f_draftbillheader_draft_loc_key_fkey FOREIGN KEY (draft_loc_key) REFERENCES dwh.d_location(loc_key);
+
+CREATE INDEX f_draftbillheader_key_idx ON dwh.f_draftbillheader USING btree (draft_loc_key, draft_cust_key, draft_curr_key);
+
+CREATE INDEX f_draftbillheader_key_idx1 ON dwh.f_draftbillheader USING btree (draft_bill_no, draft_bill_ou);
+
+CREATE INDEX f_draftbillheader_key_idx2 ON dwh.f_draftbillheader USING btree (draft_bill_ou, draft_bill_contract_id, draft_bill_supplier);

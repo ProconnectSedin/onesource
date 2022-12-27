@@ -61,3 +61,22 @@ CREATE TABLE dwh.d_vehicle (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.d_vehicle ALTER COLUMN veh_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.d_vehicle_veh_key_seq
+    START WITH -1
+    INCREMENT BY 1
+    MINVALUE -1
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.d_vehicle
+    ADD CONSTRAINT d_vehicle_pkey PRIMARY KEY (veh_key);
+
+ALTER TABLE ONLY dwh.d_vehicle
+    ADD CONSTRAINT d_vehicle_ukey UNIQUE (veh_ou, veh_id);
+
+CREATE INDEX d_vehicle_idx ON dwh.d_vehicle USING btree (veh_ou, veh_id);
+
+CREATE INDEX d_vehicle_key_ndx ON dwh.d_vehicle USING btree (veh_ou, veh_id);

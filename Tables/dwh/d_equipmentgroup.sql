@@ -16,3 +16,18 @@ CREATE TABLE dwh.d_equipmentgroup (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.d_equipmentgroup ALTER COLUMN egrp_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.d_equipmentgroup_egrp_key_seq
+    START WITH -1
+    INCREMENT BY 1
+    MINVALUE -1
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.d_equipmentgroup
+    ADD CONSTRAINT d_equipmentgroup_pkey PRIMARY KEY (egrp_key);
+
+ALTER TABLE ONLY dwh.d_equipmentgroup
+    ADD CONSTRAINT d_equipmentgroup_ukey UNIQUE (egrp_id, egrp_ou);

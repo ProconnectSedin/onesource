@@ -9,3 +9,6 @@ CREATE TABLE stg.stg_menu_mapping (
     modifieddatetime timestamp without time zone,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_menu_mapping
+    ADD CONSTRAINT screen_user_mapping PRIMARY KEY (mappingid);

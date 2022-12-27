@@ -24,3 +24,6 @@ CREATE TABLE stg.stg_wms_hr_internal_order_dtl (
     wms_in_ord_srv_type character varying(160) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_hr_internal_order_dtl
+    ADD CONSTRAINT wms_hr_internal_order_dtl_pk PRIMARY KEY (wms_in_ord_location, wms_in_ord_no, wms_in_ord_lineno, wms_in_ord_ou);

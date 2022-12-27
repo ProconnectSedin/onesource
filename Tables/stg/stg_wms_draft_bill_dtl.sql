@@ -134,3 +134,6 @@ CREATE TABLE stg.stg_wms_draft_bill_dtl (
     wms_draft_bill_accrual_amend_flag character varying(48) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_draft_bill_dtl
+    ADD CONSTRAINT wms_draft_bill_dtl_pk PRIMARY KEY (wms_draft_bill_no, wms_draft_bill_ou, wms_draft_bill_lineno);

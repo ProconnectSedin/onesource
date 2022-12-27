@@ -69,3 +69,15 @@ CREATE TABLE raw.raw_tms_brctd_br_thu_wise_contract_tariff_dtls (
     brctd_chargeable_qty numeric,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE raw.raw_tms_brctd_br_thu_wise_contract_tariff_dtls ALTER COLUMN raw_id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME raw.raw_tms_brctd_br_thu_wise_contract_tariff_dtls_raw_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY raw.raw_tms_brctd_br_thu_wise_contract_tariff_dtls
+    ADD CONSTRAINT raw_tms_brctd_br_thu_wise_contract_tariff_dtls_pkey PRIMARY KEY (raw_id);

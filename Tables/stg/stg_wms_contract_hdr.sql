@@ -152,3 +152,12 @@ CREATE TABLE stg.stg_wms_contract_hdr (
     wms_cont_vrptovt_last_bill_date timestamp without time zone,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_contract_hdr
+    ADD CONSTRAINT wms_contract_hdr_pk PRIMARY KEY (wms_cont_id, wms_cont_ou);
+
+CREATE INDEX wms_contract_hdr_idx ON stg.stg_wms_contract_hdr USING btree (wms_cont_vendor_id, wms_cont_ou);
+
+CREATE INDEX wms_contract_hdr_idx1 ON stg.stg_wms_contract_hdr USING btree (wms_cont_location, wms_cont_ou);
+
+CREATE INDEX wms_contract_hdr_idx2 ON stg.stg_wms_contract_hdr USING btree (wms_cont_customer_id, wms_cont_ou);

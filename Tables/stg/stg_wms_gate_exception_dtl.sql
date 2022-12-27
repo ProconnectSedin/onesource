@@ -13,3 +13,6 @@ CREATE TABLE stg.stg_wms_gate_exception_dtl (
     wms_gate_modified_date timestamp without time zone,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_gate_exception_dtl
+    ADD CONSTRAINT wms_gate_exception_dtl_pk PRIMARY KEY (wms_gate_exc_loc_code, wms_gate_exc_ou, wms_gate_exc_lineno, wms_gate_exc_shift_seqno);

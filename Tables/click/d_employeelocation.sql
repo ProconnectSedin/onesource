@@ -12,3 +12,9 @@ CREATE TABLE click.d_employeelocation (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE ONLY click.d_employeelocation
+    ADD CONSTRAINT d_employeelocation_pkey PRIMARY KEY (emp_loc_key);
+
+ALTER TABLE ONLY click.d_employeelocation
+    ADD CONSTRAINT d_employeelocation_ukey UNIQUE (emp_employee_code, emp_ou, emp_lineno);

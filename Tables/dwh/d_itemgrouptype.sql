@@ -18,3 +18,18 @@ CREATE TABLE dwh.d_itemgrouptype (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.d_itemgrouptype ALTER COLUMN item_igt_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.d_itemgrouptype_item_igt_key_seq
+    START WITH -1
+    INCREMENT BY 1
+    MINVALUE -1
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.d_itemgrouptype
+    ADD CONSTRAINT d_itemgrouptype_pkey PRIMARY KEY (item_igt_key);
+
+ALTER TABLE ONLY dwh.d_itemgrouptype
+    ADD CONSTRAINT d_itemgrouptype_ukey UNIQUE (item_igt_grouptype, item_igt_lo);

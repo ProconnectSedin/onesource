@@ -22,3 +22,9 @@ CREATE TABLE click.d_tarifftypegroup (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE ONLY click.d_tarifftypegroup
+    ADD CONSTRAINT d_tarifftypegroup_pkey PRIMARY KEY (tf_key);
+
+ALTER TABLE ONLY click.d_tarifftypegroup
+    ADD CONSTRAINT d_tarifftypegroup_ukey UNIQUE (tf_grp_code, tf_type_code);

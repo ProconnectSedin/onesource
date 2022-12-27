@@ -91,3 +91,8 @@ CREATE TABLE stg.stg_spy_voucher_hdr (
     gen_from character varying(100) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_spy_voucher_hdr
+    ADD CONSTRAINT spy_voucher_hdr_pkey PRIMARY KEY (ou_id, paybatch_no, voucher_no);
+
+CREATE INDEX stg_spy_voucher_hdr_key_idx2 ON stg.stg_spy_voucher_hdr USING btree (ou_id, paybatch_no, voucher_no, line_no, ict_flag);

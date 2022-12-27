@@ -20,3 +20,6 @@ CREATE TABLE stg.stg_tms_tpad_pod_attachment_dtl (
     tpad_dispatch_doc_no character varying(160) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_tms_tpad_pod_attachment_dtl
+    ADD CONSTRAINT pk__tms_tpad__d1314a7beb620e7e PRIMARY KEY (tpad_line_no);

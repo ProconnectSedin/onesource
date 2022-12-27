@@ -35,3 +35,30 @@ CREATE TABLE dwh.f_bindetails (
     etlupdatedatetime timestamp(3) without time zone,
     bin_typ_key bigint
 );
+
+ALTER TABLE dwh.f_bindetails ALTER COLUMN bin_dtl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_bindetails_bin_dtl_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_bindetails
+    ADD CONSTRAINT f_bindetails_pkey PRIMARY KEY (bin_dtl_key);
+
+ALTER TABLE ONLY dwh.f_bindetails
+    ADD CONSTRAINT f_bindetails_ukey UNIQUE (bin_ou, bin_code, bin_loc_code, bin_zone, bin_type);
+
+ALTER TABLE ONLY dwh.f_bindetails
+    ADD CONSTRAINT f_bindetails_bin_loc_key_fkey FOREIGN KEY (bin_loc_key) REFERENCES dwh.d_location(loc_key);
+
+ALTER TABLE ONLY dwh.f_bindetails
+    ADD CONSTRAINT f_bindetails_bin_zone_key_fkey FOREIGN KEY (bin_zone_key) REFERENCES dwh.d_zone(zone_key);
+
+CREATE INDEX f_bindetails_key_idx ON dwh.f_bindetails USING btree (bin_loc_key, bin_zone_key);
+
+CREATE INDEX f_bindetails_key_idx1 ON dwh.f_bindetails USING btree (bin_ou, bin_code, bin_loc_code, bin_zone, bin_type);
+
+CREATE INDEX f_bindetails_key_idx2 ON dwh.f_bindetails USING btree (bin_typ_key);

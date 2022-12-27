@@ -64,3 +64,8 @@ CREATE TABLE click.d_date (
     mmddyyyy character(10) NOT NULL COLLATE public.nocase,
     weekendindr boolean NOT NULL
 );
+
+ALTER TABLE ONLY click.d_date
+    ADD CONSTRAINT d_date_date_key_pk PRIMARY KEY (datekey);
+
+CREATE INDEX d_date_date_actual_idx ON click.d_date USING btree (dateactual);

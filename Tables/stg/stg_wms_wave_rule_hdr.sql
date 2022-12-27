@@ -38,3 +38,6 @@ CREATE TABLE stg.stg_wms_wave_rule_hdr (
     wms_wave_pick_consolidation character varying(32) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_wave_rule_hdr
+    ADD CONSTRAINT wms_wave_rule_hdr_pk PRIMARY KEY (wms_wave_loc_code, wms_wave_ou);

@@ -23,3 +23,16 @@ CREATE TABLE stg.stg_wms_stock_bin_history_dtl (
     wms_stock_thu_count_qty_bal numeric,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_stock_bin_history_dtl
+    ADD CONSTRAINT wms_stock_bin_history_dtl_pk PRIMARY KEY (wms_stock_ou, wms_stock_date, wms_stock_location, wms_stock_zone, wms_stock_bin, wms_stock_item, wms_stock_thu_id, wms_stock_su);
+
+CREATE INDEX stg_wms_stock_bin_history_dtl_idx1 ON stg.stg_wms_stock_bin_history_dtl USING btree (wms_stock_ou, wms_stock_bin, wms_stock_location, wms_stock_zone, wms_stock_bin_type, wms_stock_date, wms_stock_item, wms_stock_thu_id, wms_stock_su);
+
+CREATE INDEX stg_wms_stock_bin_history_dtl_idx2 ON stg.stg_wms_stock_bin_history_dtl USING btree (wms_stock_location, wms_stock_ou);
+
+CREATE INDEX stg_wms_stock_bin_history_dtl_idx3 ON stg.stg_wms_stock_bin_history_dtl USING btree (wms_stock_item, wms_stock_ou);
+
+CREATE INDEX stg_wms_stock_bin_history_dtl_idx4 ON stg.stg_wms_stock_bin_history_dtl USING btree (wms_stock_customer, wms_stock_ou);
+
+CREATE INDEX stg_wms_stock_bin_history_dtl_idx5 ON stg.stg_wms_stock_bin_history_dtl USING btree (wms_stock_thu_id, wms_stock_ou);

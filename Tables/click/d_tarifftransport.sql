@@ -146,3 +146,11 @@ CREATE TABLE click.d_tarifftransport (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE ONLY click.d_tarifftransport
+    ADD CONSTRAINT d_tarifftransport_pkey PRIMARY KEY (tf_tp_key);
+
+ALTER TABLE ONLY click.d_tarifftransport
+    ADD CONSTRAINT d_tarifftransport_ukey UNIQUE (tf_tp_id, tf_tp_ou);
+
+CREATE INDEX d_tarifftransport_idx ON click.d_tarifftransport USING btree (tf_tp_id, tf_tp_ou);

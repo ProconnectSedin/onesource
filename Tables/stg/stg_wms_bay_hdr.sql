@@ -26,3 +26,6 @@ CREATE TABLE stg.stg_wms_bay_hdr (
     wms_bay_linked_warehouse character varying(40) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_bay_hdr
+    ADD CONSTRAINT wms_bay_hdr_pk PRIMARY KEY (wms_bay_id, wms_bay_ou);

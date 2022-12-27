@@ -15,3 +15,9 @@ CREATE TABLE click.d_tmsparameter (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE ONLY click.d_tmsparameter
+    ADD CONSTRAINT d_tmsparameter_pkey PRIMARY KEY (tms_key);
+
+ALTER TABLE ONLY click.d_tmsparameter
+    ADD CONSTRAINT d_tmsparameter_ukey UNIQUE (tms_componentname, tms_paramcategory, tms_paramtype, tms_paramcode, tms_paramdesc, tms_langid);

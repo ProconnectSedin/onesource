@@ -22,3 +22,24 @@ CREATE TABLE dwh.d_wmsoutboundtat (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.d_wmsoutboundtat ALTER COLUMN wms_obd_tat_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.d_wmsoutboundtat_wms_obd_tat_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.d_wmsoutboundtat
+    ADD CONSTRAINT d_wmsoutboundtat_pkey PRIMARY KEY (wms_obd_tat_key);
+
+ALTER TABLE ONLY dwh.d_wmsoutboundtat
+    ADD CONSTRAINT d_wmsoutboundtat_wms_loc_key_fkey FOREIGN KEY (wms_loc_key) REFERENCES dwh.d_location(loc_key);
+
+CREATE INDEX d_wmsoutboundtat_key_idx ON dwh.d_wmsoutboundtat USING btree (wms_loc_key);
+
+CREATE INDEX d_wmsoutboundtat_key_idx1 ON dwh.d_wmsoutboundtat USING btree (ou, wms_loc_key, ordertype, servicetype);
+
+CREATE INDEX d_wmsoutboundtat_key_idx2 ON dwh.d_wmsoutboundtat USING btree (ou, locationcode, ordertype, servicetype);

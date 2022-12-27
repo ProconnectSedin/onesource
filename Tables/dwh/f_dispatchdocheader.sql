@@ -57,3 +57,33 @@ CREATE TABLE dwh.f_dispatchdocheader (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_dispatchdocheader ALTER COLUMN ddh_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_dispatchdocheader_ddh_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_dispatchdocheader
+    ADD CONSTRAINT f_dispatchdocheader_pkey PRIMARY KEY (ddh_key);
+
+ALTER TABLE ONLY dwh.f_dispatchdocheader
+    ADD CONSTRAINT f_dispatchdocheader_ddh_consignee_hdr_key_fkey FOREIGN KEY (ddh_consignee_hdr_key) REFERENCES dwh.d_consignee(consignee_hdr_key);
+
+ALTER TABLE ONLY dwh.f_dispatchdocheader
+    ADD CONSTRAINT f_dispatchdocheader_ddh_curr_key_fkey FOREIGN KEY (ddh_curr_key) REFERENCES dwh.d_currency(curr_key);
+
+ALTER TABLE ONLY dwh.f_dispatchdocheader
+    ADD CONSTRAINT f_dispatchdocheader_ddh_customer_key_fkey FOREIGN KEY (ddh_customer_key) REFERENCES dwh.d_customer(customer_key);
+
+ALTER TABLE ONLY dwh.f_dispatchdocheader
+    ADD CONSTRAINT f_dispatchdocheader_ddh_loc_key_fkey FOREIGN KEY (ddh_loc_key) REFERENCES dwh.d_location(loc_key);
+
+CREATE INDEX f_dispatchdocheader_key_idx ON dwh.f_dispatchdocheader USING btree (ddh_customer_key, ddh_consignee_hdr_key, ddh_curr_key, ddh_loc_key);
+
+CREATE INDEX f_dispatchdocheader_key_idx1 ON dwh.f_dispatchdocheader USING btree (ddh_ouinstance, ddh_dispatch_doc_no);
+
+CREATE INDEX f_dispatchdocheader_key_ndx ON dwh.f_dispatchdocheader USING btree (ddh_ouinstance, ddh_reference_doc_no);

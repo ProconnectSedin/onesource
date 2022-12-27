@@ -7,3 +7,6 @@ CREATE TABLE stg.stg_wms_loc_customer_mapping_dtl (
     wms_contract_id character varying(72) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_loc_customer_mapping_dtl
+    ADD CONSTRAINT wms_loc_customer_mapping_dtl_pk PRIMARY KEY (wms_loc_ou, wms_loc_code, wms_loc_lineno);

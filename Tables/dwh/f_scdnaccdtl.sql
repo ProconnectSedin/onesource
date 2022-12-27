@@ -32,3 +32,20 @@ CREATE TABLE dwh.f_scdnaccdtl (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_scdnaccdtl ALTER COLUMN scdnaccdtl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_scdnaccdtl_scdnaccdtl_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_scdnaccdtl
+    ADD CONSTRAINT f_scdnaccdtl_pkey PRIMARY KEY (scdnaccdtl_key);
+
+ALTER TABLE ONLY dwh.f_scdnaccdtl
+    ADD CONSTRAINT f_scdnaccdtl_ukey UNIQUE (tran_type, tran_ou, tran_no, line_no, stimestamp);
+
+CREATE INDEX f_scdnaccdtl_key_idx ON dwh.f_scdnaccdtl USING btree (tran_type, tran_ou, tran_no, line_no, stimestamp);

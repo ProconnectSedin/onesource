@@ -27,3 +27,5 @@ CREATE TABLE stg.stg_wms_pack_exec_thu_dtl (
     wms_pack_reason_code character varying(160) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+CREATE INDEX stg_wms_pack_exec_thu_dtl_key_idx2 ON stg.stg_wms_pack_exec_thu_dtl USING btree (wms_pack_exec_ou, wms_pack_loc_code, wms_pack_exec_no, wms_pack_thu_id, wms_pack_thu_lineno, wms_pack_thu_ser_no);

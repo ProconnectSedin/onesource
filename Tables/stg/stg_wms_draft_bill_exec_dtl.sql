@@ -83,3 +83,8 @@ CREATE TABLE stg.stg_wms_draft_bill_exec_dtl (
     wms_exec_hdlncopt_bil_status character varying(100) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_draft_bill_exec_dtl
+    ADD CONSTRAINT wms_draft_bill_exec_dtl_pk1 PRIMARY KEY (wms_exec_loc_code, wms_exec_ou, wms_exec_no, wms_exec_stage, wms_exec_line_no);
+
+CREATE INDEX stg_wms_draft_bill_exec_dtl_key_idx1 ON stg.stg_wms_draft_bill_exec_dtl USING btree (wms_exec_loc_code, wms_exec_ou, wms_exec_no, wms_exec_stage, wms_exec_line_no);

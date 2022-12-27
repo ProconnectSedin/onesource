@@ -42,3 +42,9 @@ CREATE TABLE click.d_thu (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE ONLY click.d_thu
+    ADD CONSTRAINT d_thu_pkey PRIMARY KEY (thu_key);
+
+ALTER TABLE ONLY click.d_thu
+    ADD CONSTRAINT d_thu_ukey UNIQUE (thu_id, thu_ou);

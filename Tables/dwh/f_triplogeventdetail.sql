@@ -27,3 +27,27 @@ CREATE TABLE dwh.f_triplogeventdetail (
     etlupdatedatetime timestamp(3) without time zone,
     tled_actual_date_key bigint
 );
+
+ALTER TABLE dwh.f_triplogeventdetail ALTER COLUMN tled_trip_log_dtl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_triplogeventdetail_tled_trip_log_dtl_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_triplogeventdetail
+    ADD CONSTRAINT f_triplogeventdetail_pkey PRIMARY KEY (tled_trip_log_dtl_key);
+
+ALTER TABLE ONLY dwh.f_triplogeventdetail
+    ADD CONSTRAINT f_triplogeventdetail_ukey UNIQUE (tled_ouinstance, tled_trip_plan_id, tled_trip_plan_unique_id);
+
+ALTER TABLE ONLY dwh.f_triplogeventdetail
+    ADD CONSTRAINT f_triplogeventdetail_plpth_hdr_key_fkey FOREIGN KEY (plpth_hdr_key) REFERENCES dwh.f_tripplanningheader(plpth_hdr_key);
+
+CREATE INDEX f_triplogeventdetail_key_idx ON dwh.f_triplogeventdetail USING btree (plpth_hdr_key);
+
+CREATE INDEX f_triplogeventdetail_key_idx1 ON dwh.f_triplogeventdetail USING btree (tled_ouinstance, tled_trip_plan_id, tled_trip_plan_unique_id);
+
+CREATE INDEX f_triplogeventdetail_key_idx2 ON dwh.f_triplogeventdetail USING btree (tled_actual_date_time);

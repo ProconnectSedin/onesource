@@ -26,3 +26,18 @@ CREATE TABLE dwh.d_consignor (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.d_consignor ALTER COLUMN consignor_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.d_consignor_consignor_key_seq
+    START WITH -1
+    INCREMENT BY 1
+    MINVALUE -1
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.d_consignor
+    ADD CONSTRAINT d_consignor_pkey PRIMARY KEY (consignor_key);
+
+ALTER TABLE ONLY dwh.d_consignor
+    ADD CONSTRAINT d_consignor_ukey UNIQUE (consignor_id, consignor_ou);

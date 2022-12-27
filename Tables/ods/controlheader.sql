@@ -36,3 +36,15 @@ CREATE TABLE ods.controlheader (
     rawstorageflag integer DEFAULT 1,
     sourcegroup character varying(40)
 );
+
+ALTER TABLE ods.controlheader ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME ods.controlheader_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY ods.controlheader
+    ADD CONSTRAINT controlheader_pkey PRIMARY KEY (id);

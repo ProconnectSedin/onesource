@@ -30,3 +30,6 @@ CREATE TABLE stg.stg_wms_contract_rev_leak_dtl (
     wms_cont_rev_lkge_billable character varying(32) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_contract_rev_leak_dtl
+    ADD CONSTRAINT wms_contract_rev_leak_dtl_pk PRIMARY KEY (wms_cont_rev_lkge_ou, wms_cont_rev_lkge_line_no);

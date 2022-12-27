@@ -21,3 +21,24 @@ CREATE TABLE raw.raw_lbc_offline_wms_stock_uid_tracking_load_stag (
     qname character varying(80) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE raw.raw_lbc_offline_wms_stock_uid_tracking_load_stag ALTER COLUMN raw_id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME raw.raw_lbc_offline_wms_stock_uid_tracking_load_stag_raw_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE raw.raw_lbc_offline_wms_stock_uid_tracking_load_stag ALTER COLUMN running_no ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME raw.raw_lbc_offline_wms_stock_uid_tracking_load_stag_running_no_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY raw.raw_lbc_offline_wms_stock_uid_tracking_load_stag
+    ADD CONSTRAINT raw_lbc_offline_wms_stock_uid_tracking_load_stag_pkey PRIMARY KEY (raw_id);

@@ -48,3 +48,6 @@ CREATE TABLE stg.stg_snp_voucher_dtl (
     decl_tax_region character varying(40) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_snp_voucher_dtl
+    ADD CONSTRAINT snp_voucher_dtl_pkey PRIMARY KEY (ou_id, voucher_no, voucher_type, account_lineno, tran_type);

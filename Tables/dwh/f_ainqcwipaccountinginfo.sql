@@ -33,3 +33,20 @@ CREATE TABLE dwh.f_ainqcwipaccountinginfo (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_ainqcwipaccountinginfo ALTER COLUMN f_ainqcwipaccountinginfo_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_ainqcwipaccountinginfo_f_ainqcwipaccountinginfo_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_ainqcwipaccountinginfo
+    ADD CONSTRAINT f_ainqcwipaccountinginfo_pkey PRIMARY KEY (f_ainqcwipaccountinginfo_key);
+
+ALTER TABLE ONLY dwh.f_ainqcwipaccountinginfo
+    ADD CONSTRAINT f_ainqcwipaccountinginfo_ukey UNIQUE (tran_ou, component_id, company_code, tran_number, proposal_no);
+
+CREATE INDEX f_ainqcwipaccountinginfo_key_idx ON dwh.f_ainqcwipaccountinginfo USING btree (tran_ou, component_id, company_code, tran_number, proposal_no);

@@ -57,3 +57,6 @@ CREATE TABLE stg.stg_tms_plepd_execution_plan_details (
     plepd_updated_by character varying(1020) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_tms_plepd_execution_plan_details
+    ADD CONSTRAINT pk_tms_plepd_execution_plan_details PRIMARY KEY (plepd_ouinstance, plepd_execution_plan_id, plepd_line_no);

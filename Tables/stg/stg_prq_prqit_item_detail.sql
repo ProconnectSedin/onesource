@@ -39,3 +39,8 @@ CREATE TABLE stg.stg_prq_prqit_item_detail (
     prqit_comments character varying(4000) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_prq_prqit_item_detail
+    ADD CONSTRAINT pkprq_prqit_item_detail PRIMARY KEY (prqit_prno, prqit_lineno, prqit_prou);
+
+CREATE INDEX stg_prq_prqit_item_detail_idx1 ON stg.stg_prq_prqit_item_detail USING btree (prqit_prno, prqit_lineno, prqit_prou);

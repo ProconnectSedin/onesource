@@ -12,3 +12,6 @@ CREATE TABLE stg.stg_tms_evcld_event_configuration_loc_div_dtl (
     evcld_timestamp integer,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_tms_evcld_event_configuration_loc_div_dtl
+    ADD CONSTRAINT pk_tms_evcld_event_configuration_loc_div_dtl PRIMARY KEY (evcld_ouinstance, evcld_guid);

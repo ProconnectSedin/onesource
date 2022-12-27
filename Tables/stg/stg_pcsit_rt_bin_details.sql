@@ -9,3 +9,6 @@ CREATE TABLE stg.stg_pcsit_rt_bin_details (
     created_on timestamp without time zone DEFAULT now(),
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_pcsit_rt_bin_details
+    ADD CONSTRAINT pk_pcsit_rt_bin_details PRIMARY KEY (bin_ou, bin_code, bin_loc_code);

@@ -31,3 +31,15 @@ CREATE TABLE raw.raw_wms_bin_type_hdr (
     wms_bin_typ_prmtd_no_ethu integer,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE raw.raw_wms_bin_type_hdr ALTER COLUMN raw_id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME raw.raw_wms_bin_type_hdr_raw_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY raw.raw_wms_bin_type_hdr
+    ADD CONSTRAINT raw_wms_bin_type_hdr_pkey PRIMARY KEY (raw_id);

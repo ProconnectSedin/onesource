@@ -8,3 +8,6 @@ CREATE TABLE stg.stg_wms_pack_emp_equip_map_dtl (
     wms_pack_area character varying(1020) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_pack_emp_equip_map_dtl
+    ADD CONSTRAINT wms_pack_emp_equip_map_dtl_pk PRIMARY KEY (wms_pack_loc_code, wms_pack_ou, wms_pack_lineno);

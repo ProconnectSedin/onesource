@@ -34,3 +34,18 @@ CREATE TABLE dwh.d_bintypes (
     bin_div_key bigint,
     bin_typ_vol_calc numeric(20,2)
 );
+
+ALTER TABLE dwh.d_bintypes ALTER COLUMN bin_typ_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.d_bintypes_bin_typ_key_seq
+    START WITH -1
+    INCREMENT BY 1
+    MINVALUE -1
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.d_bintypes
+    ADD CONSTRAINT d_bintypes_pkey PRIMARY KEY (bin_typ_key);
+
+ALTER TABLE ONLY dwh.d_bintypes
+    ADD CONSTRAINT d_bintypes_ukey UNIQUE (bin_typ_ou, bin_typ_code, bin_typ_loc_code);

@@ -31,3 +31,6 @@ CREATE TABLE stg.stg_cust_comp_info (
     comp_chq_bounce_req character(12) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_cust_comp_info
+    ADD CONSTRAINT cust_comp_info_pk PRIMARY KEY (comp_lo, comp_cust_code, comp_comp_code);

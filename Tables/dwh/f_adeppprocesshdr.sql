@@ -38,3 +38,20 @@ CREATE TABLE dwh.f_adeppprocesshdr (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_adeppprocesshdr ALTER COLUMN f_adeppprocesshdr_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_adeppprocesshdr_f_adeppprocesshdr_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_adeppprocesshdr
+    ADD CONSTRAINT f_adeppprocesshdr_pkey PRIMARY KEY (f_adeppprocesshdr_key);
+
+ALTER TABLE ONLY dwh.f_adeppprocesshdr
+    ADD CONSTRAINT f_adeppprocesshdr_ukey UNIQUE (ou_id, depr_proc_runno, depr_book);
+
+CREATE INDEX f_adeppprocesshdr_key_idx ON dwh.f_adeppprocesshdr USING btree (ou_id, depr_proc_runno, depr_book);

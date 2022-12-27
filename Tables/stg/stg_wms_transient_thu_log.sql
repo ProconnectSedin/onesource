@@ -17,3 +17,6 @@ CREATE TABLE stg.stg_wms_transient_thu_log (
     wms_trans_thu_in_stage_seq_no integer,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_transient_thu_log
+    ADD CONSTRAINT wms_trans_thu_dtl_pk PRIMARY KEY (wms_trans_thu_loc_code, wms_trans_thu_ou, wms_trans_thu_lineno);

@@ -71,3 +71,35 @@ CREATE TABLE dwh.f_pickingdetail (
     etlupdatedatetime timestamp(3) without time zone,
     pick_itm_key bigint
 );
+
+ALTER TABLE dwh.f_pickingdetail ALTER COLUMN pick_dtl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_pickingdetail_pick_dtl_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_pickingdetail
+    ADD CONSTRAINT f_pickingdetail_pkey PRIMARY KEY (pick_dtl_key);
+
+ALTER TABLE ONLY dwh.f_pickingdetail
+    ADD CONSTRAINT f_pickingdetail_ukey UNIQUE (pick_loc_code, pick_exec_no, pick_exec_ou, pick_lineno);
+
+ALTER TABLE ONLY dwh.f_pickingdetail
+    ADD CONSTRAINT f_pickingdetail_pick_hdr_key_fkey FOREIGN KEY (pick_hdr_key) REFERENCES dwh.f_pickingheader(pick_hdr_key);
+
+ALTER TABLE ONLY dwh.f_pickingdetail
+    ADD CONSTRAINT f_pickingdetail_pick_itm_key_fkey FOREIGN KEY (pick_itm_key) REFERENCES dwh.d_itemheader(itm_hdr_key);
+
+ALTER TABLE ONLY dwh.f_pickingdetail
+    ADD CONSTRAINT f_pickingdetail_pick_loc_key_fkey FOREIGN KEY (pick_loc_key) REFERENCES dwh.d_location(loc_key);
+
+CREATE INDEX f_pickingdetail_key_idx ON dwh.f_pickingdetail USING btree (pick_loc_key, pick_itm_key, pick_hdr_key);
+
+CREATE INDEX f_pickingdetail_key_idx1 ON dwh.f_pickingdetail USING btree (pick_loc_code, pick_exec_no, pick_exec_ou, pick_lineno);
+
+CREATE INDEX f_pickingdetail_key_idx2 ON dwh.f_pickingdetail USING btree (pick_loc_key, pick_so_no);
+
+CREATE INDEX f_pickingdetail_key_idx3 ON dwh.f_pickingdetail USING btree (pick_loc_key, pick_so_no, pick_so_line_no);

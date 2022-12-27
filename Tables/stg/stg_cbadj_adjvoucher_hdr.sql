@@ -48,3 +48,6 @@ CREATE TABLE stg.stg_cbadj_adjvoucher_hdr (
     pdc_flag character varying(48) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_cbadj_adjvoucher_hdr
+    ADD CONSTRAINT cbadj_adjvoucher_hdr_pkey PRIMARY KEY (ou_id, adj_voucher_no, voucher_tran_type);

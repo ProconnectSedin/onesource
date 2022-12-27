@@ -40,3 +40,6 @@ CREATE TABLE stg.stg_adepp_process_hdr (
     asset_location character varying(80) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_adepp_process_hdr
+    ADD CONSTRAINT adepp_process_hdr_pkey PRIMARY KEY (ou_id, depr_proc_runno, depr_book);

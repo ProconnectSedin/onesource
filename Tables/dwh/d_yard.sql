@@ -19,3 +19,18 @@ CREATE TABLE dwh.d_yard (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.d_yard ALTER COLUMN yard_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.d_yard_yard_key_seq
+    START WITH -1
+    INCREMENT BY 1
+    MINVALUE -1
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.d_yard
+    ADD CONSTRAINT d_yard_pkey PRIMARY KEY (yard_key);
+
+ALTER TABLE ONLY dwh.d_yard
+    ADD CONSTRAINT d_yard_ukey UNIQUE (yard_id, yard_loc_code, yard_ou);

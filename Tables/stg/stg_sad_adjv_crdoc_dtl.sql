@@ -43,3 +43,6 @@ CREATE TABLE stg.stg_sad_adjv_crdoc_dtl (
     masterbillofladingno character varying(280) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_sad_adjv_crdoc_dtl
+    ADD CONSTRAINT sad_adjv_crdoc_dtl_pkey PRIMARY KEY (ou_id, adj_voucher_no, cr_doc_ou, cr_doc_no, term_no, cr_doc_type);

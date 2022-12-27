@@ -17,3 +17,6 @@ CREATE TABLE stg.stg_emod_ou_mst (
     longitude numeric,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_emod_ou_mst
+    ADD CONSTRAINT emod_ou_mst_pkey PRIMARY KEY (ou_id, bu_id, company_code, address_id, serial_no);

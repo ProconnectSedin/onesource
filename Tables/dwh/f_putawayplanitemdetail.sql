@@ -36,3 +36,34 @@ CREATE TABLE dwh.f_putawayplanitemdetail (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_putawayplanitemdetail ALTER COLUMN pway_pln_itm_dtl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_putawayplanitemdetail_pway_pln_itm_dtl_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_putawayplanitemdetail
+    ADD CONSTRAINT f_putawayplanitemdetail_pkey PRIMARY KEY (pway_pln_itm_dtl_key);
+
+ALTER TABLE ONLY dwh.f_putawayplanitemdetail
+    ADD CONSTRAINT f_putawayplanitemdetail_ukey UNIQUE (pway_loc_code, pway_pln_no, pway_pln_ou, pway_lineno);
+
+ALTER TABLE ONLY dwh.f_putawayplanitemdetail
+    ADD CONSTRAINT f_putawayplanitemdetail_pway_pln_dtl_key_fkey FOREIGN KEY (pway_pln_dtl_key) REFERENCES dwh.f_putawayplandetail(pway_pln_dtl_key);
+
+ALTER TABLE ONLY dwh.f_putawayplanitemdetail
+    ADD CONSTRAINT f_putawayplanitemdetail_pway_pln_itm_dtl_itm_hdr_key_fkey FOREIGN KEY (pway_pln_itm_dtl_itm_hdr_key) REFERENCES dwh.d_itemheader(itm_hdr_key);
+
+ALTER TABLE ONLY dwh.f_putawayplanitemdetail
+    ADD CONSTRAINT f_putawayplanitemdetail_pway_pln_itm_dtl_loc_key_fkey FOREIGN KEY (pway_pln_itm_dtl_loc_key) REFERENCES dwh.d_location(loc_key);
+
+ALTER TABLE ONLY dwh.f_putawayplanitemdetail
+    ADD CONSTRAINT f_putawayplanitemdetail_pway_pln_itm_dtl_zone_key_fkey FOREIGN KEY (pway_pln_itm_dtl_zone_key) REFERENCES dwh.d_zone(zone_key);
+
+CREATE INDEX f_putawayplanitemdetail_key_idx ON dwh.f_putawayplanitemdetail USING btree (pway_pln_dtl_key, pway_pln_itm_dtl_itm_hdr_key, pway_pln_itm_dtl_loc_key, pway_pln_itm_dtl_zone_key);
+
+CREATE INDEX f_putawayplanitemdetail_key_idx1 ON dwh.f_putawayplanitemdetail USING btree (pway_loc_code, pway_pln_no, pway_pln_ou, pway_lineno, pway_gr_no, pway_item);

@@ -23,3 +23,20 @@ CREATE TABLE dwh.f_triplogexpensedocdetail (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_triplogexpensedocdetail ALTER COLUMN tledd_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_triplogexpensedocdetail_tledd_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_triplogexpensedocdetail
+    ADD CONSTRAINT f_triplogexpensedocdetail_pkey PRIMARY KEY (tledd_key);
+
+ALTER TABLE ONLY dwh.f_triplogexpensedocdetail
+    ADD CONSTRAINT f_triplogexpensedocdetail_ukey UNIQUE (tledd_ouinstance, tledd_doc_guid);
+
+CREATE INDEX f_triplogexpensedocdetail_key_idx ON dwh.f_triplogexpensedocdetail USING btree (tledd_ouinstance, tledd_doc_guid);

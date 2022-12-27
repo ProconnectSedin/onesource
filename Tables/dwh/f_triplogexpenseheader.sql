@@ -42,3 +42,20 @@ CREATE TABLE dwh.f_triplogexpenseheader (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_triplogexpenseheader ALTER COLUMN tleh_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_triplogexpenseheader_tleh_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_triplogexpenseheader
+    ADD CONSTRAINT f_triplogexpenseheader_pkey PRIMARY KEY (tleh_key);
+
+ALTER TABLE ONLY dwh.f_triplogexpenseheader
+    ADD CONSTRAINT f_triplogexpenseheader_ukey UNIQUE (tleh_ouinstance, tleh_report_no, tleh_trip_id, tleh_report_creation_date);
+
+CREATE INDEX f_triplogexpenseheader_key_idx ON dwh.f_triplogexpenseheader USING btree (tleh_ouinstance, tleh_report_no, tleh_trip_id, tleh_report_creation_date);

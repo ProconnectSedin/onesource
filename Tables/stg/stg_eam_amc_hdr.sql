@@ -44,3 +44,6 @@ CREATE TABLE stg.stg_eam_amc_hdr (
     amc_agr_brkdwn_visit integer,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_eam_amc_hdr
+    ADD CONSTRAINT eam_amc_hdr_pkey PRIMARY KEY (amc_amcno, amc_amcou);

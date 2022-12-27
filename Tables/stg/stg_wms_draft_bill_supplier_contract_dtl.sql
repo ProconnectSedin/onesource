@@ -19,3 +19,6 @@ CREATE TABLE stg.stg_wms_draft_bill_supplier_contract_dtl (
     wms_draft_bill_resource_type character varying(1020) NOT NULL COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_draft_bill_supplier_contract_dtl
+    ADD CONSTRAINT wms_draft_bill_supplier_contract_dtl_pk PRIMARY KEY (wms_draft_bill_ou, wms_draft_bill_location, wms_draft_bill_division, wms_draft_bill_tran_type, wms_draft_bill_ref_doc_no, wms_draft_bill_ref_doc_type, wms_draft_bill_vendor_id, wms_draft_bill_resource_type);

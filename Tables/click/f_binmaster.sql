@@ -18,3 +18,18 @@ CREATE TABLE click.f_binmaster (
     bin_dtl_key bigint,
     bin_loc_key bigint
 );
+
+ALTER TABLE click.f_binmaster ALTER COLUMN f_binmaster_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME click.f_binmaster_f_binmaster_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY click.f_binmaster
+    ADD CONSTRAINT f_binmaster_pkey PRIMARY KEY (f_binmaster_key);
+
+ALTER TABLE ONLY click.f_binmaster
+    ADD CONSTRAINT f_binmaster_ukey UNIQUE (bin_div_key, bin_typ_key, bin_dtl_key, bin_loc_key);

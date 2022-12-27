@@ -33,3 +33,9 @@ CREATE TABLE click.d_operationalaccountdetail (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE ONLY click.d_operationalaccountdetail
+    ADD CONSTRAINT d_operationalaccountdetail_pkey PRIMARY KEY (opcoa_key);
+
+ALTER TABLE ONLY click.d_operationalaccountdetail
+    ADD CONSTRAINT d_operationalaccountdetail_ukey UNIQUE (opcoa_id, account_code);

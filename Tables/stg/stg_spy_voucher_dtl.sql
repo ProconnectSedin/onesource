@@ -35,3 +35,6 @@ CREATE TABLE stg.stg_spy_voucher_dtl (
     decl_tax_region character varying(40) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_spy_voucher_dtl
+    ADD CONSTRAINT spy_voucher_dtl_pkey PRIMARY KEY (ou_id, paybatch_no, voucher_no, cr_doc_ou, cr_doc_no, term_no, tran_type, cr_doc_type);

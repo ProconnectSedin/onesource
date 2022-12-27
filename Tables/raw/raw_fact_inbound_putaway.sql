@@ -76,3 +76,15 @@ CREATE TABLE raw.raw_fact_inbound_putaway (
     pway_exec_staging character varying(72) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE raw.raw_fact_inbound_putaway ALTER COLUMN raw_id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME raw.raw_fact_inbound_putaway_raw_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY raw.raw_fact_inbound_putaway
+    ADD CONSTRAINT raw_fact_inbound_putaway_pkey PRIMARY KEY (raw_id);

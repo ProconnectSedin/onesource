@@ -61,3 +61,23 @@ CREATE TABLE click.f_shipment_details (
     ship_loc_key bigint,
     tatdays integer
 );
+
+ALTER TABLE click.f_shipment_details ALTER COLUMN shipment_dtl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME click.f_shipment_details_shipment_dtl_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY click.f_shipment_details
+    ADD CONSTRAINT f_shipment_details_pkey PRIMARY KEY (shipment_dtl_key);
+
+CREATE INDEX f_shipment_details_idx1 ON click.f_shipment_details USING btree (ouinstance, trip_plan_id, br_request_id);
+
+CREATE INDEX f_shipment_details_idx2 ON click.f_shipment_details USING btree (ouinstance, trip_plan_id, dispatch_doc_no);
+
+CREATE INDEX f_shipment_details_idx3 ON click.f_shipment_details USING btree (((trip_plan_createddate)::date));
+
+CREATE INDEX f_shipment_details_idx4 ON click.f_shipment_details USING btree (leg_behaviour);

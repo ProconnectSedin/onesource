@@ -7,3 +7,15 @@ CREATE TABLE stg.stg_sng_automail_pcklist (
     wms_pack_exec_end_date timestamp without time zone,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE stg.stg_sng_automail_pcklist ALTER COLUMN execid ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME stg.stg_sng_automail_pcklist_execid_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY stg.stg_sng_automail_pcklist
+    ADD CONSTRAINT pk_sng_automail_pcklist PRIMARY KEY (execid);

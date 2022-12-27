@@ -21,3 +21,18 @@ CREATE TABLE dwh.d_bulocationmap (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.d_bulocationmap ALTER COLUMN bu_loc_map_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.d_bulocationmap_bu_loc_map_key_seq
+    START WITH -1
+    INCREMENT BY 1
+    MINVALUE -1
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.d_bulocationmap
+    ADD CONSTRAINT d_bulocationmap_pkey PRIMARY KEY (bu_loc_map_key);
+
+ALTER TABLE ONLY dwh.d_bulocationmap
+    ADD CONSTRAINT d_bulocationmap_ukey UNIQUE (lo_id, bu_id, company_code, serial_no);

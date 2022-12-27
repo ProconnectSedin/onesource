@@ -37,3 +37,34 @@ CREATE TABLE dwh.f_rptacctinfodtl (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_rptacctinfodtl ALTER COLUMN rptacctinfodtl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_rptacctinfodtl_rptacctinfodtl_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_rptacctinfodtl
+    ADD CONSTRAINT f_rptacctinfodtl_pkey PRIMARY KEY (rptacctinfodtl_key);
+
+ALTER TABLE ONLY dwh.f_rptacctinfodtl
+    ADD CONSTRAINT f_rptacctinfodtl_ukey UNIQUE (ou_id, tran_no, fb_id, account_code, tran_type, drcr_flag, posting_line_no);
+
+ALTER TABLE ONLY dwh.f_rptacctinfodtl
+    ADD CONSTRAINT f_rptacctinfodtl_rptacctinfodtl_company_key_fkey FOREIGN KEY (rptacctinfodtl_company_key) REFERENCES dwh.d_company(company_key);
+
+ALTER TABLE ONLY dwh.f_rptacctinfodtl
+    ADD CONSTRAINT f_rptacctinfodtl_rptacctinfodtl_curr_key_fkey FOREIGN KEY (rptacctinfodtl_curr_key) REFERENCES dwh.d_currency(curr_key);
+
+ALTER TABLE ONLY dwh.f_rptacctinfodtl
+    ADD CONSTRAINT f_rptacctinfodtl_rptacctinfodtl_datekey_fkey FOREIGN KEY (rptacctinfodtl_datekey) REFERENCES dwh.d_date(datekey);
+
+ALTER TABLE ONLY dwh.f_rptacctinfodtl
+    ADD CONSTRAINT f_rptacctinfodtl_rptacctinfodtl_opcoa_key_fkey FOREIGN KEY (rptacctinfodtl_opcoa_key) REFERENCES dwh.d_operationalaccountdetail(opcoa_key);
+
+CREATE INDEX f_rptacctinfodtl_key_idx ON dwh.f_rptacctinfodtl USING btree (ou_id, tran_no, fb_id, account_code, tran_type, drcr_flag, posting_line_no);
+
+CREATE INDEX f_rptacctinfodtl_key_idx1 ON dwh.f_rptacctinfodtl USING btree (rptacctinfodtl_curr_key, rptacctinfodtl_company_key, rptacctinfodtl_datekey, rptacctinfodtl_opcoa_key);

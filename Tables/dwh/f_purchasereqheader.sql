@@ -37,3 +37,25 @@ CREATE TABLE dwh.f_purchasereqheader (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_purchasereqheader ALTER COLUMN preqm_hr_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_purchasereqheader_preqm_hr_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_purchasereqheader
+    ADD CONSTRAINT f_purchasereqheader_pkey PRIMARY KEY (preqm_hr_key);
+
+ALTER TABLE ONLY dwh.f_purchasereqheader
+    ADD CONSTRAINT f_purchasereqheader_ukey UNIQUE (preqm_prou, preqm_prno);
+
+ALTER TABLE ONLY dwh.f_purchasereqheader
+    ADD CONSTRAINT f_purchasereqheader_preqm_hr_curr_key_fkey FOREIGN KEY (preqm_hr_curr_key) REFERENCES dwh.d_currency(curr_key);
+
+CREATE INDEX f_purchasereqheader_key_idx ON dwh.f_purchasereqheader USING btree (preqm_hr_curr_key);
+
+CREATE INDEX f_purchasereqheader_key_idx1 ON dwh.f_purchasereqheader USING btree (preqm_prou, preqm_prno);

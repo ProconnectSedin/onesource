@@ -28,3 +28,18 @@ CREATE TABLE click.f_wh_space_detail (
     status character varying(20) COLLATE public.nocase,
     createddate timestamp(3) without time zone
 );
+
+ALTER TABLE click.f_wh_space_detail ALTER COLUMN wh_space_dtl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME click.f_wh_space_detail_wh_space_dtl_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY click.f_wh_space_detail
+    ADD CONSTRAINT f_wh_space_detail_pkey PRIMARY KEY (wh_space_dtl_key);
+
+ALTER TABLE ONLY click.f_wh_space_detail
+    ADD CONSTRAINT f_wh_space_detail_ukey UNIQUE (ou, division, location_code, customer_code);

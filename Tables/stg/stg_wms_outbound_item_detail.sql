@@ -78,3 +78,14 @@ CREATE TABLE stg.stg_wms_outbound_item_detail (
     wms_oub_cupkslch_sell_bil_status character varying(160) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_outbound_item_detail
+    ADD CONSTRAINT wms_outbound_item_detail_pkey PRIMARY KEY (wms_oub_itm_loc_code, wms_oub_itm_ou, wms_oub_outbound_ord, wms_oub_itm_lineno);
+
+CREATE INDEX stg_wms_outbound_item_detail_idx ON stg.stg_wms_outbound_item_detail USING btree (wms_oub_item_code, wms_oub_itm_ou);
+
+CREATE INDEX stg_wms_outbound_item_detail_idx1 ON stg.stg_wms_outbound_item_detail USING btree (wms_oub_itm_loc_code, wms_oub_itm_ou);
+
+CREATE INDEX stg_wms_outbound_item_detail_idx2 ON stg.stg_wms_outbound_item_detail USING btree (wms_oub_itm_ou, wms_oub_itm_loc_code, wms_oub_outbound_ord);
+
+CREATE INDEX stg_wms_outbound_item_detail_key_idx2 ON stg.stg_wms_outbound_item_detail USING btree (wms_oub_itm_ou, wms_oub_itm_loc_code, wms_oub_outbound_ord, wms_oub_itm_lineno);

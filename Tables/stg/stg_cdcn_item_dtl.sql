@@ -36,3 +36,6 @@ CREATE TABLE stg.stg_cdcn_item_dtl (
     party_tax_region character varying(40) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_cdcn_item_dtl
+    ADD CONSTRAINT cdcn_item_dtl_pkey PRIMARY KEY (tran_type, tran_ou, tran_no, line_no);

@@ -127,3 +127,14 @@ CREATE TABLE stg.stg_wms_outbound_header (
     wms_transport_activity character varying(160) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_outbound_header
+    ADD CONSTRAINT wms_outbound_header_pkey PRIMARY KEY (wms_oub_ou, wms_oub_loc_code, wms_oub_outbound_ord);
+
+CREATE INDEX stg_wms_outbound_header_key_idx ON stg.stg_wms_outbound_header USING btree (wms_oub_loc_code, wms_oub_ou);
+
+CREATE INDEX stg_wms_outbound_header_key_idx1 ON stg.stg_wms_outbound_header USING btree (wms_oub_cust_code, wms_oub_ou);
+
+CREATE INDEX stg_wms_outbound_header_key_idx2 ON stg.stg_wms_outbound_header USING btree (wms_oub_ou, wms_oub_loc_code, wms_oub_outbound_ord);
+
+CREATE INDEX wms_oub_orderdate_idx ON stg.stg_wms_outbound_header USING btree (wms_oub_orderdate);

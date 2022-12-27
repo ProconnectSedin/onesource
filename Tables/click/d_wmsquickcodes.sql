@@ -22,3 +22,9 @@ CREATE TABLE click.d_wmsquickcodes (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE ONLY click.d_wmsquickcodes
+    ADD CONSTRAINT d_wmsquickcodes_pkey PRIMARY KEY (code_key);
+
+ALTER TABLE ONLY click.d_wmsquickcodes
+    ADD CONSTRAINT d_wmsquickcodes_ukey UNIQUE (code_ou, code_type, code);

@@ -12,3 +12,6 @@ CREATE TABLE stg.stg_wms_employee_skills_dtl (
     wms_emp_remarks character varying(1020) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_employee_skills_dtl
+    ADD CONSTRAINT wms_employee_skills_dtl_pk PRIMARY KEY (wms_emp_employee_code, wms_emp_ou, wms_emp_lineno);

@@ -33,3 +33,6 @@ CREATE TABLE stg.stg_fact_outbound_disp (
     dispatch_reason_code character varying(160) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_fact_outbound_disp
+    ADD CONSTRAINT pk__fact_out__4cd9458eb107b1b9 PRIMARY KEY (refkey);

@@ -19,3 +19,15 @@ CREATE TABLE click.f_pnd_inb_actvity (
     created_date timestamp without time zone,
     modified_date timestamp without time zone
 );
+
+ALTER TABLE click.f_pnd_inb_actvity ALTER COLUMN pnd_inb_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME click.f_pnd_inb_actvity_pnd_inb_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY click.f_pnd_inb_actvity
+    ADD CONSTRAINT f_pnd_inb_key PRIMARY KEY (pnd_inb_key);

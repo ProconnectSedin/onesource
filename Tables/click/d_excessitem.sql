@@ -33,3 +33,11 @@ CREATE TABLE click.d_excessitem (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE ONLY click.d_excessitem
+    ADD CONSTRAINT d_excessitem_pkey PRIMARY KEY (ex_itm_key);
+
+ALTER TABLE ONLY click.d_excessitem
+    ADD CONSTRAINT d_excessitem_ukey UNIQUE (ex_itm_code, ex_itm_loc_code, ex_itm_ou);
+
+CREATE INDEX d_excessitem_idx ON click.d_excessitem USING btree (ex_itm_ou, ex_itm_code, ex_itm_loc_code);
