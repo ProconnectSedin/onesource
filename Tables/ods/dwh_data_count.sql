@@ -1,6 +1,6 @@
 -- Table: ods.dwh_data_count
 
--- DROP TABLE IF EXISTS ods.dwh_data_count;
+DROP TABLE IF EXISTS ods.dwh_data_count;
 
 CREATE TABLE IF NOT EXISTS ods.dwh_data_count
 (
@@ -11,7 +11,6 @@ CREATE TABLE IF NOT EXISTS ods.dwh_data_count
     datacount bigint,
     createddatetime timestamp without time zone NOT NULL DEFAULT now()
 )
-
 TABLESPACE pg_default;
 
 ALTER TABLE IF EXISTS ods.dwh_data_count
