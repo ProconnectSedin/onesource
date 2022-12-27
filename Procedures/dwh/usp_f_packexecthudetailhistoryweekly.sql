@@ -14,6 +14,25 @@ CREATE OR REPLACE PROCEDURE dwh.usp_f_packexecthudetailhistoryweekly(
 	OUT flag2 character varying)
 LANGUAGE 'plpgsql'
 AS $BODY$
+/*****************************************************************************************************************/
+/* PROCEDURE		:	dwh.usp_f_packexecthudetailhistoryweekly														 				 */
+/* DESCRIPTION		:	This sp is used to load f_packexecthudetailhistoryweekly table from stg_wms_pack_exec_thu_dtl_hist        			 			 */
+/*						Load Strategy: Insert/Update 															 */
+/*						Sources: wms_pack_exec_thu_dtl_hist_w					 		 									 */
+/*****************************************************************************************************************/
+/* DEVELOPMENT HISTORY																							 */
+/*****************************************************************************************************************/
+/* AUTHOR    		:	AKASH V																						 */
+/* DATE				:	26-DEC-2022																				 */
+/*****************************************************************************************************************/
+/* MODIFICATION HISTORY																							 */
+/*****************************************************************************************************************/
+/* MODIFIED BY		:																							 */
+/* DATE				:														 									 */
+/* DESCRIPTION		:													  										 */
+/*****************************************************************************************************************/
+/* EXECUTION SAMPLE :CALL dwh.usp_f_packexecthudetailhistoryweekly('wms_pack_exec_thu_dtl_hist_w','StgtoDW','f_packexecthudetailhistory',0,0,0,0,NULL,NULL);*/
+/*************************************************************************************************************/
 
 DECLARE
     p_etljobname VARCHAR(100);

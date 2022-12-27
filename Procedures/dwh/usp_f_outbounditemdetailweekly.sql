@@ -13,7 +13,30 @@ CREATE OR REPLACE PROCEDURE dwh.usp_f_outbounditemdetailweekly(
 	INOUT flag1 character varying,
 	OUT flag2 character varying)
 LANGUAGE 'plpgsql'
-AS $BODY$
+AS $BODY$ 
+/*****************************************************************************************************************/
+/* PROCEDURE		:	dwh.usp_f_outbounditemdetailweekly														 				 */
+/* DESCRIPTION		:	This sp is used to load f_outbounditemdetailweekly table from stg_wms_outbound_item_detail        			 			 */
+/*						Load Strategy: Insert/Update 															 */
+/*						Sources: wms_outbound_item_detail_w					 		 									 */
+/*****************************************************************************************************************/
+/* DEVELOPMENT HISTORY																							 */
+/*****************************************************************************************************************/
+/* AUTHOR    		:	AKASH V																						 */
+/* DATE				:	26-DEC-2022																				 */
+/*****************************************************************************************************************/
+/* MODIFICATION HISTORY																							 */
+/*****************************************************************************************************************/
+/* MODIFIED BY		:																							 */
+/* DATE				:														 									 */
+/* DESCRIPTION		:													  										 */
+/*****************************************************************************************************************/
+/* EXECUTION SAMPLE :CALL dwh.usp_f_outbounditemdetailweekly('wms_outbound_item_detail_w','StgtoDW','f_outbounditemdetail',0,0,0,0,NULL,NULL);*/
+/*****************************************************************************************************************/
+
+
+
+
 DECLARE 
 	p_etljobname VARCHAR(100);
 	p_envsourcecd VARCHAR(50);

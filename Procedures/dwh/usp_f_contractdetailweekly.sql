@@ -14,6 +14,27 @@ CREATE OR REPLACE PROCEDURE dwh.usp_f_contractdetailweekly(
 	OUT flag2 character varying)
 LANGUAGE 'plpgsql'
 AS $BODY$
+/*****************************************************************************************************************/
+/* PROCEDURE		:	dwh.usp_f_contractdetailweekly														 				 */
+/* DESCRIPTION		:	This sp is used to load f_contractdetailweekly table from stg_wms_contract_dtl        			 			 */
+/*						Load Strategy: Insert/Update 															 */
+/*						Sources: wms_contract_dtl_w					 		 									 */
+/*****************************************************************************************************************/
+/* DEVELOPMENT HISTORY																							 */
+/*****************************************************************************************************************/
+/* AUTHOR    		:	AKASH V																						 */
+/* DATE				:	26-DEC-2022																				 */
+/*****************************************************************************************************************/
+/* MODIFICATION HISTORY																							 */
+/*****************************************************************************************************************/
+/* MODIFIED BY		:																							 */
+/* DATE				:														 									 */
+/* DESCRIPTION		:													  										 */
+/*****************************************************************************************************************/
+/* EXECUTION SAMPLE :CALL dwh.usp_usp_f_contractdetailweekly('wms_contract_dtl_w','StgtoDW','f_contractdetail',0,0,0,0,NULL,NULL);*/
+/*****************************************************************************************************************/
+
+
 
 DECLARE
     p_etljobname VARCHAR(100);

@@ -14,6 +14,25 @@ CREATE OR REPLACE PROCEDURE dwh.usp_f_asndetailhistoryweekly(
 	OUT flag2 character varying)
 LANGUAGE 'plpgsql'
 AS $BODY$
+/*****************************************************************************************************************/
+/* PROCEDURE		:	dwh.f_asndetailhistoryweekly														 				 */
+/* DESCRIPTION		:	This sp is used to load f_asndetailhistoryweekly table from stg_wms_asn_detail_h        			 			 */
+/*						Load Strategy: Insert/Update 															 */
+/*						Sources: wms_asn_detail_h_w					 		 									 */
+/*****************************************************************************************************************/
+/* DEVELOPMENT HISTORY																							 */
+/*****************************************************************************************************************/
+/* AUTHOR    		:	AKASH V																						 */
+/* DATE				:	26-DEC-2022																				 */
+/*****************************************************************************************************************/
+/* MODIFICATION HISTORY																							 */
+/*****************************************************************************************************************/
+/* MODIFIED BY		:																							 */
+/* DATE				:														 									 */
+/* DESCRIPTION		:													  										 */
+/*****************************************************************************************************************/
+/* EXECUTION SAMPLE :CALL dwh.usp_f_asndetailhistoryweekly('wms_asn_detail_h_w','StgtoDW','f_asndetailhistory',0,0,0,0,NULL,NULL);*/
+/*****************************************************************************************************************/
 
 DECLARE
     p_etljobname VARCHAR(100);

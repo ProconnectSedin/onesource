@@ -12,7 +12,6 @@ DECLARE
     p_errorid integer;
     p_errordesc character varying;
     p_errorline integer;
-
     p_rawstorageflag integer;
 
 BEGIN
