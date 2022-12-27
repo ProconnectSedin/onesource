@@ -70,3 +70,6 @@ CREATE TABLE stg.stg_fact_outbound_pickexec (
     pick_reset_flg character varying(32) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_fact_outbound_pickexec
+    ADD CONSTRAINT pk__fact_out__4cd9458e837df774 PRIMARY KEY (refkey);

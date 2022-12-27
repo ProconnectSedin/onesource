@@ -18,3 +18,15 @@ CREATE TABLE stg.stg_wms_lnm_lh_lotnohistory (
     lh_seqno_unique bigint NOT NULL,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE stg.stg_wms_lnm_lh_lotnohistory ALTER COLUMN lh_seqno_unique ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME stg.stg_wms_lnm_lh_lotnohistory_lh_seqno_unique_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    MAXVALUE 2147483647
+    CACHE 1
+);
+
+ALTER TABLE ONLY stg.stg_wms_lnm_lh_lotnohistory
+    ADD CONSTRAINT wms_lnm_lh_lotnohistory_pk PRIMARY KEY (lh_seqno_unique);

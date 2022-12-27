@@ -18,3 +18,9 @@ CREATE TABLE click.d_uomconversion (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE ONLY click.d_uomconversion
+    ADD CONSTRAINT d_uomconversion_pkey PRIMARY KEY (uom_con_key);
+
+ALTER TABLE ONLY click.d_uomconversion
+    ADD CONSTRAINT d_uomconversion_ukey UNIQUE (con_fromuomcode, con_touomcode);

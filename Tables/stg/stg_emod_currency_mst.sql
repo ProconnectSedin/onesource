@@ -18,3 +18,6 @@ CREATE TABLE stg.stg_emod_currency_mst (
     modifieddate timestamp without time zone,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_emod_currency_mst
+    ADD CONSTRAINT emod_currency_mst_pkey PRIMARY KEY (iso_curr_code, serial_no);

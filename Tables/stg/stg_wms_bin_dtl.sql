@@ -50,3 +50,8 @@ CREATE TABLE stg.stg_wms_bin_dtl (
     wms_error_code character varying(1020) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_bin_dtl
+    ADD CONSTRAINT pk_wms_bin_dtl PRIMARY KEY (wms_bin_ou, wms_bin_code, wms_bin_loc_code, wms_bin_zone, wms_bin_type);
+
+CREATE INDEX stg_wms_bin_dtl_key_idx1 ON stg.stg_wms_bin_dtl USING btree (wms_bin_ou, wms_bin_code, wms_bin_loc_code, wms_bin_zone, wms_bin_type);

@@ -60,3 +60,34 @@ CREATE TABLE dwh.f_purchaseheader (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_purchaseheader ALTER COLUMN po_hr_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_purchaseheader_po_hr_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_purchaseheader
+    ADD CONSTRAINT f_purchaseheader_pkey PRIMARY KEY (po_hr_key);
+
+ALTER TABLE ONLY dwh.f_purchaseheader
+    ADD CONSTRAINT f_purchaseheader_ukey UNIQUE (poou, pono, poamendmentno);
+
+ALTER TABLE ONLY dwh.f_purchaseheader
+    ADD CONSTRAINT f_purchaseheader_po_cur_key_fkey FOREIGN KEY (po_cur_key) REFERENCES dwh.d_currency(curr_key);
+
+ALTER TABLE ONLY dwh.f_purchaseheader
+    ADD CONSTRAINT f_purchaseheader_po_date_key_fkey FOREIGN KEY (po_date_key) REFERENCES dwh.d_date(datekey);
+
+ALTER TABLE ONLY dwh.f_purchaseheader
+    ADD CONSTRAINT f_purchaseheader_po_loc_key_fkey FOREIGN KEY (po_loc_key) REFERENCES dwh.d_location(loc_key);
+
+ALTER TABLE ONLY dwh.f_purchaseheader
+    ADD CONSTRAINT f_purchaseheader_po_supp_key_fkey FOREIGN KEY (po_supp_key) REFERENCES dwh.d_vendor(vendor_key);
+
+CREATE INDEX f_purchaseheader_key_idx ON dwh.f_purchaseheader USING btree (po_loc_key, po_date_key, po_cur_key, po_supp_key);
+
+CREATE INDEX f_purchaseheader_key_idx1 ON dwh.f_purchaseheader USING btree (poou, pono, poamendmentno);

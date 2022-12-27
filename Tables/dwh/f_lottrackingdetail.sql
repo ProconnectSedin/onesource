@@ -21,3 +21,31 @@ CREATE TABLE dwh.f_lottrackingdetail (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_lottrackingdetail ALTER COLUMN stk_lottrk_dtl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_lottrackingdetail_stk_lottrk_dtl_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_lottrackingdetail
+    ADD CONSTRAINT f_lottrackingdetail_pkey PRIMARY KEY (stk_lottrk_dtl_key);
+
+ALTER TABLE ONLY dwh.f_lottrackingdetail
+    ADD CONSTRAINT f_lottrackingdetail_ukey UNIQUE (stk_ou, stk_location, stk_item, stk_customer, stk_date, stk_lot_no);
+
+ALTER TABLE ONLY dwh.f_lottrackingdetail
+    ADD CONSTRAINT f_lottrackingdetail_stk_customer_key_fkey FOREIGN KEY (stk_customer_key) REFERENCES dwh.d_customer(customer_key);
+
+ALTER TABLE ONLY dwh.f_lottrackingdetail
+    ADD CONSTRAINT f_lottrackingdetail_stk_item_key_fkey FOREIGN KEY (stk_item_key) REFERENCES dwh.d_itemheader(itm_hdr_key);
+
+ALTER TABLE ONLY dwh.f_lottrackingdetail
+    ADD CONSTRAINT f_lottrackingdetail_stk_loc_key_fkey FOREIGN KEY (stk_loc_key) REFERENCES dwh.d_location(loc_key);
+
+CREATE INDEX f_lottrackingdetail_key_idx ON dwh.f_lottrackingdetail USING btree (stk_loc_key, stk_item_key, stk_customer_key);
+
+CREATE INDEX f_lottrackingdetail_key_idx1 ON dwh.f_lottrackingdetail USING btree (stk_ou, stk_location, stk_item, stk_customer, stk_date, stk_lot_no);

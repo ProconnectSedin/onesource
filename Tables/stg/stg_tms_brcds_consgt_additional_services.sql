@@ -39,3 +39,6 @@ CREATE TABLE stg.stg_tms_brcds_consgt_additional_services (
     cds_no_of_equipment integer,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_tms_brcds_consgt_additional_services
+    ADD CONSTRAINT pk_tms_brcds_consgt_additional_services PRIMARY KEY (cds_ouinstance, cds_br_id);

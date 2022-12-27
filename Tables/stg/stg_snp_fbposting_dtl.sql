@@ -39,3 +39,6 @@ CREATE TABLE stg.stg_snp_fbposting_dtl (
     reftran_fbid character varying(80) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_snp_fbposting_dtl
+    ADD CONSTRAINT snp_fbposting_dtl_pkey PRIMARY KEY (batch_id, ou_id, document_no, account_lineno, account_code);

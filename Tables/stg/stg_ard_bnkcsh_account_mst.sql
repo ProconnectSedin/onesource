@@ -17,3 +17,6 @@ CREATE TABLE stg.stg_ard_bnkcsh_account_mst (
     interim_account character varying(128) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_ard_bnkcsh_account_mst
+    ADD CONSTRAINT ard_bnkcsh_account_mst_pkey PRIMARY KEY (company_code, fb_id, bank_ptt_code, effective_from, sequence_no);

@@ -22,3 +22,6 @@ CREATE TABLE stg.stg_ard_addn_account_mst (
     modifieddate timestamp without time zone,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_ard_addn_account_mst
+    ADD CONSTRAINT ard_addn_account_mst_pkey PRIMARY KEY (company_code, fb_id, usage_id, effective_from, currency_code, drcr_flag, dest_fbid, child_company, dest_company, sequence_no);

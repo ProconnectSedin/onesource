@@ -15,3 +15,8 @@ CREATE TABLE stg.stg_tms_plph_planning_hdr (
     plph_plan_mode character varying(160) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_tms_plph_planning_hdr
+    ADD CONSTRAINT pk_tms_plph_planning_hdr PRIMARY KEY (plph_ouinstance, plph_plan_run_no);
+
+CREATE INDEX stg_tms_plph_planning_hdr_key_idx2 ON stg.stg_tms_plph_planning_hdr USING btree (plph_ouinstance, plph_plan_run_no);

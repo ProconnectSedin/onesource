@@ -19,3 +19,15 @@ CREATE TABLE dwh.f_aplanproposalbaldtl (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_aplanproposalbaldtl ALTER COLUMN pln_pro_dtl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_aplanproposalbaldtl_pln_pro_dtl_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_aplanproposalbaldtl
+    ADD CONSTRAINT f_aplanproposalbaldtl_pkey PRIMARY KEY (pln_pro_dtl_key);

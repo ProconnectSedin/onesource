@@ -11,3 +11,6 @@ CREATE TABLE stg.stg_wms_inv_profile_dtl (
     wms_inv_modified_dt timestamp without time zone,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_inv_profile_dtl
+    ADD CONSTRAINT wms_inv_profile_dtl_pk PRIMARY KEY (wms_inv_prof_loc_code, wms_inv_prof_ou, wms_inv_prof_lineno);

@@ -29,3 +29,11 @@ CREATE TABLE stg.stg_wms_pack_exec_thu_dtl_hist (
     wms_pack_created_date timestamp without time zone,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+CREATE INDEX stg_wms_pack_exec_thu_dtl_hist_idx ON stg.stg_wms_pack_exec_thu_dtl_hist USING btree (wms_pack_exec_ou, wms_pack_loc_code, wms_pack_exec_no, wms_pack_thu_id, wms_pack_thu_lineno, wms_pack_thu_ser_no);
+
+CREATE INDEX stg_wms_pack_exec_thu_dtl_hist_idx1 ON stg.stg_wms_pack_exec_thu_dtl_hist USING btree (wms_pack_exec_ou, wms_pack_loc_code, wms_pack_exec_no);
+
+CREATE INDEX stg_wms_pack_exec_thu_dtl_hist_idx2 ON stg.stg_wms_pack_exec_thu_dtl_hist USING btree (wms_pack_exec_ou, wms_pack_loc_code);
+
+CREATE INDEX stg_wms_pack_exec_thu_dtl_hist_idx3 ON stg.stg_wms_pack_exec_thu_dtl_hist USING btree (wms_pack_exec_ou, wms_pack_thu_id);

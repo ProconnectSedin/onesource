@@ -38,3 +38,6 @@ CREATE TABLE stg.stg_acap_asset_hdr (
     asset_cluster character varying(1020) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_acap_asset_hdr
+    ADD CONSTRAINT acap_asset_hdr_pkey PRIMARY KEY (ou_id, cap_number, asset_number);

@@ -55,3 +55,34 @@ CREATE TABLE dwh.f_rppostingsdtl (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_rppostingsdtl ALTER COLUMN rppostingsdtl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_rppostingsdtl_rppostingsdtl_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_rppostingsdtl
+    ADD CONSTRAINT f_rppostingsdtl_pkey PRIMARY KEY (rppostingsdtl_key);
+
+ALTER TABLE ONLY dwh.f_rppostingsdtl
+    ADD CONSTRAINT f_rppostingsdtl_ukey UNIQUE (ou_id, serial_no, unique_no, doc_type, tran_ou, document_no, account_code, tran_type);
+
+ALTER TABLE ONLY dwh.f_rppostingsdtl
+    ADD CONSTRAINT f_rppostingsdtl_rppostingsdtl_company_key_fkey FOREIGN KEY (rppostingsdtl_company_key) REFERENCES dwh.d_company(company_key);
+
+ALTER TABLE ONLY dwh.f_rppostingsdtl
+    ADD CONSTRAINT f_rppostingsdtl_rppostingsdtl_curr_key_fkey FOREIGN KEY (rppostingsdtl_curr_key) REFERENCES dwh.d_currency(curr_key);
+
+ALTER TABLE ONLY dwh.f_rppostingsdtl
+    ADD CONSTRAINT f_rppostingsdtl_rppostingsdtl_datekey_fkey FOREIGN KEY (rppostingsdtl_datekey) REFERENCES dwh.d_date(datekey);
+
+ALTER TABLE ONLY dwh.f_rppostingsdtl
+    ADD CONSTRAINT f_rppostingsdtl_rppostingsdtl_opcoa_key_fkey FOREIGN KEY (rppostingsdtl_opcoa_key) REFERENCES dwh.d_operationalaccountdetail(opcoa_key);
+
+CREATE INDEX f_rppostingsdtl_key_idx ON dwh.f_rppostingsdtl USING btree (ou_id, serial_no, unique_no, doc_type, tran_ou, document_no, account_code, tran_type);
+
+CREATE INDEX f_rppostingsdtl_key_idx1 ON dwh.f_rppostingsdtl USING btree (rppostingsdtl_curr_key, rppostingsdtl_company_key, rppostingsdtl_datekey, rppostingsdtl_opcoa_key);

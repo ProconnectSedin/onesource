@@ -7,3 +7,6 @@ CREATE TABLE stg.stg_wms_ex_itm_vas_dtl (
     wms_ex_itm_vas_default integer,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_ex_itm_vas_dtl
+    ADD CONSTRAINT wms_ex_itm_vas_dtl_pk PRIMARY KEY (wms_ex_itm_ou, wms_ex_itm_code, wms_ex_itm_loc_code, wms_ex_itm_line_no);

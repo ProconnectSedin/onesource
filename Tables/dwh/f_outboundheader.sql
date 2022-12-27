@@ -85,3 +85,45 @@ CREATE TABLE dwh.f_outboundheader (
     etlupdatedatetime timestamp(3) without time zone,
     oub_orderdatekey bigint
 );
+
+ALTER TABLE dwh.f_outboundheader ALTER COLUMN obh_hr_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_outboundheader_obh_hr_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_outboundheader
+    ADD CONSTRAINT f_outboundheader_pkey PRIMARY KEY (obh_hr_key);
+
+ALTER TABLE ONLY dwh.f_outboundheader
+    ADD CONSTRAINT f_outboundheader_ukey UNIQUE (oub_ou, oub_loc_code, oub_outbound_ord);
+
+ALTER TABLE ONLY dwh.f_outboundheader
+    ADD CONSTRAINT f_outboundheader_obh_cust_key_fkey FOREIGN KEY (obh_cust_key) REFERENCES dwh.d_customer(customer_key);
+
+ALTER TABLE ONLY dwh.f_outboundheader
+    ADD CONSTRAINT f_outboundheader_obh_loc_key_fkey FOREIGN KEY (obh_loc_key) REFERENCES dwh.d_location(loc_key);
+
+ALTER TABLE ONLY dwh.f_outboundheader
+    ADD CONSTRAINT f_outboundheader_oub_orderdatekey_fkey FOREIGN KEY (oub_orderdatekey) REFERENCES dwh.d_date(datekey);
+
+CREATE INDEX f_outboundheader_key_idx ON dwh.f_outboundheader USING btree (obh_cust_key, obh_loc_key);
+
+CREATE INDEX f_outboundheader_key_idx1 ON dwh.f_outboundheader USING btree (oub_ou, oub_loc_code, oub_outbound_ord);
+
+CREATE INDEX f_outboundheader_key_idx2 ON dwh.f_outboundheader USING btree (oub_ou, obh_loc_key, oub_prim_rf_dc_no);
+
+CREATE INDEX f_outboundheader_key_idx3 ON dwh.f_outboundheader USING btree (obh_loc_key, obh_cust_key, oub_prim_rf_dc_no);
+
+CREATE INDEX f_outboundheader_key_idx4 ON dwh.f_outboundheader USING btree (oub_prim_rf_dc_no, oub_ou);
+
+CREATE INDEX f_outboundheader_key_idx_1 ON dwh.f_outboundheader USING btree (oub_orderdatekey);
+
+CREATE INDEX f_outboundheader_key_idx_2 ON dwh.f_outboundheader USING btree (oub_modified_date, oub_created_date);
+
+CREATE INDEX f_outboundheader_key_idx_5 ON dwh.f_outboundheader USING btree (oub_ou, oub_loc_code, oub_prim_rf_dc_no);
+
+CREATE INDEX f_outboundheader_key_idx_7 ON dwh.f_outboundheader USING btree (oub_ou, oub_loc_code, oub_order_type, oub_shipment_type);

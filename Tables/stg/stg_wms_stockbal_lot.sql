@@ -15,3 +15,6 @@ CREATE TABLE stg.stg_wms_stockbal_lot (
     etlcreateddatetime timestamp(3) without time zone DEFAULT now(),
     CONSTRAINT wms_stockbal_lot_check CHECK ((sbl_quantity >= (0)::numeric))
 );
+
+ALTER TABLE ONLY stg.stg_wms_stockbal_lot
+    ADD CONSTRAINT wms_stockbal_lot_pk PRIMARY KEY (sbl_wh_code, sbl_ouinstid, sbl_item_code, sbl_lot_no, sbl_zone, sbl_bin, sbl_stock_status);

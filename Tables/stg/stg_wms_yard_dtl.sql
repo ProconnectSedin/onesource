@@ -9,3 +9,6 @@ CREATE TABLE stg.stg_wms_yard_dtl (
     wms_yard_parking_type character varying(32) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_yard_dtl
+    ADD CONSTRAINT wms_yard_dtl_pk PRIMARY KEY (wms_yard_id, wms_yard_loc_code, wms_yard_ou, wms_yard_lineno);

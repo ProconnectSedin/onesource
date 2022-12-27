@@ -26,3 +26,6 @@ CREATE TABLE stg.stg_tms_brctd_consgt_thu_serial_details (
     ctsd_timestamp integer,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_tms_brctd_consgt_thu_serial_details
+    ADD CONSTRAINT pk_tms_brctd_consgt_thu_serial_details PRIMARY KEY (ctsd_ouinstance, ctsd_thu_line_no, ctsd_thu_serial_line_no);

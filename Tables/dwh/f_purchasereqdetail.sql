@@ -45,3 +45,40 @@ CREATE TABLE dwh.f_purchasereqdetail (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_purchasereqdetail ALTER COLUMN preqm_dtl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_purchasereqdetail_preqm_dtl_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_purchasereqdetail
+    ADD CONSTRAINT f_purchasereqdetail_pkey PRIMARY KEY (preqm_dtl_key);
+
+ALTER TABLE ONLY dwh.f_purchasereqdetail
+    ADD CONSTRAINT f_purchasereqdetail_ukey UNIQUE (prqit_prou, prqit_prno, prqit_lineno);
+
+ALTER TABLE ONLY dwh.f_purchasereqdetail
+    ADD CONSTRAINT f_purchasereqdetail_preqm_dtl_customer_key_fkey FOREIGN KEY (preqm_dtl_customer_key) REFERENCES dwh.d_customer(customer_key);
+
+ALTER TABLE ONLY dwh.f_purchasereqdetail
+    ADD CONSTRAINT f_purchasereqdetail_preqm_dtl_loc_key_fkey FOREIGN KEY (preqm_dtl_loc_key) REFERENCES dwh.d_location(loc_key);
+
+ALTER TABLE ONLY dwh.f_purchasereqdetail
+    ADD CONSTRAINT f_purchasereqdetail_preqm_dtl_uom_key_fkey FOREIGN KEY (preqm_dtl_uom_key) REFERENCES dwh.d_uom(uom_key);
+
+ALTER TABLE ONLY dwh.f_purchasereqdetail
+    ADD CONSTRAINT f_purchasereqdetail_preqm_dtl_vendor_key_fkey FOREIGN KEY (preqm_dtl_vendor_key) REFERENCES dwh.d_vendor(vendor_key);
+
+ALTER TABLE ONLY dwh.f_purchasereqdetail
+    ADD CONSTRAINT f_purchasereqdetail_preqm_dtl_wh_key_fkey FOREIGN KEY (preqm_dtl_wh_key) REFERENCES dwh.d_warehouse(wh_key);
+
+ALTER TABLE ONLY dwh.f_purchasereqdetail
+    ADD CONSTRAINT f_purchasereqdetail_preqm_hr_key_fkey FOREIGN KEY (preqm_hr_key) REFERENCES dwh.f_purchasereqheader(preqm_hr_key);
+
+CREATE INDEX f_purchasereqdetail_key_idx ON dwh.f_purchasereqdetail USING btree (preqm_hr_key, preqm_dtl_wh_key, preqm_dtl_uom_key, preqm_dtl_vendor_key, preqm_dtl_loc_key, preqm_dtl_customer_key);
+
+CREATE INDEX f_purchasereqdetail_key_idx1 ON dwh.f_purchasereqdetail USING btree (prqit_prou, prqit_prno, prqit_lineno);

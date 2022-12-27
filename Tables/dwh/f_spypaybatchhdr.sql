@@ -36,3 +36,20 @@ CREATE TABLE dwh.f_spypaybatchhdr (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_spypaybatchhdr ALTER COLUMN paybatch_hdr_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_spypaybatchhdr_paybatch_hdr_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_spypaybatchhdr
+    ADD CONSTRAINT f_spypaybatchhdr_pkey PRIMARY KEY (paybatch_hdr_key);
+
+ALTER TABLE ONLY dwh.f_spypaybatchhdr
+    ADD CONSTRAINT f_spypaybatchhdr_ukey UNIQUE (ou_id, paybatch_no, ptimestamp, ict_flag);
+
+CREATE INDEX f_spypaybatchhdr_key_idx ON dwh.f_spypaybatchhdr USING btree (curr_key);

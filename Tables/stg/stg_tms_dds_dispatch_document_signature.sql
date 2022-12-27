@@ -13,3 +13,5 @@ CREATE TABLE stg.stg_tms_dds_dispatch_document_signature (
     dds_designation character varying(160) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+CREATE INDEX stg_tms_dds_dispatch_document_signature_key_idx1 ON stg.stg_tms_dds_dispatch_document_signature USING btree (dds_ouinstance, dds_trip_id, dds_seqno, dds_dispatch_doc_no);

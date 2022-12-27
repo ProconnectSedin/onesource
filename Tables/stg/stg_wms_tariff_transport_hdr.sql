@@ -140,3 +140,8 @@ CREATE TABLE stg.stg_wms_tariff_transport_hdr (
     wms_tf_tp_commodity_uom character varying(160) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_tariff_transport_hdr
+    ADD CONSTRAINT wms_tariff_transport_hdr_pk PRIMARY KEY (wms_tf_tp_id, wms_tf_tp_ou);
+
+CREATE INDEX stg_wms_tariff_transport_hdr_idx ON stg.stg_wms_tariff_transport_hdr USING btree (wms_tf_tp_id, wms_tf_tp_ou);

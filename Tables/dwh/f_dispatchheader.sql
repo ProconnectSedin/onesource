@@ -28,3 +28,26 @@ CREATE TABLE dwh.f_dispatchheader (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_dispatchheader ALTER COLUMN dispatch_hdr_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_dispatchheader_dispatch_hdr_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_dispatchheader
+    ADD CONSTRAINT f_dispatchheader_pkey PRIMARY KEY (dispatch_hdr_key);
+
+ALTER TABLE ONLY dwh.f_dispatchheader
+    ADD CONSTRAINT f_dispatchheader_ukey UNIQUE (dispatch_loc_code, dispatch_ld_sheet_no, dispatch_ld_sheet_ou);
+
+ALTER TABLE ONLY dwh.f_dispatchheader
+    ADD CONSTRAINT f_dispatchheader_dispatch_hdr_loc_key_fkey FOREIGN KEY (dispatch_hdr_loc_key) REFERENCES dwh.d_location(loc_key);
+
+ALTER TABLE ONLY dwh.f_dispatchheader
+    ADD CONSTRAINT f_dispatchheader_dispatch_hdr_veh_key_fkey FOREIGN KEY (dispatch_hdr_veh_key) REFERENCES dwh.d_vehicle(veh_key);
+
+CREATE INDEX f_dispatchheader_key_idx ON dwh.f_dispatchheader USING btree (dispatch_hdr_loc_key, dispatch_hdr_veh_key);

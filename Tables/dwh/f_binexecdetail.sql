@@ -51,3 +51,32 @@ CREATE TABLE dwh.f_binexecdetail (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_binexecdetail ALTER COLUMN bin_exec_dtl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_binexecdetail_bin_exec_dtl_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_binexecdetail
+    ADD CONSTRAINT f_binexecdetail_pkey PRIMARY KEY (bin_exec_dtl_key);
+
+ALTER TABLE ONLY dwh.f_binexecdetail
+    ADD CONSTRAINT f_binexecdetail_ukey UNIQUE (bin_loc_code, bin_exec_no, bin_pln_lineno, bin_exec_ou);
+
+ALTER TABLE ONLY dwh.f_binexecdetail
+    ADD CONSTRAINT f_binexecdetail_bin_exec_hdr_key_fkey FOREIGN KEY (bin_exec_hdr_key) REFERENCES dwh.f_binexechdr(bin_hdr_key);
+
+ALTER TABLE ONLY dwh.f_binexecdetail
+    ADD CONSTRAINT f_binexecdetail_bin_exec_itm_hdr_key_fkey FOREIGN KEY (bin_exec_itm_hdr_key) REFERENCES dwh.d_itemheader(itm_hdr_key);
+
+ALTER TABLE ONLY dwh.f_binexecdetail
+    ADD CONSTRAINT f_binexecdetail_bin_exec_loc_key_fkey FOREIGN KEY (bin_exec_loc_key) REFERENCES dwh.d_location(loc_key);
+
+ALTER TABLE ONLY dwh.f_binexecdetail
+    ADD CONSTRAINT f_binexecdetail_bin_exec_thu_key_fkey FOREIGN KEY (bin_exec_thu_key) REFERENCES dwh.d_thu(thu_key);
+
+CREATE INDEX f_binexecdetail_key_idx ON dwh.f_binexecdetail USING btree (bin_exec_hdr_key, bin_exec_loc_key, bin_exec_itm_hdr_key, bin_exec_thu_key);

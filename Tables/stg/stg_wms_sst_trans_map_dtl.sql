@@ -10,3 +10,6 @@ CREATE TABLE stg.stg_wms_sst_trans_map_dtl (
     wms_stkstatus_modified_date timestamp without time zone,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_sst_trans_map_dtl
+    ADD CONSTRAINT wms_sst_trans_map_dtl_pk PRIMARY KEY (wms_stkstatus_code, wms_stkstatus_lineno, wms_stkstatus_ou);

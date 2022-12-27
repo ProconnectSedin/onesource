@@ -45,3 +45,20 @@ CREATE TABLE dwh.f_scdnappostingsdtl (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_scdnappostingsdtl ALTER COLUMN f_scdnappostingsdtl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_scdnappostingsdtl_f_scdnappostingsdtl_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_scdnappostingsdtl
+    ADD CONSTRAINT f_scdnappostingsdtl_pkey PRIMARY KEY (f_scdnappostingsdtl_key);
+
+ALTER TABLE ONLY dwh.f_scdnappostingsdtl
+    ADD CONSTRAINT f_scdnappostingsdtl_ukey UNIQUE (tran_type, tran_ou, tran_no, posting_line_no, s_timestamp);
+
+CREATE INDEX f_scdnappostingsdtl_key_idx ON dwh.f_scdnappostingsdtl USING btree (tran_type, tran_ou, tran_no, posting_line_no, s_timestamp);

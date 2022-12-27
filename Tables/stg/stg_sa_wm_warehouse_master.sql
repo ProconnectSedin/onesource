@@ -55,3 +55,6 @@ CREATE TABLE stg.stg_sa_wm_warehouse_master (
     wm_address3 character varying(160) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_sa_wm_warehouse_master
+    ADD CONSTRAINT sa_wm_warehouse_master_pk PRIMARY KEY (wm_wh_code, wm_wh_ou);

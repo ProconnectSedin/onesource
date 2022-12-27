@@ -20,3 +20,5 @@ CREATE TABLE stg.stg_tms_ddtsd_dispatch_document_thu_sku_dtl (
     ddtsd_timestamp integer,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+CREATE INDEX stg_tms_ddtsd_dispatch_document_thu_sku_dtl_key_idx1 ON stg.stg_tms_ddtsd_dispatch_document_thu_sku_dtl USING btree (ddtsd_ou, ddtsd_dispatch_doc_no, ddtsd_thu_line_no);

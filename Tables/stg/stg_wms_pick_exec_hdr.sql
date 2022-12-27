@@ -29,3 +29,6 @@ CREATE TABLE stg.stg_wms_pick_exec_hdr (
     wms_pick_system_date timestamp without time zone DEFAULT now(),
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_pick_exec_hdr
+    ADD CONSTRAINT pk_wms_pick_exec_hdr PRIMARY KEY (wms_pick_loc_code, wms_pick_exec_no, wms_pick_exec_ou);

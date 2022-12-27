@@ -58,3 +58,25 @@ CREATE TABLE dwh.f_tripexecutionplandetail (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_tripexecutionplandetail ALTER COLUMN plepd_trip_exe_pln_dtl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_tripexecutionplandetail_plepd_trip_exe_pln_dtl_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_tripexecutionplandetail
+    ADD CONSTRAINT f_tripexecutionplandetail_pkey PRIMARY KEY (plepd_trip_exe_pln_dtl_key);
+
+ALTER TABLE ONLY dwh.f_tripexecutionplandetail
+    ADD CONSTRAINT f_tripexecutionplandetail_ukey UNIQUE (plepd_ouinstance, plepd_execution_plan_id, plepd_line_no);
+
+ALTER TABLE ONLY dwh.f_tripexecutionplandetail
+    ADD CONSTRAINT f_tripexecutionplandetail_br_key_fkey FOREIGN KEY (br_key) REFERENCES dwh.f_bookingrequest(br_key);
+
+CREATE INDEX f_tripexecutionplandetail_key_idx ON dwh.f_tripexecutionplandetail USING btree (br_key);
+
+CREATE INDEX f_tripexecutionplandetail_key_idx1 ON dwh.f_tripexecutionplandetail USING btree (plepd_ouinstance, plepd_execution_plan_id, plepd_line_no);

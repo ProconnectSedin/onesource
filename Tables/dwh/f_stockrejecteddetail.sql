@@ -26,3 +26,29 @@ CREATE TABLE dwh.f_stockrejecteddetail (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_stockrejecteddetail ALTER COLUMN rejstk_dtl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_stockrejecteddetail_rejstk_dtl_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_stockrejecteddetail
+    ADD CONSTRAINT f_stockrejecteddetail_pkey PRIMARY KEY (rejstk_dtl_key);
+
+ALTER TABLE ONLY dwh.f_stockrejecteddetail
+    ADD CONSTRAINT f_stockrejecteddetail_ukey UNIQUE (rejstk_line_no);
+
+ALTER TABLE ONLY dwh.f_stockrejecteddetail
+    ADD CONSTRAINT f_stockrejecteddetail_rejstk_dtl_itm_hdr_key_fkey FOREIGN KEY (rejstk_dtl_itm_hdr_key) REFERENCES dwh.d_itemheader(itm_hdr_key);
+
+ALTER TABLE ONLY dwh.f_stockrejecteddetail
+    ADD CONSTRAINT f_stockrejecteddetail_rejstk_dtl_loc_key_fkey FOREIGN KEY (rejstk_dtl_loc_key) REFERENCES dwh.d_location(loc_key);
+
+ALTER TABLE ONLY dwh.f_stockrejecteddetail
+    ADD CONSTRAINT f_stockrejecteddetail_rejstk_dtl_thu_key_fkey FOREIGN KEY (rejstk_dtl_thu_key) REFERENCES dwh.d_thu(thu_key);
+
+CREATE INDEX f_stockrejecteddetail_key_idx ON dwh.f_stockrejecteddetail USING btree (rejstk_dtl_loc_key, rejstk_dtl_itm_hdr_key, rejstk_dtl_thu_key);

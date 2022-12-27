@@ -39,3 +39,6 @@ CREATE TABLE stg.stg_tms_brccd_consgt_consignee_details (
     ccd_timestamp integer,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_tms_brccd_consgt_consignee_details
+    ADD CONSTRAINT pk_tms_brccd_consgt_consignee_details PRIMARY KEY (ccd_ouinstance, ccd_br_id);

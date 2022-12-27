@@ -40,3 +40,15 @@ CREATE TABLE click.f_wmsoutboundsummary (
     oub_totpacktolqty numeric(21,8),
     oub_totpackemp bigint
 );
+
+ALTER TABLE click.f_wmsoutboundsummary ALTER COLUMN wms_ob_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME click.f_wmsoutboundsummary_wms_ob_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY click.f_wmsoutboundsummary
+    ADD CONSTRAINT f_wmsoutboundsummary_pkey PRIMARY KEY (wms_ob_key);

@@ -146,3 +146,20 @@ CREATE TABLE dwh.d_tarifftransport (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.d_tarifftransport ALTER COLUMN tf_tp_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.d_tarifftransport_tf_tp_key_seq
+    START WITH -1
+    INCREMENT BY 1
+    MINVALUE -1
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.d_tarifftransport
+    ADD CONSTRAINT d_tarifftransport_pkey PRIMARY KEY (tf_tp_key);
+
+ALTER TABLE ONLY dwh.d_tarifftransport
+    ADD CONSTRAINT d_tarifftransport_ukey UNIQUE (tf_tp_id, tf_tp_ou);
+
+CREATE INDEX d_tarifftransport_idx ON dwh.d_tarifftransport USING btree (tf_tp_id, tf_tp_ou);

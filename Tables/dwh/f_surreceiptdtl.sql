@@ -32,3 +32,28 @@ CREATE TABLE dwh.f_surreceiptdtl (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_surreceiptdtl ALTER COLUMN surreceiptdtl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_surreceiptdtl_surreceiptdtl_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_surreceiptdtl
+    ADD CONSTRAINT f_surreceiptdtl_pkey PRIMARY KEY (surreceiptdtl_key);
+
+ALTER TABLE ONLY dwh.f_surreceiptdtl
+    ADD CONSTRAINT f_surreceiptdtl_ukey UNIQUE (ou_id, receipt_type, receipt_no, refdoc_lineno, tran_type, stimestamp);
+
+ALTER TABLE ONLY dwh.f_surreceiptdtl
+    ADD CONSTRAINT f_surreceiptdtl_surreceiptdtl_curr_key_fkey FOREIGN KEY (surreceiptdtl_curr_key) REFERENCES dwh.d_currency(curr_key);
+
+ALTER TABLE ONLY dwh.f_surreceiptdtl
+    ADD CONSTRAINT f_surreceiptdtl_surreceiptdtl_opcoa_key_fkey FOREIGN KEY (surreceiptdtl_opcoa_key) REFERENCES dwh.d_operationalaccountdetail(opcoa_key);
+
+CREATE INDEX f_surreceiptdtl_key_idx ON dwh.f_surreceiptdtl USING btree (ou_id, receipt_type, receipt_no, refdoc_lineno, tran_type, stimestamp);
+
+CREATE INDEX f_surreceiptdtl_key_idx1 ON dwh.f_surreceiptdtl USING btree (surreceiptdtl_curr_key, surreceiptdtl_opcoa_key);

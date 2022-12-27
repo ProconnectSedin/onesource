@@ -10,3 +10,6 @@ CREATE TABLE ods.datavalidation_scriptgenerator (
     whereclause_columnname text COLLATE public.nocase,
     groupby_columnname text COLLATE public.nocase
 );
+
+ALTER TABLE ONLY ods.datavalidation_scriptgenerator
+    ADD CONSTRAINT datavalidation_scriptgenerator_pkey PRIMARY KEY (row_id);

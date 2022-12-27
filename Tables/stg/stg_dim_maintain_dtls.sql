@@ -19,3 +19,6 @@ CREATE TABLE stg.stg_dim_maintain_dtls (
     org_type character varying(100) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_dim_maintain_dtls
+    ADD CONSTRAINT pk__dim_main__8dedaafb7dd35e4a PRIMARY KEY (company_code, dim_name);

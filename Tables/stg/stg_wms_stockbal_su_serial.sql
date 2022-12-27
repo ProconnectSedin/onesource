@@ -26,3 +26,8 @@ CREATE TABLE stg.stg_wms_stockbal_su_serial (
     etlcreateddatetime timestamp(3) without time zone DEFAULT now(),
     CONSTRAINT wms_stockbal_su_serial_chk CHECK ((sbs_quantity >= (0)::numeric))
 );
+
+ALTER TABLE ONLY stg.stg_wms_stockbal_su_serial
+    ADD CONSTRAINT wms_stockbal_su_serial_pk PRIMARY KEY (sbs_wh_code, sbs_ouinstid, sbs_item_code, sbs_sr_no, sbs_zone, sbs_bin, sbs_stock_status, sbs_lot_no, sbs_su_serial_no, sbs_thu_serial_no);
+
+CREATE INDEX stg_wms_stockbal_su_serial_key_idx2 ON stg.stg_wms_stockbal_su_serial USING btree (sbs_wh_code, sbs_ouinstid, sbs_item_code, sbs_sr_no, sbs_zone, sbs_bin, sbs_stock_status, sbs_lot_no, sbs_su_serial_no, sbs_thu_serial_no);

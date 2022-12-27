@@ -80,3 +80,6 @@ CREATE TABLE stg.stg_wms_draft_bill_acc_tariff_dtl (
     wms_draft_bill_seq_no integer,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_draft_bill_acc_tariff_dtl
+    ADD CONSTRAINT wms_draft_bill_acc_tariff_dtl_pk PRIMARY KEY (wms_draft_bill_ou, wms_draft_bill_line_no, wms_draft_bill_tran_type);

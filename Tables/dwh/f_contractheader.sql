@@ -57,3 +57,34 @@ CREATE TABLE dwh.f_contractheader (
     cont_customer_key bigint,
     cont_date_key bigint
 );
+
+ALTER TABLE dwh.f_contractheader ALTER COLUMN cont_hdr_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_contractheader_cont_hdr_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_contractheader
+    ADD CONSTRAINT f_contract_pkey PRIMARY KEY (cont_hdr_key);
+
+ALTER TABLE ONLY dwh.f_contractheader
+    ADD CONSTRAINT f_contract_ukey UNIQUE (cont_id, cont_ou);
+
+ALTER TABLE ONLY dwh.f_contractheader
+    ADD CONSTRAINT f_contractheader_cont_customer_key_fkey FOREIGN KEY (cont_customer_key) REFERENCES dwh.d_customer(customer_key);
+
+ALTER TABLE ONLY dwh.f_contractheader
+    ADD CONSTRAINT f_contractheader_cont_date_key_fkey FOREIGN KEY (cont_date_key) REFERENCES dwh.d_date(datekey);
+
+ALTER TABLE ONLY dwh.f_contractheader
+    ADD CONSTRAINT f_contractheader_cont_location_key_fkey FOREIGN KEY (cont_location_key) REFERENCES dwh.d_location(loc_key);
+
+ALTER TABLE ONLY dwh.f_contractheader
+    ADD CONSTRAINT f_contractheader_cont_vendor_key_fkey FOREIGN KEY (cont_vendor_key) REFERENCES dwh.d_vendor(vendor_key);
+
+CREATE INDEX f_contractheader_key_idx ON dwh.f_contractheader USING btree (cont_id, cont_ou);
+
+CREATE INDEX f_contractheader_ndx ON dwh.f_contractheader USING btree (cont_ou, cont_id, cont_vendor_id, cont_type);

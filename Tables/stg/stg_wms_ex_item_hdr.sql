@@ -39,3 +39,6 @@ CREATE TABLE stg.stg_wms_ex_item_hdr (
     wms_ex_itm_mul_tar_zone character varying(40) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_ex_item_hdr
+    ADD CONSTRAINT wms_ex_item_hdr_pk PRIMARY KEY (wms_ex_itm_ou, wms_ex_itm_code, wms_ex_itm_loc_code);

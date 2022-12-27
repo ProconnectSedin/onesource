@@ -39,3 +39,6 @@ CREATE TABLE stg.stg_wms_stock_acc_exec_dtl (
     wms_stk_acc_addline_flag character varying(160) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_stock_acc_exec_dtl
+    ADD CONSTRAINT wms_stock_acc_exec_dtl_pk PRIMARY KEY (wms_stk_acc_loc_code, wms_stk_acc_exec_no, wms_stk_acc_exec_pln_ou, wms_stk_acc_lineno);

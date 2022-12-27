@@ -63,3 +63,9 @@ CREATE TABLE click.d_employeeheader (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE ONLY click.d_employeeheader
+    ADD CONSTRAINT d_employeeheader_pkey PRIMARY KEY (emp_hdr_key);
+
+ALTER TABLE ONLY click.d_employeeheader
+    ADD CONSTRAINT d_employeeheader_ukey UNIQUE (emp_employee_code, emp_ou);

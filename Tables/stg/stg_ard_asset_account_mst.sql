@@ -15,3 +15,6 @@ CREATE TABLE stg.stg_ard_asset_account_mst (
     modifieddate timestamp without time zone,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_ard_asset_account_mst
+    ADD CONSTRAINT ard_asset_account_mst_pkey PRIMARY KEY (company_code, fb_id, asset_class, asset_usage, effective_from, sequence_no);

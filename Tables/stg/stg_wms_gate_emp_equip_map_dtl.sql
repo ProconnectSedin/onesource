@@ -13,3 +13,6 @@ CREATE TABLE stg.stg_wms_gate_emp_equip_map_dtl (
     wms_gate_modified_date timestamp without time zone,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_gate_emp_equip_map_dtl
+    ADD CONSTRAINT wms_gate_emp_equip_map_dtl_pk PRIMARY KEY (wms_gate_loc_code, wms_gate_ou, wms_gate_lineno);

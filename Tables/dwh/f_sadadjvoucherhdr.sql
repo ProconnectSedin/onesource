@@ -35,3 +35,28 @@ CREATE TABLE dwh.f_sadadjvoucherhdr (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_sadadjvoucherhdr ALTER COLUMN sadadjvoucherhdr_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_sadadjvoucherhdr_sadadjvoucherhdr_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_sadadjvoucherhdr
+    ADD CONSTRAINT f_sadadjvoucherhdr_pkey PRIMARY KEY (sadadjvoucherhdr_key);
+
+ALTER TABLE ONLY dwh.f_sadadjvoucherhdr
+    ADD CONSTRAINT f_sadadjvoucherhdr_ukey UNIQUE (ou_id, adj_voucher_no, stimestamp);
+
+ALTER TABLE ONLY dwh.f_sadadjvoucherhdr
+    ADD CONSTRAINT f_sadadjvoucherhdr_sadadjvoucherhdr_curr_key_fkey FOREIGN KEY (sadadjvoucherhdr_curr_key) REFERENCES dwh.d_currency(curr_key);
+
+ALTER TABLE ONLY dwh.f_sadadjvoucherhdr
+    ADD CONSTRAINT f_sadadjvoucherhdr_sadadjvoucherhdr_vendor_key_fkey FOREIGN KEY (sadadjvoucherhdr_vendor_key) REFERENCES dwh.d_vendor(vendor_key);
+
+CREATE INDEX f_sadadjvoucherhdr_key_idx ON dwh.f_sadadjvoucherhdr USING btree (ou_id, adj_voucher_no, stimestamp);
+
+CREATE INDEX f_sadadjvoucherhdr_key_idx1 ON dwh.f_sadadjvoucherhdr USING btree (sadadjvoucherhdr_curr_key, sadadjvoucherhdr_vendor_key);

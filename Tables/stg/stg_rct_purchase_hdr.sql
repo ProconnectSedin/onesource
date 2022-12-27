@@ -19,3 +19,8 @@ CREATE TABLE stg.stg_rct_purchase_hdr (
     process_flag character varying(48) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_rct_purchase_hdr
+    ADD CONSTRAINT rct_purchase_hdr_pk PRIMARY KEY (rcgh_receipt_no, rcgh_ouinstid);
+
+CREATE INDEX stg_rct_purchase_hdr_key_idx2 ON stg.stg_rct_purchase_hdr USING btree (rcgh_ouinstid, rcgh_receipt_no);

@@ -51,3 +51,31 @@ CREATE TABLE dwh.f_asnheaderhistory (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_asnheaderhistory ALTER COLUMN asn_hdr_hst_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_asnheaderhistory_asn_hdr_hst_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_asnheaderhistory
+    ADD CONSTRAINT f_asnheaderhistory_pkey PRIMARY KEY (asn_hdr_hst_key);
+
+ALTER TABLE ONLY dwh.f_asnheaderhistory
+    ADD CONSTRAINT f_asnheaderhistory_ukey UNIQUE (asn_ou, asn_location, asn_no, asn_amendno);
+
+ALTER TABLE ONLY dwh.f_asnheaderhistory
+    ADD CONSTRAINT f_asnheaderhistory_asn_hdr_hst_customer_key_fkey FOREIGN KEY (asn_hdr_hst_customer_key) REFERENCES dwh.d_customer(customer_key);
+
+ALTER TABLE ONLY dwh.f_asnheaderhistory
+    ADD CONSTRAINT f_asnheaderhistory_asn_hdr_hst_datekey_fkey FOREIGN KEY (asn_hdr_hst_datekey) REFERENCES dwh.d_date(datekey);
+
+ALTER TABLE ONLY dwh.f_asnheaderhistory
+    ADD CONSTRAINT f_asnheaderhistory_asn_hdr_hst_loc_key_fkey FOREIGN KEY (asn_hdr_hst_loc_key) REFERENCES dwh.d_location(loc_key);
+
+CREATE INDEX f_asnheaderhistory_key_idx ON dwh.f_asnheaderhistory USING btree (asn_hdr_hst_loc_key, asn_hdr_hst_datekey, asn_hdr_hst_customer_key);
+
+CREATE INDEX f_asnheaderhistory_key_idx1 ON dwh.f_asnheaderhistory USING btree (asn_ou, asn_location, asn_no, asn_amendno);

@@ -62,3 +62,8 @@ CREATE TABLE stg.stg_wms_bin_plan_item_dtl (
     wms_bin_pln_itm_attr9 character varying(200) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_bin_plan_item_dtl
+    ADD CONSTRAINT wms_bin_plan_item_dtl_pk PRIMARY KEY (wms_bin_loc_code, wms_bin_pln_no, wms_bin_pln_lineno, wms_bin_pln_ou);
+
+CREATE INDEX stg_wms_bin_plan_item_dtl_key_idx2 ON stg.stg_wms_bin_plan_item_dtl USING btree (wms_bin_loc_code, wms_bin_pln_no, wms_bin_pln_lineno, wms_bin_pln_ou);

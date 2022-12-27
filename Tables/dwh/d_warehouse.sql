@@ -37,3 +37,18 @@ CREATE TABLE dwh.d_warehouse (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.d_warehouse ALTER COLUMN wh_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.d_warehouse_wh_key_seq
+    START WITH -1
+    INCREMENT BY 1
+    MINVALUE -1
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.d_warehouse
+    ADD CONSTRAINT d_warehouse_pkey PRIMARY KEY (wh_key);
+
+ALTER TABLE ONLY dwh.d_warehouse
+    ADD CONSTRAINT d_warehouse_ukey UNIQUE (wh_code, wh_ou);

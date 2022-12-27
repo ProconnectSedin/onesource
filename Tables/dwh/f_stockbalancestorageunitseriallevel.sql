@@ -29,3 +29,25 @@ CREATE TABLE dwh.f_stockbalancestorageunitseriallevel (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_stockbalancestorageunitseriallevel ALTER COLUMN sbs_blc_usl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_stockbalancestorageunitseriallevel_sbs_blc_usl_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_stockbalancestorageunitseriallevel
+    ADD CONSTRAINT f_stockbalancestorageunitseriallevel_pkey PRIMARY KEY (sbs_blc_usl_key);
+
+ALTER TABLE ONLY dwh.f_stockbalancestorageunitseriallevel
+    ADD CONSTRAINT f_stockbalancestorageunitseriallevel_ukey UNIQUE (sbs_wh_code, sbs_ouinstid, sbs_item_code, sbs_sr_no, sbs_zone, sbs_bin, sbs_stock_status, sbs_lot_no, sbs_su_serial_no, sbs_thu_serial_no);
+
+ALTER TABLE ONLY dwh.f_stockbalancestorageunitseriallevel
+    ADD CONSTRAINT f_stockbalancestorageunitseriallevel_sbs_hdr_key_fkey FOREIGN KEY (sbl_lot_level_itm_hdr_key) REFERENCES dwh.d_itemheader(itm_hdr_key);
+
+CREATE INDEX f_stockbalancestorageunitseriallevel_key_idx ON dwh.f_stockbalancestorageunitseriallevel USING btree (sbl_lot_level_itm_hdr_key);
+
+CREATE INDEX f_stockbalancestorageunitseriallevel_key_idx1 ON dwh.f_stockbalancestorageunitseriallevel USING btree (sbs_wh_code, sbs_ouinstid, sbs_item_code, sbs_sr_no, sbs_zone, sbs_bin, sbs_stock_status, sbs_lot_no, sbs_su_serial_no, sbs_thu_serial_no);

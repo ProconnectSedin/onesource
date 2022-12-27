@@ -29,3 +29,21 @@ CREATE TABLE click.f_outboundorderdetail (
     ord_waveqty numeric(21,8),
     ord_loadeddatetime timestamp without time zone DEFAULT CURRENT_DATE
 );
+
+ALTER TABLE click.f_outboundorderdetail ALTER COLUMN ord_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME click.f_outboundorderdetail_ord_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY click.f_outboundorderdetail
+    ADD CONSTRAINT f_outboundorderdetail_pkey PRIMARY KEY (ord_key);
+
+CREATE INDEX f_outboundorderdetail_ndx ON click.f_outboundorderdetail USING btree (ord_ou, ord_lockey, ord_sono);
+
+CREATE INDEX f_outboundorderdetail_ndx1 ON click.f_outboundorderdetail USING btree (ord_ou, ord_lockey, ord_sono);
+
+CREATE INDEX f_outboundorderdetail_ndx2 ON click.f_outboundorderdetail USING btree (ord_ou, ord_lockey, ord_ordertype, ord_shipmenttype);

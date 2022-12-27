@@ -7,3 +7,6 @@ CREATE TABLE stg.stg_wms_stage_mas_dtl (
     wms_stg_vehicle_type character varying(160) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_stage_mas_dtl
+    ADD CONSTRAINT wms_stage_mas_dtl_pk PRIMARY KEY (wms_stg_mas_ou, wms_stg_mas_id, wms_stg_mas_loc, wms_stg_line_no);

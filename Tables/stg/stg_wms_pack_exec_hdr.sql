@@ -24,3 +24,8 @@ CREATE TABLE stg.stg_wms_pack_exec_hdr (
     wms_pack_vnpakchr_bil_status character varying(32) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_pack_exec_hdr
+    ADD CONSTRAINT wms_pack_exec_hdr_pk PRIMARY KEY (wms_pack_loc_code, wms_pack_exec_no, wms_pack_exec_ou);
+
+CREATE INDEX stg_wms_pack_exec_hdr_key_idx2 ON stg.stg_wms_pack_exec_hdr USING btree (wms_pack_loc_code, wms_pack_exec_no, wms_pack_exec_ou);

@@ -6,3 +6,12 @@ CREATE TABLE stg.stg_pcsit_rt_grn_reasoncode_mst (
     createddate timestamp without time zone,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE stg.stg_pcsit_rt_grn_reasoncode_mst ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME stg.stg_pcsit_rt_grn_reasoncode_mst_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);

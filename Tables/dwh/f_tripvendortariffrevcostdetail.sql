@@ -42,3 +42,25 @@ CREATE TABLE dwh.f_tripvendortariffrevcostdetail (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_tripvendortariffrevcostdetail ALTER COLUMN tvtrcd_dtl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_tripvendortariffrevcostdetail_tvtrcd_dtl_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_tripvendortariffrevcostdetail
+    ADD CONSTRAINT f_tripvendortariffrevcostdetail_pkey PRIMARY KEY (tvtrcd_dtl_key);
+
+ALTER TABLE ONLY dwh.f_tripvendortariffrevcostdetail
+    ADD CONSTRAINT f_tripvendortariffrevcostdetail_ukey UNIQUE (tvtrcd_ouinstance, tvtrcd_trip_plan_id, tvtrcd_booking_request, tvtrcd_unique_id);
+
+ALTER TABLE ONLY dwh.f_tripvendortariffrevcostdetail
+    ADD CONSTRAINT f_tripvendortariffrevcostdetail_tvtrcd_hdr_key_fkey FOREIGN KEY (tvtrcd_hdr_key) REFERENCES dwh.f_tripvendortariffrevcostheader(tvtrch_key);
+
+CREATE INDEX f_tripvendortariffrevcostdetail_key_idx ON dwh.f_tripvendortariffrevcostdetail USING btree (tvtrcd_ouinstance, tvtrcd_trip_plan_id, tvtrcd_booking_request, tvtrcd_unique_id);
+
+CREATE INDEX f_tripvendortariffrevcostdetail_key_idx1 ON dwh.f_tripvendortariffrevcostdetail USING btree (tvtrcd_hdr_key);

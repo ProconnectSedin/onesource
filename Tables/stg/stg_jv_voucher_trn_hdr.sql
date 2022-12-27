@@ -52,3 +52,6 @@ CREATE TABLE stg.stg_jv_voucher_trn_hdr (
     writeoff_flag character varying(48) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_jv_voucher_trn_hdr
+    ADD CONSTRAINT jv_voucher_trn_hdr_pkey PRIMARY KEY (ou_id, voucher_no);

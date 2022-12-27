@@ -41,3 +41,20 @@ CREATE TABLE dwh.f_eamamchdr (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_eamamchdr ALTER COLUMN amc_hdr_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_eamamchdr_amc_hdr_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_eamamchdr
+    ADD CONSTRAINT f_eamamchdr_pkey PRIMARY KEY (amc_hdr_key);
+
+ALTER TABLE ONLY dwh.f_eamamchdr
+    ADD CONSTRAINT f_eamamchdr_ukey UNIQUE (amc_amcno, amc_amcou, amc_date, amc_fromdate, amc_todate, amc_revno, amc_suppcode, amc_createdate);
+
+CREATE INDEX f_eamamchdr_key_idx ON dwh.f_eamamchdr USING btree (amc_vendor_key, amc_curr_key);

@@ -19,3 +19,15 @@ CREATE TABLE dwh.f_triplogresourceintransitdetail (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_triplogresourceintransitdetail ALTER COLUMN in_tran_dtl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_triplogresourceintransitdetail_in_tran_dtl_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_triplogresourceintransitdetail
+    ADD CONSTRAINT f_triplogresourceintransitdetail_pkey PRIMARY KEY (in_tran_dtl_key);

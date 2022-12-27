@@ -20,3 +20,9 @@ CREATE TABLE click.d_financebook (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE ONLY click.d_financebook
+    ADD CONSTRAINT d_financebook_pkey PRIMARY KEY (fb_key);
+
+ALTER TABLE ONLY click.d_financebook
+    ADD CONSTRAINT d_financebook_ukey UNIQUE (fb_id, company_code, serial_no, fb_type);

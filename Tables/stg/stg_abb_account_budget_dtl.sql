@@ -25,3 +25,6 @@ CREATE TABLE stg.stg_abb_account_budget_dtl (
     forecastamt_parbase numeric,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_abb_account_budget_dtl
+    ADD CONSTRAINT abb_account_budget_dtl_pkey PRIMARY KEY (company_code, fb_id, fin_year_code, fin_period_code, account_code);

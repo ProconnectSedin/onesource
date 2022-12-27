@@ -18,3 +18,18 @@ CREATE TABLE dwh.d_oubumap (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.d_oubumap ALTER COLUMN d_oubumap_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.d_oubumap_d_oubumap_key_seq
+    START WITH -1
+    INCREMENT BY 1
+    MINVALUE -1
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.d_oubumap
+    ADD CONSTRAINT d_oubumap_pkey PRIMARY KEY (d_oubumap_key);
+
+ALTER TABLE ONLY dwh.d_oubumap
+    ADD CONSTRAINT d_oubumap_ukey UNIQUE (ou_id, bu_id, company_code, serial_no);

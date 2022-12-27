@@ -18,3 +18,19 @@ CREATE TABLE click.f_outboundpickpackdetail (
     packemployee bigint,
     pickpack_loadeddatetime timestamp without time zone DEFAULT CURRENT_DATE
 );
+
+ALTER TABLE click.f_outboundpickpackdetail ALTER COLUMN pickpack_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME click.f_outboundpickpackdetail_pickpack_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY click.f_outboundpickpackdetail
+    ADD CONSTRAINT f_outboundpickpackdetail_pk PRIMARY KEY (pickpack_key);
+
+CREATE INDEX f_outboundpickpackdetail_ndx ON click.f_outboundpickpackdetail USING btree (pickpack_ordkey);
+
+CREATE INDEX f_outboundpickpackdetail_ndx1 ON click.f_outboundpickpackdetail USING btree (pickpack_ou, pickpack_lockey, pickpack_sono);

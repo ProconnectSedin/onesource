@@ -20,3 +20,6 @@ CREATE TABLE stg.stg_wms_skill_dtl (
     wms_skl_lineno integer NOT NULL,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_skill_dtl
+    ADD CONSTRAINT wms_skill_dtl_pk PRIMARY KEY (wms_skl_ou, wms_skl_code, wms_skl_type);

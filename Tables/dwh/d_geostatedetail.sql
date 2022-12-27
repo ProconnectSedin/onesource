@@ -16,3 +16,18 @@ CREATE TABLE dwh.d_geostatedetail (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.d_geostatedetail ALTER COLUMN geo_state_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.d_geostatedetail_geo_state_key_seq
+    START WITH -1
+    INCREMENT BY 1
+    MINVALUE -1
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.d_geostatedetail
+    ADD CONSTRAINT d_geostatedetail_pkey PRIMARY KEY (geo_state_key);
+
+ALTER TABLE ONLY dwh.d_geostatedetail
+    ADD CONSTRAINT d_geostatedetail_ukey UNIQUE (geo_state_code, geo_state_ou, geo_country_code, geo_state_lineno);

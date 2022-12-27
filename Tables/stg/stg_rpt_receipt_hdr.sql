@@ -95,3 +95,6 @@ CREATE TABLE stg.stg_rpt_receipt_hdr (
     lgt_invoice_flag character varying(48) DEFAULT 'N'::character varying NOT NULL COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_rpt_receipt_hdr
+    ADD CONSTRAINT rpt_receipt_hdr_pkey PRIMARY KEY (ou_id, receipt_no);

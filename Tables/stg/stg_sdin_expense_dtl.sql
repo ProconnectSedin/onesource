@@ -77,3 +77,6 @@ CREATE TABLE stg.stg_sdin_expense_dtl (
     leg_behaviour character varying(160) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_sdin_expense_dtl
+    ADD CONSTRAINT sdin_expense_dtl_pkey PRIMARY KEY (tran_type, tran_ou, tran_no, line_no);

@@ -23,3 +23,6 @@ CREATE TABLE stg.stg_cm_creditterm_hdr (
     app_res_writeoff character(12) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_cm_creditterm_hdr
+    ADD CONSTRAINT cm_creditterm_hdr_pkey PRIMARY KEY (companybu_code, type_flag, creditterm_code);

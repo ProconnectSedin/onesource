@@ -22,3 +22,20 @@ CREATE TABLE dwh.d_exchangerate (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.d_exchangerate ALTER COLUMN d_exchangerate_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.d_exchangerate_d_exchangerate_key_seq
+    START WITH -1
+    INCREMENT BY 1
+    MINVALUE -1
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.d_exchangerate
+    ADD CONSTRAINT d_exchangerate_pkey PRIMARY KEY (d_exchangerate_key);
+
+ALTER TABLE ONLY dwh.d_exchangerate
+    ADD CONSTRAINT d_exchangerate_ukey UNIQUE (ou_id, exchrate_type, from_currency, to_currency, inverse_typeno, start_date);
+
+CREATE INDEX d_exchangerate_idx ON dwh.d_exchangerate USING btree (ou_id, exchrate_type, from_currency, to_currency, inverse_typeno, start_date);

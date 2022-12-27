@@ -98,3 +98,6 @@ CREATE TABLE stg.stg_cdi_item_dtl (
     bill_sch_slno integer,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_cdi_item_dtl
+    ADD CONSTRAINT pk__cdi_item_dtl__77b1daa9 PRIMARY KEY (tran_type, tran_ou, tran_no, line_no);

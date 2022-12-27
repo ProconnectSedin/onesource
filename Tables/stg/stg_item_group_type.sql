@@ -12,3 +12,6 @@ CREATE TABLE stg.stg_item_group_type (
     item_igt_created_langid integer NOT NULL,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_item_group_type
+    ADD CONSTRAINT pkitem_group_type PRIMARY KEY (item_igt_grouptype, item_igt_lo);

@@ -36,3 +36,25 @@ CREATE TABLE dwh.f_dispatchdocthuserialdetail (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_dispatchdocthuserialdetail ALTER COLUMN ddtsd_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_dispatchdocthuserialdetail_ddtsd_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_dispatchdocthuserialdetail
+    ADD CONSTRAINT f_dispatchdocthuserialdetail_pkey PRIMARY KEY (ddtsd_key);
+
+ALTER TABLE ONLY dwh.f_dispatchdocthuserialdetail
+    ADD CONSTRAINT f_dispatchdocthuserialdetail_ukey UNIQUE (ddtsd_dispatch_doc_no, ddtsd_thu_line_no, ddtsd_thu_serial_line_no);
+
+ALTER TABLE ONLY dwh.f_dispatchdocthuserialdetail
+    ADD CONSTRAINT f_dispatchdocthuserialdetail_ddtd_key_fkey FOREIGN KEY (ddtd_key) REFERENCES dwh.f_dispatchdocthudetail(ddtd_key);
+
+CREATE INDEX f_dispatchdocthuserialdetail_key_idx ON dwh.f_dispatchdocthuserialdetail USING btree (ddtd_key);
+
+CREATE INDEX f_dispatchdocthuserialdetail_key_idx1 ON dwh.f_dispatchdocthuserialdetail USING btree (ddtsd_ouinstance, ddtsd_dispatch_doc_no, ddtsd_thu_line_no, ddtsd_thu_serial_line_no);

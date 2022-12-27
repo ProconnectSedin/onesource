@@ -13,3 +13,5 @@ CREATE TABLE tmp.f_triplogeventdetail_act (
     actualtripend timestamp without time zone,
     actualdatekey bigint
 );
+
+CREATE INDEX f_triplogeventdetail_act_ndx ON tmp.f_triplogeventdetail_act USING btree (tled_ouinstance, tled_trip_plan_id, tled_leg_no);

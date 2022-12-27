@@ -28,3 +28,25 @@ CREATE TABLE dwh.f_waveheader (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_waveheader ALTER COLUMN wave_hdr_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_waveheader_wave_hdr_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_waveheader
+    ADD CONSTRAINT f_waveheader_pkey PRIMARY KEY (wave_hdr_key);
+
+ALTER TABLE ONLY dwh.f_waveheader
+    ADD CONSTRAINT f_waveheader_ukey UNIQUE (wave_loc_code, wave_no, wave_ou);
+
+ALTER TABLE ONLY dwh.f_waveheader
+    ADD CONSTRAINT f_waveheader_wave_loc_key_fkey FOREIGN KEY (wave_loc_key) REFERENCES dwh.d_location(loc_key);
+
+CREATE INDEX f_waveheader_key_idx ON dwh.f_waveheader USING btree (wave_loc_key);
+
+CREATE INDEX f_waveheader_key_idx1 ON dwh.f_waveheader USING btree (wave_loc_code, wave_no, wave_ou);

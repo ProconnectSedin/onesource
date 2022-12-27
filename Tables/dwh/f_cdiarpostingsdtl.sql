@@ -59,3 +59,22 @@ CREATE TABLE dwh.f_cdiarpostingsdtl (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_cdiarpostingsdtl ALTER COLUMN cdi_dtl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_cdiarpostingsdtl_cdi_dtl_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_cdiarpostingsdtl
+    ADD CONSTRAINT f_cdiarpostingsdtl_pkey PRIMARY KEY (cdi_dtl_key);
+
+ALTER TABLE ONLY dwh.f_cdiarpostingsdtl
+    ADD CONSTRAINT f_cdiarpostingsdtl_ukey UNIQUE (tran_type, tran_ou, tran_no, posting_line_no, ctimestamp);
+
+CREATE INDEX f_cdiarpostingsdtl_date_idx ON dwh.f_cdiarpostingsdtl USING btree (createddate, modifieddate, entry_date, auth_date, posting_date, tran_date);
+
+CREATE INDEX f_cdiarpostingsdtl_key_idx ON dwh.f_cdiarpostingsdtl USING btree (company_key, fb_key, curr_key, itm_hdr_key, uom_key, customer_key);

@@ -24,3 +24,6 @@ CREATE TABLE stg.stg_not_notes_attachdoc (
     notes_comments character varying(10000) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_not_notes_attachdoc
+    ADD CONSTRAINT pk__not_note__61fd609002277387 PRIMARY KEY (sequence_no, notes_compkey, line_no, line_entity);

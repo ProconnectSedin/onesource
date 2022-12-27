@@ -63,3 +63,6 @@ CREATE TABLE stg.stg_fact_outbound_packexec (
     pack_exec_end_date timestamp without time zone,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_fact_outbound_packexec
+    ADD CONSTRAINT pk__fact_out__4cd9458e9c430327 PRIMARY KEY (refkey);

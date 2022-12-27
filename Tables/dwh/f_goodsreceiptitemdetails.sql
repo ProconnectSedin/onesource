@@ -62,3 +62,40 @@ CREATE TABLE dwh.f_goodsreceiptitemdetails (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_goodsreceiptitemdetails ALTER COLUMN gr_itm_dtl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_goodsreceiptitemdetails_gr_itm_dtl_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_goodsreceiptitemdetails
+    ADD CONSTRAINT f_goodsreceiptitemdetails_pkey PRIMARY KEY (gr_itm_dtl_key);
+
+ALTER TABLE ONLY dwh.f_goodsreceiptitemdetails
+    ADD CONSTRAINT f_goodsreceiptitemdetails_ukey UNIQUE (gr_loc_code, gr_exec_no, gr_exec_ou, gr_lineno);
+
+ALTER TABLE ONLY dwh.f_goodsreceiptitemdetails
+    ADD CONSTRAINT f_goodsreceiptitemdetails_gr_dtl_key_fkey FOREIGN KEY (gr_dtl_key) REFERENCES dwh.f_goodsreceiptdetails(gr_dtl_key);
+
+ALTER TABLE ONLY dwh.f_goodsreceiptitemdetails
+    ADD CONSTRAINT f_goodsreceiptitemdetails_gr_itm_dtl_itm_hdr_key_fkey FOREIGN KEY (gr_itm_dtl_itm_hdr_key) REFERENCES dwh.d_itemheader(itm_hdr_key);
+
+ALTER TABLE ONLY dwh.f_goodsreceiptitemdetails
+    ADD CONSTRAINT f_goodsreceiptitemdetails_gr_itm_dtl_loc_key_fkey FOREIGN KEY (gr_itm_dtl_loc_key) REFERENCES dwh.d_location(loc_key);
+
+ALTER TABLE ONLY dwh.f_goodsreceiptitemdetails
+    ADD CONSTRAINT f_goodsreceiptitemdetails_gr_itm_dtl_stg_mas_key_fkey FOREIGN KEY (gr_itm_dtl_stg_mas_key) REFERENCES dwh.d_stage(stg_mas_key);
+
+ALTER TABLE ONLY dwh.f_goodsreceiptitemdetails
+    ADD CONSTRAINT f_goodsreceiptitemdetails_gr_itm_dtl_thu_key_fkey FOREIGN KEY (gr_itm_dtl_thu_key) REFERENCES dwh.d_thu(thu_key);
+
+ALTER TABLE ONLY dwh.f_goodsreceiptitemdetails
+    ADD CONSTRAINT f_goodsreceiptitemdetails_gr_itm_dtl_uom_key_fkey FOREIGN KEY (gr_itm_dtl_uom_key) REFERENCES dwh.d_uom(uom_key);
+
+CREATE INDEX f_goodsreceiptitemdetails_join_idx ON dwh.f_goodsreceiptitemdetails USING btree (gr_exec_no, gr_lineno, gr_loc_code, gr_po_no, gr_item, gr_lineno, gr_exec_ou, gr_exe_asn_line_no);
+
+CREATE INDEX f_goodsreceiptitemdetails_key_idx ON dwh.f_goodsreceiptitemdetails USING btree (gr_dtl_key, gr_itm_dtl_loc_key, gr_itm_dtl_itm_hdr_key, gr_itm_dtl_uom_key, gr_itm_dtl_thu_key, gr_itm_dtl_stg_mas_key);

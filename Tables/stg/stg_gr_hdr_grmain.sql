@@ -92,3 +92,6 @@ CREATE TABLE stg.stg_gr_hdr_grmain (
     gr_hdr_additional_info character varying(4000) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_gr_hdr_grmain
+    ADD CONSTRAINT pk_grmain PRIMARY KEY (gr_hdr_grno, gr_hdr_ouinstid);

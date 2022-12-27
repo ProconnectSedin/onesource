@@ -36,3 +36,6 @@ CREATE TABLE stg.stg_wms_loading_exec_hdr (
     wms_loading_trip_planid character varying(72) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_loading_exec_hdr
+    ADD CONSTRAINT wms_loading_exec_hdr_pk PRIMARY KEY (wms_loading_loc_code, wms_loading_exec_no, wms_loading_exec_ou);

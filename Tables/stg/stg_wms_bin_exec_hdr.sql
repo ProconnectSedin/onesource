@@ -28,3 +28,6 @@ CREATE TABLE stg.stg_wms_bin_exec_hdr (
     wms_bin_source_stage character varying(1020) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_bin_exec_hdr
+    ADD CONSTRAINT wms_bin_exec_hdr_pk PRIMARY KEY (wms_bin_loc_code, wms_bin_exec_no, wms_bin_exec_ou);

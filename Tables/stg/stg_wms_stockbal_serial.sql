@@ -19,3 +19,6 @@ CREATE TABLE stg.stg_wms_stockbal_serial (
     etlcreateddatetime timestamp(3) without time zone DEFAULT now(),
     CONSTRAINT wms_stockbal_serial_chk CHECK ((sbs_quantity >= (0)::numeric))
 );
+
+ALTER TABLE ONLY stg.stg_wms_stockbal_serial
+    ADD CONSTRAINT wms_stockbal_serial_pk PRIMARY KEY (sbs_wh_code, sbs_ouinstid, sbs_item_code, sbs_sr_no, sbs_zone, sbs_bin, sbs_stock_status, sbs_lot_no);

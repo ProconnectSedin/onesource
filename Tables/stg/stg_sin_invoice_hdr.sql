@@ -130,3 +130,6 @@ CREATE TABLE stg.stg_sin_invoice_hdr (
     supplieraddress character varying(1020) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_sin_invoice_hdr
+    ADD CONSTRAINT sin_invoice_hdr_pkey PRIMARY KEY (tran_type, tran_ou, tran_no);

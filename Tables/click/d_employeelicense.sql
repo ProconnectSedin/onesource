@@ -17,3 +17,9 @@ CREATE TABLE click.d_employeelicense (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE ONLY click.d_employeelicense
+    ADD CONSTRAINT d_employeelicense_pkey PRIMARY KEY (emp_key);
+
+ALTER TABLE ONLY click.d_employeelicense
+    ADD CONSTRAINT d_employeelicense_ukey UNIQUE (emp_employee_code, emp_ou, emp_lineno);

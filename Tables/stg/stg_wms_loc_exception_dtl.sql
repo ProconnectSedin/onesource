@@ -10,3 +10,6 @@ CREATE TABLE stg.stg_wms_loc_exception_dtl (
     wms_loc_state character varying(160) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_loc_exception_dtl
+    ADD CONSTRAINT wms_loc_exception_dtl_pk PRIMARY KEY (wms_loc_exc_loc_code, wms_loc_exc_ou, wms_loc_exc_lineno, wms_loc_exc_shift_seqno);

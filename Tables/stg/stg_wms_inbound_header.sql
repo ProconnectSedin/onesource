@@ -57,3 +57,8 @@ CREATE TABLE stg.stg_wms_inbound_header (
     wms_inb_chporcn_sell_bil_status character varying(32) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_inbound_header
+    ADD CONSTRAINT wms_inbound_header_pk PRIMARY KEY (wms_inb_loc_code, wms_inb_orderno, wms_inb_ou);
+
+CREATE INDEX stg_wms_inbound_header_key_idx2 ON stg.stg_wms_inbound_header USING btree (wms_inb_loc_code, wms_inb_orderno, wms_inb_ou);

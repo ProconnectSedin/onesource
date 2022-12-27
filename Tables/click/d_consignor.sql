@@ -26,3 +26,9 @@ CREATE TABLE click.d_consignor (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE ONLY click.d_consignor
+    ADD CONSTRAINT d_consignor_pkey PRIMARY KEY (consignor_key);
+
+ALTER TABLE ONLY click.d_consignor
+    ADD CONSTRAINT d_consignor_ukey UNIQUE (consignor_id, consignor_ou);

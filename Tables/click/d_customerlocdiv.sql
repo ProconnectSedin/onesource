@@ -13,3 +13,9 @@ CREATE TABLE click.d_customerlocdiv (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE ONLY click.d_customerlocdiv
+    ADD CONSTRAINT d_customerlocdiv_pkey PRIMARY KEY (wms_customer_key);
+
+ALTER TABLE ONLY click.d_customerlocdiv
+    ADD CONSTRAINT d_customerlocdiv_ukey UNIQUE (wms_customer_id, wms_customer_ou, wms_customer_lineno);

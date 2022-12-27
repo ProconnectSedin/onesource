@@ -27,3 +27,35 @@ CREATE TABLE dwh.f_stockuiditemtrackingdetail (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_stockuiditemtrackingdetail ALTER COLUMN stk_itm_dtl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_stockuiditemtrackingdetail_stk_itm_dtl_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_stockuiditemtrackingdetail
+    ADD CONSTRAINT f_stockuiditemtrackingdetail_pkey PRIMARY KEY (stk_itm_dtl_key);
+
+ALTER TABLE ONLY dwh.f_stockuiditemtrackingdetail
+    ADD CONSTRAINT f_stockuiditemtrackingdetail_ukey UNIQUE (stk_ou, stk_location, stk_item, stk_customer, stk_date, stk_uid_serial_no, stk_lot_no);
+
+ALTER TABLE ONLY dwh.f_stockuiditemtrackingdetail
+    ADD CONSTRAINT f_stockuiditemtrackingdetail_stk_itm_dtl_customer_key_fkey FOREIGN KEY (stk_itm_dtl_customer_key) REFERENCES dwh.d_customer(customer_key);
+
+ALTER TABLE ONLY dwh.f_stockuiditemtrackingdetail
+    ADD CONSTRAINT f_stockuiditemtrackingdetail_stk_itm_dtl_date_key_fkey FOREIGN KEY (stk_itm_dtl_date_key) REFERENCES dwh.d_date(datekey);
+
+ALTER TABLE ONLY dwh.f_stockuiditemtrackingdetail
+    ADD CONSTRAINT f_stockuiditemtrackingdetail_stk_itm_dtl_itm_hdr_key_fkey FOREIGN KEY (stk_itm_dtl_itm_hdr_key) REFERENCES dwh.d_itemheader(itm_hdr_key);
+
+ALTER TABLE ONLY dwh.f_stockuiditemtrackingdetail
+    ADD CONSTRAINT f_stockuiditemtrackingdetail_stk_itm_dtl_loc_key_fkey FOREIGN KEY (stk_itm_dtl_loc_key) REFERENCES dwh.d_location(loc_key);
+
+ALTER TABLE ONLY dwh.f_stockuiditemtrackingdetail
+    ADD CONSTRAINT f_stockuiditemtrackingdetail_stk_itm_dtl_thu_key_fkey FOREIGN KEY (stk_itm_dtl_thu_key) REFERENCES dwh.d_thu(thu_key);
+
+CREATE INDEX f_stockuiditemtrackingdetail_key_idx ON dwh.f_stockuiditemtrackingdetail USING btree (stk_itm_dtl_loc_key, stk_itm_dtl_itm_hdr_key, stk_itm_dtl_customer_key, stk_itm_dtl_date_key, stk_itm_dtl_thu_key);

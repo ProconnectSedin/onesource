@@ -18,3 +18,15 @@ CREATE TABLE dwh.d_opscomponentlookup (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.d_opscomponentlookup ALTER COLUMN comp_lkp_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.d_opscomponentlookup_comp_lkp_key_seq
+    START WITH -1
+    INCREMENT BY 1
+    MINVALUE -1
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.d_opscomponentlookup
+    ADD CONSTRAINT d_opscomponentlookup_pkey PRIMARY KEY (comp_lkp_key);

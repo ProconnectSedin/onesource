@@ -31,3 +31,6 @@ CREATE TABLE stg.stg_fact_outbound_br (
     to_postal_code character varying(120) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_fact_outbound_br
+    ADD CONSTRAINT pk__fact_out__4cd9458e3e7f8556 PRIMARY KEY (refkey);

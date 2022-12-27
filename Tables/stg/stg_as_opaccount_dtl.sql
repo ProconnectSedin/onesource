@@ -32,3 +32,6 @@ CREATE TABLE stg.stg_as_opaccount_dtl (
     revised_asindas_layout_code character varying(160) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_as_opaccount_dtl
+    ADD CONSTRAINT as_opaccount_dtl_pkey PRIMARY KEY (opcoa_id, account_code);

@@ -19,3 +19,6 @@ CREATE TABLE stg.stg_wms_stock_conversion_hdr (
     wms_stk_recasfee_last_bil_date timestamp without time zone,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_stock_conversion_hdr
+    ADD CONSTRAINT wms_stock_conversion_hdr_pk PRIMARY KEY (wms_stk_con_loc_code, wms_stk_con_proposal_no, wms_stk_con_proposal_ou);

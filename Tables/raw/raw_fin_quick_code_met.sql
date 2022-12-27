@@ -17,3 +17,15 @@ CREATE TABLE raw.raw_fin_quick_code_met (
     cml_translate character varying(8) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE raw.raw_fin_quick_code_met ALTER COLUMN raw_id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME raw.raw_fin_quick_code_met_raw_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY raw.raw_fin_quick_code_met
+    ADD CONSTRAINT raw_fin_quick_code_met_pkey PRIMARY KEY (raw_id);

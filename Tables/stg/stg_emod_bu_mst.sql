@@ -14,3 +14,6 @@ CREATE TABLE stg.stg_emod_bu_mst (
     modifieddate timestamp without time zone,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_emod_bu_mst
+    ADD CONSTRAINT emod_bu_mst_pkey PRIMARY KEY (company_code, bu_id, serial_no);

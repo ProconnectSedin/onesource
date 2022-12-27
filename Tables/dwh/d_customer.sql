@@ -82,3 +82,20 @@ CREATE TABLE dwh.d_customer (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.d_customer ALTER COLUMN customer_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.d_customer_customer_key_seq
+    START WITH -1
+    INCREMENT BY 1
+    MINVALUE -1
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.d_customer
+    ADD CONSTRAINT d_customer_pkey PRIMARY KEY (customer_key);
+
+ALTER TABLE ONLY dwh.d_customer
+    ADD CONSTRAINT d_customer_ukey UNIQUE (customer_id, customer_ou);
+
+CREATE INDEX d_customer_idx ON dwh.d_customer USING btree (customer_ou, customer_id);

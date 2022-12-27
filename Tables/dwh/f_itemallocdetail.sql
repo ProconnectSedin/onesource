@@ -47,3 +47,40 @@ CREATE TABLE dwh.f_itemallocdetail (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_itemallocdetail ALTER COLUMN allc_dtl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_itemallocdetail_allc_dtl_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_itemallocdetail
+    ADD CONSTRAINT f_itemallocdetail_pkey PRIMARY KEY (allc_dtl_key);
+
+ALTER TABLE ONLY dwh.f_itemallocdetail
+    ADD CONSTRAINT f_itemallocdetail_ukey UNIQUE (allc_doc_no, allc_doc_line_no, allc_alloc_line_no, allc_doc_ou);
+
+ALTER TABLE ONLY dwh.f_itemallocdetail
+    ADD CONSTRAINT f_itemallocdetail_allc_itm_hdr_key_fkey FOREIGN KEY (allc_itm_hdr_key) REFERENCES dwh.d_itemheader(itm_hdr_key);
+
+ALTER TABLE ONLY dwh.f_itemallocdetail
+    ADD CONSTRAINT f_itemallocdetail_allc_stg_mas_key_fkey FOREIGN KEY (allc_stg_mas_key) REFERENCES dwh.d_stage(stg_mas_key);
+
+ALTER TABLE ONLY dwh.f_itemallocdetail
+    ADD CONSTRAINT f_itemallocdetail_allc_thu_key_fkey FOREIGN KEY (allc_thu_key) REFERENCES dwh.d_thu(thu_key);
+
+ALTER TABLE ONLY dwh.f_itemallocdetail
+    ADD CONSTRAINT f_itemallocdetail_allc_uom_key_fkey FOREIGN KEY (allc_uom_key) REFERENCES dwh.d_uom(uom_key);
+
+ALTER TABLE ONLY dwh.f_itemallocdetail
+    ADD CONSTRAINT f_itemallocdetail_allc_wh_key_fkey FOREIGN KEY (allc_wh_key) REFERENCES dwh.d_warehouse(wh_key);
+
+ALTER TABLE ONLY dwh.f_itemallocdetail
+    ADD CONSTRAINT f_itemallocdetail_allc_zone_key_fkey FOREIGN KEY (allc_zone_key) REFERENCES dwh.d_zone(zone_key);
+
+CREATE INDEX f_itemallocdetail_key_idx ON dwh.f_itemallocdetail USING btree (allc_itm_hdr_key, allc_wh_key, allc_zone_key, allc_thu_key, allc_uom_key, allc_stg_mas_key);
+
+CREATE INDEX f_itemallocdetail_key_idx1 ON dwh.f_itemallocdetail USING btree (allc_doc_no, allc_doc_line_no, allc_alloc_line_no, allc_doc_ou);

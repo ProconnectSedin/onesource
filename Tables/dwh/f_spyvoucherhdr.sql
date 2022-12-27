@@ -43,3 +43,20 @@ CREATE TABLE dwh.f_spyvoucherhdr (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_spyvoucherhdr ALTER COLUMN spy_vcr_hdr_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_spyvoucherhdr_spy_vcr_hdr_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_spyvoucherhdr
+    ADD CONSTRAINT f_spyvoucherhdr_pkey PRIMARY KEY (spy_vcr_hdr_key);
+
+ALTER TABLE ONLY dwh.f_spyvoucherhdr
+    ADD CONSTRAINT f_spyvoucherhdr_ukey UNIQUE (ou_id, paybatch_no, voucher_no, "timestamp", line_no, ict_flag);
+
+CREATE INDEX f_spyvoucherhdr_key_idx1 ON dwh.f_spyvoucherhdr USING btree (ou_id, paybatch_no, voucher_no, "timestamp", line_no, ict_flag);

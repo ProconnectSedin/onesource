@@ -102,3 +102,33 @@ CREATE TABLE dwh.f_outboundheaderhistory (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_outboundheaderhistory ALTER COLUMN obh_hr_his_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_outboundheaderhistory_obh_hr_his_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_outboundheaderhistory
+    ADD CONSTRAINT f_outboundheaderhistory_pkey PRIMARY KEY (obh_hr_his_key);
+
+ALTER TABLE ONLY dwh.f_outboundheaderhistory
+    ADD CONSTRAINT f_outboundheaderhistory_ukey UNIQUE (oub_ou, oub_loc_code, oub_outbound_ord, oub_amendno);
+
+ALTER TABLE ONLY dwh.f_outboundheaderhistory
+    ADD CONSTRAINT f_outboundheaderhistory_obh_cust_key_fkey FOREIGN KEY (obh_cust_key) REFERENCES dwh.d_customer(customer_key);
+
+ALTER TABLE ONLY dwh.f_outboundheaderhistory
+    ADD CONSTRAINT f_outboundheaderhistory_obh_loc_key_fkey FOREIGN KEY (obh_loc_key) REFERENCES dwh.d_location(loc_key);
+
+ALTER TABLE ONLY dwh.f_outboundheaderhistory
+    ADD CONSTRAINT f_outboundheaderhistory_oub_orderdatekey_fkey FOREIGN KEY (oub_orderdatekey) REFERENCES dwh.d_date(datekey);
+
+CREATE INDEX f_outboundheaderhistory_key_idx1 ON dwh.f_outboundheaderhistory USING btree (oub_ou, oub_loc_code, oub_outbound_ord, oub_amendno);
+
+CREATE INDEX f_outboundheaderhistory_key_idx2 ON dwh.f_outboundheaderhistory USING btree (obh_loc_key, obh_cust_key);
+
+CREATE INDEX f_outboundheaderhistory_key_idx3 ON dwh.f_outboundheaderhistory USING btree (obh_hr_his_key);

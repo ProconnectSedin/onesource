@@ -11,3 +11,9 @@ CREATE TABLE click.d_divloclist (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE ONLY click.d_divloclist
+    ADD CONSTRAINT d_divloclist_pkey PRIMARY KEY (div_loc_key);
+
+ALTER TABLE ONLY click.d_divloclist
+    ADD CONSTRAINT d_divloclist_ukey UNIQUE (div_ou, div_code, div_lineno);

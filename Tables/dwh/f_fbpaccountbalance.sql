@@ -28,3 +28,23 @@ CREATE TABLE dwh.f_fbpaccountbalance (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_fbpaccountbalance ALTER COLUMN fbp_act_blc_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_fbpaccountbalance_fbp_act_blc_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_fbpaccountbalance
+    ADD CONSTRAINT f_fbpaccountbalance_pkey PRIMARY KEY (fbp_act_blc_key);
+
+ALTER TABLE ONLY dwh.f_fbpaccountbalance
+    ADD CONSTRAINT f_fbpaccountbalance_ukey UNIQUE (ou_id, company_code, fb_id, fin_year, fin_period, account_code, currency_code);
+
+ALTER TABLE ONLY dwh.f_fbpaccountbalance
+    ADD CONSTRAINT f_fbpaccountbalance_fbp_act_curr_key_fkey FOREIGN KEY (fbp_act_curr_key) REFERENCES dwh.d_currency(curr_key);
+
+CREATE INDEX f_fbpaccountbalance_key_idx ON dwh.f_fbpaccountbalance USING btree (fbp_act_curr_key);

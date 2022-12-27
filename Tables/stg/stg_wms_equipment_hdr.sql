@@ -97,3 +97,6 @@ CREATE TABLE stg.stg_wms_equipment_hdr (
     wms_eqp_last_bill_date timestamp without time zone,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_equipment_hdr
+    ADD CONSTRAINT wms_equipment_hdr_pk PRIMARY KEY (wms_eqp_ou, wms_eqp_equipment_id);

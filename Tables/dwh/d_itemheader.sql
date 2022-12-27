@@ -68,3 +68,22 @@ CREATE TABLE dwh.d_itemheader (
     etlupdatedatetime timestamp(3) without time zone,
     itm_volume_calc numeric
 );
+
+ALTER TABLE dwh.d_itemheader ALTER COLUMN itm_hdr_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.d_itemheader_itm_hdr_key_seq
+    START WITH -1
+    INCREMENT BY 1
+    MINVALUE -1
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.d_itemheader
+    ADD CONSTRAINT d_itemheader_pkey PRIMARY KEY (itm_hdr_key);
+
+ALTER TABLE ONLY dwh.d_itemheader
+    ADD CONSTRAINT d_itemheader_ukey UNIQUE (itm_code, itm_ou);
+
+CREATE INDEX d_itemheader_idx ON dwh.d_itemheader USING btree (itm_ou, itm_code);
+
+CREATE INDEX d_itemheader_idx1 ON dwh.d_itemheader USING btree (itm_ou, itm_customer);

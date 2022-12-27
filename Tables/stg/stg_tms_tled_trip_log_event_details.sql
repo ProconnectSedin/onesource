@@ -20,3 +20,10 @@ CREATE TABLE stg.stg_tms_tled_trip_log_event_details (
     tled_event_nod character varying(1020) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_tms_tled_trip_log_event_details
+    ADD CONSTRAINT pk_tms_tled_trip_log_event_details PRIMARY KEY (tled_ouinstance, tled_trip_plan_id, tled_trip_plan_unique_id);
+
+CREATE INDEX stg_tms_tled_trip_log_event_details_key_idx ON stg.stg_tms_tled_trip_log_event_details USING btree (tled_actual_date_time);
+
+CREATE INDEX stg_tms_tled_trip_log_event_details_key_idx1 ON stg.stg_tms_tled_trip_log_event_details USING btree (tled_ouinstance, tled_trip_plan_id, tled_trip_plan_unique_id);

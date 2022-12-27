@@ -32,3 +32,8 @@ CREATE TABLE stg.stg_wms_contract_dtl (
     wms_cont_tariff_bill_stage character varying(160) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_contract_dtl
+    ADD CONSTRAINT wms_contract_dtl_pk PRIMARY KEY (wms_cont_id, wms_cont_lineno, wms_cont_ou, wms_cont_tariff_id);
+
+CREATE INDEX stg_wms_contract_dtl_idx ON stg.stg_wms_contract_dtl USING btree (wms_cont_id, wms_cont_ou);

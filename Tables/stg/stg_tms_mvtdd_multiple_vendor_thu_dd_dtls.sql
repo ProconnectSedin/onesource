@@ -21,3 +21,6 @@ CREATE TABLE stg.stg_tms_mvtdd_multiple_vendor_thu_dd_dtls (
     mvtdd_ethu_custom_seal_no character varying(160) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_tms_mvtdd_multiple_vendor_thu_dd_dtls
+    ADD CONSTRAINT pk_tms_mvtdd_multiple_vendor_thu_dd_dtls PRIMARY KEY (mvtdd_ouinstance, mvtdd_dispatch_no, mvtdd_guid);

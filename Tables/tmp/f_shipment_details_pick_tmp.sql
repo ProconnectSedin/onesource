@@ -8,3 +8,5 @@ CREATE TABLE tmp.f_shipment_details_pick_tmp (
     from_pincode character varying(40),
     to_pincode character varying(40)
 ); 
+
+CREATE INDEX f_shipment_details_pick_tmp_ndx1 ON tmp.f_shipment_details_pick_tmp USING btree (ouinstance, ((trip_plan_id)::text), ((br_request_id)::text));

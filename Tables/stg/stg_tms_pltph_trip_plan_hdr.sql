@@ -113,3 +113,8 @@ CREATE TABLE stg.stg_tms_pltph_trip_plan_hdr (
     tms_trip_log_worklfow_status character varying(160) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_tms_pltph_trip_plan_hdr
+    ADD CONSTRAINT pk_tms_pltph_trip_plan_hdr PRIMARY KEY (plpth_ouinstance, plpth_trip_plan_id);
+
+CREATE INDEX f_tripplanningheader_key_idx ON stg.stg_tms_pltph_trip_plan_hdr USING btree (plpth_vehicle_id);

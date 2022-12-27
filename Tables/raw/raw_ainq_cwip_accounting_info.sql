@@ -28,3 +28,15 @@ CREATE TABLE raw.raw_ainq_cwip_accounting_info (
     rpt_amount numeric,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE raw.raw_ainq_cwip_accounting_info ALTER COLUMN raw_id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME raw.raw_ainq_cwip_accounting_info_raw_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY raw.raw_ainq_cwip_accounting_info
+    ADD CONSTRAINT raw_ainq_cwip_accounting_info_pkey PRIMARY KEY (raw_id);

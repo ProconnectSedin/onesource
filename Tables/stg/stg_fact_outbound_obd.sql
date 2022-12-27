@@ -89,3 +89,6 @@ CREATE TABLE stg.stg_fact_outbound_obd (
     oub_consgn_name character varying(600) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_fact_outbound_obd
+    ADD CONSTRAINT pk__fact_out__4cd9458ea53ab33a PRIMARY KEY (refkey);

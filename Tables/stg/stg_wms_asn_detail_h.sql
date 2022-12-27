@@ -32,3 +32,8 @@ CREATE TABLE stg.stg_wms_asn_detail_h (
     wms_asn_bestbeforedate timestamp without time zone,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_asn_detail_h
+    ADD CONSTRAINT wms_asn_detail_h_pk PRIMARY KEY (wms_asn_ou, wms_asn_location, wms_asn_no, wms_asn_amendno, wms_asn_lineno);
+
+CREATE INDEX stg_wms_asn_detail_h_idx ON stg.stg_wms_asn_detail_h USING btree (wms_asn_ou, wms_asn_location, wms_asn_no, wms_asn_amendno, wms_asn_lineno);

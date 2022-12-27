@@ -11,3 +11,12 @@ CREATE TABLE ods.source_target_count (
     createddatetime timestamp(3) without time zone DEFAULT now(),
     diffcount bigint
 );
+
+ALTER TABLE ods.source_target_count ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME ods.source_target_count_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);

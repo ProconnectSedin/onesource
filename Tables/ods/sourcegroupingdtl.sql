@@ -10,3 +10,12 @@ CREATE TABLE ods.sourcegroupingdtl (
     loadstartdatetime timestamp without time zone,
     loadenddatetime timestamp without time zone
 );
+
+ALTER TABLE ods.sourcegroupingdtl ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME ods.sourcegroupingdtl_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);

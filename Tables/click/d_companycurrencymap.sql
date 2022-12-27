@@ -18,3 +18,9 @@ CREATE TABLE click.d_companycurrencymap (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE ONLY click.d_companycurrencymap
+    ADD CONSTRAINT d_companycurrencymap_pkey PRIMARY KEY (d_companycurrencymap_key);
+
+ALTER TABLE ONLY click.d_companycurrencymap
+    ADD CONSTRAINT d_companycurrencymap_ukey UNIQUE (serial_no, company_code, currency_code);

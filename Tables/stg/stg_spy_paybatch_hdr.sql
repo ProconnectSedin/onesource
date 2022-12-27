@@ -37,3 +37,6 @@ CREATE TABLE stg.stg_spy_paybatch_hdr (
     supplier_group character varying(80) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_spy_paybatch_hdr
+    ADD CONSTRAINT spy_paybatch_hdr_pkey PRIMARY KEY (ou_id, paybatch_no);

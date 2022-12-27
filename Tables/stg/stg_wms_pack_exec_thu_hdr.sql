@@ -28,3 +28,10 @@ CREATE TABLE stg.stg_wms_pack_exec_thu_hdr (
     wms_thu_max_pack_qty numeric,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_pack_exec_thu_hdr
+    ADD CONSTRAINT wms_pack_exec_thu_hdr_pk PRIMARY KEY (wms_pack_loc_code, wms_pack_exec_no, wms_pack_exec_ou, wms_pack_thu_id, wms_pack_thu_sr_no);
+
+CREATE INDEX stg_wms_pack_exec_thu_hdr_idx_uom ON stg.stg_wms_pack_exec_thu_hdr USING btree (wms_pack_exec_ou, wms_pack_uom);
+
+CREATE INDEX stg_wms_pack_exec_thu_hdr_key_idx2 ON stg.stg_wms_pack_exec_thu_hdr USING btree (wms_pack_exec_ou, wms_pack_loc_code, wms_pack_exec_no, wms_pack_thu_id, wms_pack_thu_sr_no);

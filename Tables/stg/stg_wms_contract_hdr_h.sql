@@ -50,3 +50,8 @@ CREATE TABLE stg.stg_wms_contract_hdr_h (
     wms_cont_plan_difot character varying(32) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_contract_hdr_h
+    ADD CONSTRAINT wms_contract_hdr_h_pk PRIMARY KEY (wms_cont_id, wms_cont_ou, wms_cont_amendno);
+
+CREATE INDEX stg_wms_contract_hdr_h_idx ON stg.stg_wms_contract_hdr_h USING btree (wms_cont_id, wms_cont_ou, wms_cont_amendno);

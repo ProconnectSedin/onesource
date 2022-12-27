@@ -55,3 +55,6 @@ CREATE TABLE stg.stg_wms_stock_conversion_dtl (
     wms_stk_con_item_atrib10 character varying(200) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_stock_conversion_dtl
+    ADD CONSTRAINT wms_stock_conversion_dtl_pk PRIMARY KEY (wms_stk_con_loc_code, wms_stk_con_proposal_no, wms_stk_con_proposal_ou, wms_stk_con_lineno);
