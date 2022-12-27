@@ -25,3 +25,18 @@ CREATE TABLE dwh.d_equipment (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.d_equipment ALTER COLUMN eqp_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.d_equipment_eqp_key_seq
+    START WITH -1
+    INCREMENT BY 1
+    MINVALUE -1
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.d_equipment
+    ADD CONSTRAINT d_equipment_pkey PRIMARY KEY (eqp_key);
+
+ALTER TABLE ONLY dwh.d_equipment
+    ADD CONSTRAINT d_equipment_ukey UNIQUE (eqp_equipment_id, eqp_ou);

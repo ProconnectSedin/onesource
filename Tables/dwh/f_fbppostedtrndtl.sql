@@ -68,3 +68,23 @@ CREATE TABLE dwh.f_fbppostedtrndtl (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_fbppostedtrndtl ALTER COLUMN fbp_trn_dtl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_fbppostedtrndtl_fbp_trn_dtl_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_fbppostedtrndtl
+    ADD CONSTRAINT f_fbppostedtrndtl_pkey PRIMARY KEY (fbp_trn_dtl_key);
+
+ALTER TABLE ONLY dwh.f_fbppostedtrndtl
+    ADD CONSTRAINT f_fbppostedtrndtl_fbp_trn_company_key_fkey FOREIGN KEY (fbp_trn_company_key) REFERENCES dwh.d_company(company_key);
+
+ALTER TABLE ONLY dwh.f_fbppostedtrndtl
+    ADD CONSTRAINT f_fbppostedtrndtl_fbp_trn_curr_key_fkey FOREIGN KEY (fbp_trn_curr_key) REFERENCES dwh.d_currency(curr_key);
+
+CREATE INDEX f_fbppostedtrndtl_key_idx ON dwh.f_fbppostedtrndtl USING btree (fbp_trn_curr_key, fbp_trn_company_key);

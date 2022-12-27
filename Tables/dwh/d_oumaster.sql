@@ -20,3 +20,18 @@ CREATE TABLE dwh.d_oumaster (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.d_oumaster ALTER COLUMN ou_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.d_oumaster_ou_key_seq
+    START WITH -1
+    INCREMENT BY 1
+    MINVALUE -1
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.d_oumaster
+    ADD CONSTRAINT d_oumaster_pkey PRIMARY KEY (ou_key);
+
+ALTER TABLE ONLY dwh.d_oumaster
+    ADD CONSTRAINT d_oumaster_ukey UNIQUE (ou_id, bu_id, company_code, address_id, serial_no);

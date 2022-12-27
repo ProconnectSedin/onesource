@@ -23,3 +23,18 @@ CREATE TABLE dwh.d_currency (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.d_currency ALTER COLUMN curr_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.d_currency_curr_key_seq
+    START WITH -1
+    INCREMENT BY 1
+    MINVALUE -1
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.d_currency
+    ADD CONSTRAINT d_currency_pkey PRIMARY KEY (curr_key);
+
+ALTER TABLE ONLY dwh.d_currency
+    ADD CONSTRAINT d_currency_ukey UNIQUE (iso_curr_code, serial_no);

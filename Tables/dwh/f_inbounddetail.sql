@@ -51,3 +51,31 @@ CREATE TABLE dwh.f_inbounddetail (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_inbounddetail ALTER COLUMN inb_dtl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_inbounddetail_inb_dtl_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_inbounddetail
+    ADD CONSTRAINT f_inbounddetail_pkey PRIMARY KEY (inb_dtl_key);
+
+ALTER TABLE ONLY dwh.f_inbounddetail
+    ADD CONSTRAINT f_inbounddetail_ukey UNIQUE (inb_loc_code, inb_orderno, inb_lineno, inb_ou);
+
+ALTER TABLE ONLY dwh.f_inbounddetail
+    ADD CONSTRAINT f_inbounddetail_inb_hdr_key_fkey FOREIGN KEY (inb_hdr_key) REFERENCES dwh.f_inboundheader(inb_hdr_key);
+
+ALTER TABLE ONLY dwh.f_inbounddetail
+    ADD CONSTRAINT f_inbounddetail_inb_itm_dtl_itm_hdr_key_fkey FOREIGN KEY (inb_itm_dtl_itm_hdr_key) REFERENCES dwh.d_itemheader(itm_hdr_key);
+
+ALTER TABLE ONLY dwh.f_inbounddetail
+    ADD CONSTRAINT f_inbounddetail_inb_itm_dtl_loc_key_fkey FOREIGN KEY (inb_itm_dtl_loc_key) REFERENCES dwh.d_location(loc_key);
+
+CREATE INDEX f_inbounddetail_key_idx ON dwh.f_inbounddetail USING btree (inb_itm_dtl_loc_key, inb_itm_dtl_itm_hdr_key);
+
+CREATE INDEX f_inbounddetail_key_idx1 ON dwh.f_inbounddetail USING btree (inb_loc_code, inb_orderno, inb_lineno, inb_ou);

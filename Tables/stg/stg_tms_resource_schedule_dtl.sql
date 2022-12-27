@@ -21,3 +21,7 @@ CREATE TABLE stg.stg_tms_resource_schedule_dtl (
     trsd_vendor_id character varying(1020) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+CREATE INDEX stg_tms_resource_schedule_dtl_idx1 ON stg.stg_tms_resource_schedule_dtl USING btree (trsd_ouinstance, trsd_trip_plan_id, trsd_resource_type, trsd_resource_id);
+
+CREATE INDEX stg_tms_resource_schedule_dtl_idx2 ON stg.stg_tms_resource_schedule_dtl USING btree (trsd_ouinstance, trsd_trip_plan_id);

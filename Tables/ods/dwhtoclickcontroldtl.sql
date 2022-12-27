@@ -13,3 +13,12 @@ CREATE TABLE ods.dwhtoclickcontroldtl (
     loadfrequency character varying(20),
     depsource character varying(100)
 );
+
+ALTER TABLE ods.dwhtoclickcontroldtl ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME ods.dwhtoclickcontroldtl_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);

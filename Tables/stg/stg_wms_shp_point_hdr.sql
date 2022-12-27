@@ -42,3 +42,6 @@ CREATE TABLE stg.stg_wms_shp_point_hdr (
     wms_shp_pt_type character varying(160) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_shp_point_hdr
+    ADD CONSTRAINT wms_shp_point_hdr_pk PRIMARY KEY (wms_shp_pt_ou, wms_shp_pt_id);

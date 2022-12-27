@@ -12,3 +12,9 @@ CREATE TABLE click.d_itemsuppliermap (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE ONLY click.d_itemsuppliermap
+    ADD CONSTRAINT d_itemsuppliermap_pkey PRIMARY KEY (itm_supp_key);
+
+ALTER TABLE ONLY click.d_itemsuppliermap
+    ADD CONSTRAINT d_itemsuppliermap_ukey UNIQUE (itm_ou, itm_code, itm_lineno);

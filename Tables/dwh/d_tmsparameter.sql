@@ -15,3 +15,18 @@ CREATE TABLE dwh.d_tmsparameter (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.d_tmsparameter ALTER COLUMN tms_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.d_tmsparameter_tms_key_seq
+    START WITH -1
+    INCREMENT BY 1
+    MINVALUE -1
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.d_tmsparameter
+    ADD CONSTRAINT d_tmsparameter_pkey PRIMARY KEY (tms_key);
+
+ALTER TABLE ONLY dwh.d_tmsparameter
+    ADD CONSTRAINT d_tmsparameter_ukey UNIQUE (tms_componentname, tms_paramcategory, tms_paramtype, tms_paramcode, tms_paramdesc, tms_langid);

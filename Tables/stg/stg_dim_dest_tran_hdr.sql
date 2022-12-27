@@ -12,3 +12,6 @@ CREATE TABLE stg.stg_dim_dest_tran_hdr (
     modifieddate timestamp without time zone,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_dim_dest_tran_hdr
+    ADD CONSTRAINT pk__dim_dest__12c9edbda023e94e PRIMARY KEY (tran_no, tran_ou, tran_type, line_no);

@@ -28,3 +28,22 @@ CREATE TABLE dwh.f_tripresourcescheduledetail (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_tripresourcescheduledetail ALTER COLUMN trsd_trip_sdl_dtl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_tripresourcescheduledetail_trsd_trip_sdl_dtl_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_tripresourcescheduledetail
+    ADD CONSTRAINT f_tripresourcescheduledetail_pkey PRIMARY KEY (trsd_trip_sdl_dtl_key);
+
+ALTER TABLE ONLY dwh.f_tripresourcescheduledetail
+    ADD CONSTRAINT f_tripresourcescheduledetail_trsd_vendor_key_fkey FOREIGN KEY (trsd_vendor_key) REFERENCES dwh.d_vendor(vendor_key);
+
+CREATE INDEX f_tripresourcescheduledetail_key_idx ON dwh.f_tripresourcescheduledetail USING btree (trsd_vendor_key);
+
+CREATE INDEX f_tripresourcescheduledetail_key_idx1 ON dwh.f_tripresourcescheduledetail USING btree (trsd_ouinstance, trsd_trip_plan_id, trsd_resource_type, trsd_resource_id);

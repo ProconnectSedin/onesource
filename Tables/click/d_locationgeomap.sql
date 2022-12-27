@@ -12,3 +12,9 @@ CREATE TABLE click.d_locationgeomap (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE ONLY click.d_locationgeomap
+    ADD CONSTRAINT d_locationgeomap_pkey PRIMARY KEY (loc_geo_key);
+
+ALTER TABLE ONLY click.d_locationgeomap
+    ADD CONSTRAINT d_locationgeomap_ukey UNIQUE (loc_ou, loc_code, loc_geo_lineno);

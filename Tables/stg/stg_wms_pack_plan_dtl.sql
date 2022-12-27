@@ -41,3 +41,14 @@ CREATE TABLE stg.stg_wms_pack_plan_dtl (
     wms_pack_item_attribute10 character varying(1020) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_pack_plan_dtl
+    ADD CONSTRAINT wms_pack_plan_dtl_pk PRIMARY KEY (wms_pack_loc_code, wms_pack_pln_no, wms_pack_pln_ou, wms_pack_lineno);
+
+CREATE INDEX stg_wms_pack_plan_dtl_idx ON stg.stg_wms_pack_plan_dtl USING btree (wms_pack_pln_ou, wms_pack_loc_code, wms_pack_pln_no, wms_pack_lineno);
+
+CREATE INDEX stg_wms_pack_plan_dtl_idx1 ON stg.stg_wms_pack_plan_dtl USING btree (wms_pack_pln_ou, wms_pack_loc_code);
+
+CREATE INDEX stg_wms_pack_plan_dtl_idx2 ON stg.stg_wms_pack_plan_dtl USING btree (wms_pack_pln_ou, wms_pack_item_code);
+
+CREATE INDEX stg_wms_pack_plan_dtl_idx3 ON stg.stg_wms_pack_plan_dtl USING btree (wms_pack_pln_ou, wms_pack_thu_id);

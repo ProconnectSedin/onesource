@@ -37,3 +37,9 @@ CREATE TABLE click.d_warehouse (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE ONLY click.d_warehouse
+    ADD CONSTRAINT d_warehouse_pkey PRIMARY KEY (wh_key);
+
+ALTER TABLE ONLY click.d_warehouse
+    ADD CONSTRAINT d_warehouse_ukey UNIQUE (wh_code, wh_ou);

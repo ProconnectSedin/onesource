@@ -24,3 +24,15 @@ CREATE TABLE click.f_pnd_oub_activity (
     obh_cust_key bigint,
     obd_itm_key bigint
 );
+
+ALTER TABLE click.f_pnd_oub_activity ALTER COLUMN pnd_oub_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME click.f_pnd_oub_activity_pnd_oub_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY click.f_pnd_oub_activity
+    ADD CONSTRAINT f_pnd_oub_pkey PRIMARY KEY (pnd_oub_key);

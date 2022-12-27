@@ -6,3 +6,6 @@ CREATE TABLE stg.stg_wms_shp_point_loc_div_dtl (
     wms_shp_pt_code character varying(40) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_shp_point_loc_div_dtl
+    ADD CONSTRAINT wms_shp_point_loc_div_dtl_pk PRIMARY KEY (wms_shp_pt_ou, wms_shp_pt_id, wms_shp_pt_lineno);

@@ -21,3 +21,6 @@ CREATE TABLE stg.stg_uom_mas_uommaster (
     mas_weight_uom character varying(40) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_uom_mas_uommaster
+    ADD CONSTRAINT pk_uom_mas_uommaster PRIMARY KEY (mas_uomcode);

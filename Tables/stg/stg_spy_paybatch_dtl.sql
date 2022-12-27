@@ -41,3 +41,6 @@ CREATE TABLE stg.stg_spy_paybatch_dtl (
     app_wht_amt numeric,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_spy_paybatch_dtl
+    ADD CONSTRAINT spy_paybatch_dtl_pkey PRIMARY KEY (ou_id, paybatch_no, cr_doc_ou, cr_doc_no, term_no, tran_type);

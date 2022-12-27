@@ -30,3 +30,6 @@ CREATE TABLE stg.stg_wms_pick_plan_hdr (
     wms_pick_consol_auto_cmplt character varying(32) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_pick_plan_hdr
+    ADD CONSTRAINT pk_wms_pick_plan_hdr PRIMARY KEY (wms_pick_loc_code, wms_pick_pln_no, wms_pick_pln_ou);

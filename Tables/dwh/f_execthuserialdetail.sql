@@ -38,3 +38,22 @@ CREATE TABLE dwh.f_execthuserialdetail (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_execthuserialdetail ALTER COLUMN pletsd_exc_srl_thu_dtl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_execthuserialdetail_pletsd_exc_srl_thu_dtl_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_execthuserialdetail
+    ADD CONSTRAINT f_execthuserialdetail_pkey PRIMARY KEY (pletsd_exc_srl_thu_dtl_key);
+
+ALTER TABLE ONLY dwh.f_execthuserialdetail
+    ADD CONSTRAINT f_execthuserialdetail_plepd_trip_exe_pln_dtl_key_fkey FOREIGN KEY (plepd_trip_exe_pln_dtl_key) REFERENCES dwh.f_tripexecutionplandetail(plepd_trip_exe_pln_dtl_key);
+
+CREATE INDEX f_execthuserialdetail_key_idx ON dwh.f_execthuserialdetail USING btree (plepd_trip_exe_pln_dtl_key);
+
+CREATE INDEX f_execthuserialdetail_key_idx1 ON dwh.f_execthuserialdetail USING btree (pletsd_ouinstance, pletsd_execution_plan_id, pletsd_line_no, pletsd_thu_line_no, pletsd_serial_line_no);

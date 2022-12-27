@@ -13,3 +13,18 @@ CREATE TABLE dwh.d_locationshiftdetails (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.d_locationshiftdetails ALTER COLUMN loc_shft_dtl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.d_locationshiftdetails_loc_shft_dtl_key_seq
+    START WITH -1
+    INCREMENT BY 1
+    MINVALUE -1
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.d_locationshiftdetails
+    ADD CONSTRAINT d_locationshiftdetails_pkey PRIMARY KEY (loc_shft_dtl_key);
+
+ALTER TABLE ONLY dwh.d_locationshiftdetails
+    ADD CONSTRAINT d_locationshiftdetails_ukey UNIQUE (loc_code, loc_shft_lineno, loc_ou);

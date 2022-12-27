@@ -18,3 +18,13 @@ CREATE TABLE click.d_thuitemmap (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE ONLY click.d_thuitemmap
+    ADD CONSTRAINT d_thuitemmap_pkey PRIMARY KEY (thu_itm_key);
+
+ALTER TABLE ONLY click.d_thuitemmap
+    ADD CONSTRAINT d_thuitemmap_ukey UNIQUE (thu_loc_code, thu_ou, thu_serial_no, thu_id, thu_item, thu_lot_no, thu_itm_serial_no);
+
+CREATE INDEX d_thuitemmap_idx ON click.d_thuitemmap USING btree (thu_loc_code, thu_ou, thu_serial_no, thu_id, thu_item, thu_lot_no, thu_itm_serial_no);
+
+CREATE INDEX d_thuitemmap_idx1 ON click.d_thuitemmap USING btree (COALESCE(etlupdatedatetime, etlcreatedatetime));

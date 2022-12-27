@@ -48,3 +48,31 @@ CREATE TABLE dwh.f_gateplandetail (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_gateplandetail ALTER COLUMN gate_pln_dtl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_gateplandetail_gate_pln_dtl_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_gateplandetail
+    ADD CONSTRAINT f_gateplandetail_pkey PRIMARY KEY (gate_pln_dtl_key);
+
+ALTER TABLE ONLY dwh.f_gateplandetail
+    ADD CONSTRAINT f_gateplandetail_ukey UNIQUE (gate_loc_code, gate_pln_no, gate_pln_ou);
+
+ALTER TABLE ONLY dwh.f_gateplandetail
+    ADD CONSTRAINT f_gateplandetail_gate_pln_dtl_eqp_key_fkey FOREIGN KEY (gate_pln_dtl_eqp_key) REFERENCES dwh.d_equipment(eqp_key);
+
+ALTER TABLE ONLY dwh.f_gateplandetail
+    ADD CONSTRAINT f_gateplandetail_gate_pln_dtl_loc_key_fkey FOREIGN KEY (gate_pln_dtl_loc_key) REFERENCES dwh.d_location(loc_key);
+
+ALTER TABLE ONLY dwh.f_gateplandetail
+    ADD CONSTRAINT f_gateplandetail_gate_pln_dtl_veh_key_fkey FOREIGN KEY (gate_pln_dtl_veh_key) REFERENCES dwh.d_vehicle(veh_key);
+
+CREATE INDEX f_gateplandetail_key_idx ON dwh.f_gateplandetail USING btree (gate_pln_dtl_eqp_key, gate_pln_dtl_veh_key, gate_pln_dtl_loc_key);
+
+CREATE INDEX f_gateplandetail_key_idx1 ON dwh.f_gateplandetail USING btree (gate_loc_code, gate_pln_no, gate_pln_ou);

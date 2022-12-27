@@ -20,3 +20,6 @@ CREATE TABLE stg.stg_fbp_voucher_dtl (
     modifieddate timestamp without time zone,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_fbp_voucher_dtl
+    ADD CONSTRAINT fbp_voucher_dtl_pkey PRIMARY KEY (parent_key, current_key, company_code, ou_id, fb_id, fb_voucher_no, serial_no);

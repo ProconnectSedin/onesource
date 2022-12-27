@@ -80,3 +80,8 @@ CREATE TABLE stg.stg_tms_brsd_shipment_details (
     brsd_alternate_email_id character varying(160) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_tms_brsd_shipment_details
+    ADD CONSTRAINT pk_tms_brsd_shipment_details PRIMARY KEY (brsd_ouinstance, brsd_br_id);
+
+CREATE INDEX stg_tms_brsd_shipment_details_idx ON stg.stg_tms_brsd_shipment_details USING btree (brsd_ouinstance, brsd_br_id);

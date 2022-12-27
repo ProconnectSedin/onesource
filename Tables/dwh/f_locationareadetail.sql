@@ -27,3 +27,20 @@ CREATE TABLE dwh.f_locationareadetail (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_locationareadetail ALTER COLUMN loc_pop_dtl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_locationareadetail_loc_pop_dtl_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_locationareadetail
+    ADD CONSTRAINT f_locationareadetail_pkey PRIMARY KEY (loc_pop_dtl_key);
+
+ALTER TABLE ONLY dwh.f_locationareadetail
+    ADD CONSTRAINT f_locationareadetail_ukey UNIQUE (loc_pop_code, loc_pop_ou);
+
+CREATE INDEX f_locationareadetail_key_idx ON dwh.f_locationareadetail USING btree (loc_pop_loc_key);

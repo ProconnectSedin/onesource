@@ -9,3 +9,6 @@ CREATE TABLE stg.stg_wms_veh_maint_dtl (
     wms_veh_maint_catgry character varying(160) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_veh_maint_dtl
+    ADD CONSTRAINT wms_veh_maint_dtl_pk PRIMARY KEY (wms_veh_maint_ou, wms_veh_maint_id, wms_veh_maint_line);

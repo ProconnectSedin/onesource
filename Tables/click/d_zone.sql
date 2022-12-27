@@ -45,3 +45,9 @@ CREATE TABLE click.d_zone (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE ONLY click.d_zone
+    ADD CONSTRAINT d_zone_pkey PRIMARY KEY (zone_key);
+
+ALTER TABLE ONLY click.d_zone
+    ADD CONSTRAINT d_zone_ukey UNIQUE (zone_code, zone_ou, zone_loc_code);

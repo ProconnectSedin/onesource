@@ -20,3 +20,6 @@ CREATE TABLE stg.stg_wms_route_hdr (
     wms_rou_route_type character varying(1020) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_route_hdr
+    ADD CONSTRAINT wms_route_hdr_pk PRIMARY KEY (wms_rou_route_id, wms_rou_ou);

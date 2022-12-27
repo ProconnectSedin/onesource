@@ -10,3 +10,6 @@ CREATE TABLE stg.stg_wms_financial_dimension_odo_dtl (
     wms_fin_dim_loc_atribute character varying(1020) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_financial_dimension_odo_dtl
+    ADD CONSTRAINT wms_financial_dimension_odo_dtl_pk PRIMARY KEY (wms_fin_dim_location, wms_fin_dim_order_no, wms_fin_dim_order_ou);

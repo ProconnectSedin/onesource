@@ -69,3 +69,34 @@ CREATE TABLE dwh.f_asndetails (
     asn_itm_itemgroup character varying(80),
     asn_itm_class character varying(80)
 );
+
+ALTER TABLE dwh.f_asndetails ALTER COLUMN asn_dtl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_asndetails_asn_dtl_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_asndetails
+    ADD CONSTRAINT f_asndetails_pkey PRIMARY KEY (asn_dtl_key);
+
+ALTER TABLE ONLY dwh.f_asndetails
+    ADD CONSTRAINT f_asndetails_ukey UNIQUE (asn_ou, asn_location, asn_no, asn_lineno);
+
+ALTER TABLE ONLY dwh.f_asndetails
+    ADD CONSTRAINT f_asndetails_asn_dtl_itm_hdr_key_fkey FOREIGN KEY (asn_dtl_itm_hdr_key) REFERENCES dwh.d_itemheader(itm_hdr_key);
+
+ALTER TABLE ONLY dwh.f_asndetails
+    ADD CONSTRAINT f_asndetails_asn_dtl_loc_key_fkey FOREIGN KEY (asn_dtl_loc_key) REFERENCES dwh.d_location(loc_key);
+
+ALTER TABLE ONLY dwh.f_asndetails
+    ADD CONSTRAINT f_asndetails_asn_dtl_thu_key_fkey FOREIGN KEY (asn_dtl_thu_key) REFERENCES dwh.d_thu(thu_key);
+
+ALTER TABLE ONLY dwh.f_asndetails
+    ADD CONSTRAINT f_asndetails_asn_dtl_uom_key_fkey FOREIGN KEY (asn_dtl_uom_key) REFERENCES dwh.d_uom(uom_key);
+
+CREATE INDEX f_asndetails_join_idx ON dwh.f_asndetails USING btree (asn_ou, asn_location, asn_no, asn_lineno);
+
+CREATE INDEX f_asndetails_key_idx ON dwh.f_asndetails USING btree (asn_hr_key, asn_dtl_loc_key, asn_dtl_itm_hdr_key, asn_dtl_thu_key, asn_dtl_uom_key);

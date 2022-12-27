@@ -16,3 +16,6 @@ CREATE TABLE stg.stg_wms_tariff_type_met (
     wms_tf_basicsforop character varying(160) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_tariff_type_met
+    ADD CONSTRAINT wms_tariff_type_met_pk PRIMARY KEY (wms_tf_grp_code, wms_tf_type_code);

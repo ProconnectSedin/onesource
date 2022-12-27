@@ -14,3 +14,18 @@ CREATE TABLE dwh.d_employeeunavdate (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.d_employeeunavdate ALTER COLUMN emp_udate_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.d_employeeunavdate_emp_udate_key_seq
+    START WITH -1
+    INCREMENT BY 1
+    MINVALUE -1
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.d_employeeunavdate
+    ADD CONSTRAINT d_employeeunavdate_pkey PRIMARY KEY (emp_udate_key);
+
+ALTER TABLE ONLY dwh.d_employeeunavdate
+    ADD CONSTRAINT d_employeeunavdate_ukey UNIQUE (emp_employee_code, emp_lineno, emp_ou);

@@ -12,3 +12,6 @@ CREATE TABLE stg.stg_pcsit_gate_invoice (
     created_by character varying(50) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_pcsit_gate_invoice
+    ADD CONSTRAINT pk_pcsit_gate_invoice PRIMARY KEY (gate_loc_code, gate_exec_no, gate_ou, invoice_number);

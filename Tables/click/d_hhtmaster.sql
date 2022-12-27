@@ -16,3 +16,15 @@ CREATE TABLE click.d_hhtmaster (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE click.d_hhtmaster ALTER COLUMN hht_master_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME click.d_hhtmaster_hht_master_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY click.d_hhtmaster
+    ADD CONSTRAINT d_hht_master_pkey PRIMARY KEY (hht_master_key);

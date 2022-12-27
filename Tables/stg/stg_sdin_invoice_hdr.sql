@@ -162,3 +162,6 @@ CREATE TABLE stg.stg_sdin_invoice_hdr (
     allow_auto_cap character varying(48) DEFAULT 'N'::character varying NOT NULL COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_sdin_invoice_hdr
+    ADD CONSTRAINT sdin_invoice_hdr_pkey PRIMARY KEY (tran_type, tran_ou, tran_no);

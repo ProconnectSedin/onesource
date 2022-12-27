@@ -19,3 +19,18 @@ CREATE TABLE dwh.d_vehiclereginfo (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.d_vehiclereginfo ALTER COLUMN veh_rifo_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.d_vehiclereginfo_veh_rifo_key_seq
+    START WITH -1
+    INCREMENT BY 1
+    MINVALUE -1
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.d_vehiclereginfo
+    ADD CONSTRAINT d_vehiclereginfo_pkey PRIMARY KEY (veh_rifo_key);
+
+ALTER TABLE ONLY dwh.d_vehiclereginfo
+    ADD CONSTRAINT d_vehiclereginfo_ukey UNIQUE (veh_ou, veh_id, veh_line_no);

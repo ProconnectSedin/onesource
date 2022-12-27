@@ -6,3 +6,6 @@ CREATE TABLE stg.stg_wms_item_supplier_dtl (
     wms_item_source character varying(160) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_item_supplier_dtl
+    ADD CONSTRAINT wms_item_supplier_dtl_pk PRIMARY KEY (wms_itm_ou, wms_itm_code, wms_itm_lineno);

@@ -36,3 +36,20 @@ CREATE TABLE dwh.f_contractrevleakdetail (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_contractrevleakdetail ALTER COLUMN cont_rev_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_contractrevleakdetail_cont_rev_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_contractrevleakdetail
+    ADD CONSTRAINT f_contractrevleakdetail_pkey PRIMARY KEY (cont_rev_key);
+
+ALTER TABLE ONLY dwh.f_contractrevleakdetail
+    ADD CONSTRAINT f_contractrevleakdetail_ukey UNIQUE (cont_rev_lkge_ou, cont_rev_lkge_line_no);
+
+CREATE INDEX f_contractrevleakdetail_key_idx ON dwh.f_contractrevleakdetail USING btree (cont_rev_lkge_ou, cont_rev_lkge_line_no);

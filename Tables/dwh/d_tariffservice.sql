@@ -22,3 +22,18 @@ CREATE TABLE dwh.d_tariffservice (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.d_tariffservice ALTER COLUMN tf_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.d_tariffservice_tf_key_seq
+    START WITH -1
+    INCREMENT BY 1
+    MINVALUE -1
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.d_tariffservice
+    ADD CONSTRAINT d_tariffservice_pkey PRIMARY KEY (tf_key);
+
+ALTER TABLE ONLY dwh.d_tariffservice
+    ADD CONSTRAINT d_tariffservice_ukey UNIQUE (tf_ser_id, tf_ser_ou);

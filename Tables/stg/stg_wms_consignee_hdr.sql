@@ -42,3 +42,6 @@ CREATE TABLE stg.stg_wms_consignee_hdr (
     wms_consignee_timeslot character varying(32) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_consignee_hdr
+    ADD CONSTRAINT wms_consignee_hdr_pk PRIMARY KEY (wms_consignee_id, wms_consignee_ou);

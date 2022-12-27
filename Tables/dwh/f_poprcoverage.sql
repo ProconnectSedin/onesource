@@ -24,3 +24,20 @@ CREATE TABLE dwh.f_poprcoverage (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_poprcoverage ALTER COLUMN poprq_covg_dtl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_poprcoverage_poprq_covg_dtl_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_poprcoverage
+    ADD CONSTRAINT f_poprcoverage_pkey PRIMARY KEY (poprq_covg_dtl_key);
+
+ALTER TABLE ONLY dwh.f_poprcoverage
+    ADD CONSTRAINT f_poprcoverage_ukey UNIQUE (poprq_poou, poprq_pono, poprq_poamendmentno, poprq_polineno, poprq_scheduleno, poprq_prno, poprq_posubscheduleno, poprq_prlineno, poprq_prou, poprq_pr_shdno, poprq_pr_subsceduleno);
+
+CREATE INDEX f_poprcoverage_key_idx1 ON dwh.f_poprcoverage USING btree (poprq_poou, poprq_pono, poprq_poamendmentno, poprq_polineno, poprq_scheduleno, poprq_prno, poprq_posubscheduleno, poprq_prlineno, poprq_prou, poprq_pr_shdno, poprq_pr_subsceduleno);

@@ -26,3 +26,23 @@ CREATE TABLE dwh.f_draftbillsuppliercontractdetail (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_draftbillsuppliercontractdetail ALTER COLUMN draft_bill_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_draftbillsuppliercontractdetail_draft_bill_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_draftbillsuppliercontractdetail
+    ADD CONSTRAINT f_draftbillsuppliercontractdetail_pkey PRIMARY KEY (draft_bill_key);
+
+ALTER TABLE ONLY dwh.f_draftbillsuppliercontractdetail
+    ADD CONSTRAINT f_draftbillsuppliercontractdetail_ukey UNIQUE (draft_bill_ou, draft_bill_location, draft_bill_division, draft_bill_tran_type, draft_bill_ref_doc_no, draft_bill_ref_doc_type, draft_bill_vendor_id, draft_bill_resource_type);
+
+ALTER TABLE ONLY dwh.f_draftbillsuppliercontractdetail
+    ADD CONSTRAINT f_draftbillsuppliercontractdetail_draft_bill_location_key_fkey FOREIGN KEY (draft_bill_location_key) REFERENCES dwh.d_location(loc_key);
+
+CREATE INDEX f_draftbillsuppliercontractdetail_key_idx ON dwh.f_draftbillsuppliercontractdetail USING btree (draft_bill_ou, draft_bill_location, draft_bill_division, draft_bill_tran_type, draft_bill_ref_doc_no, draft_bill_ref_doc_type, draft_bill_vendor_id, draft_bill_resource_type);

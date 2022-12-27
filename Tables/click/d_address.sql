@@ -24,3 +24,9 @@ CREATE TABLE click.d_address (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE ONLY click.d_address
+    ADD CONSTRAINT d_adress_pkey PRIMARY KEY (address_key);
+
+ALTER TABLE ONLY click.d_address
+    ADD CONSTRAINT d_adress_ukey UNIQUE (address_id);

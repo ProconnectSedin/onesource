@@ -27,3 +27,18 @@ CREATE TABLE dwh.d_consignee (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.d_consignee ALTER COLUMN consignee_hdr_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.d_consignee_consignee_hdr_key_seq
+    START WITH -1
+    INCREMENT BY 1
+    MINVALUE -1
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.d_consignee
+    ADD CONSTRAINT d_consignee_pkey PRIMARY KEY (consignee_hdr_key);
+
+ALTER TABLE ONLY dwh.d_consignee
+    ADD CONSTRAINT d_consignee_ukey UNIQUE (consignee_id, consignee_ou);

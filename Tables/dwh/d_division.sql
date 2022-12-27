@@ -21,3 +21,18 @@ CREATE TABLE dwh.d_division (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.d_division ALTER COLUMN div_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.d_division_div_key_seq
+    START WITH -1
+    INCREMENT BY 1
+    MINVALUE -1
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.d_division
+    ADD CONSTRAINT d_division_pkey PRIMARY KEY (div_key);
+
+ALTER TABLE ONLY dwh.d_division
+    ADD CONSTRAINT d_division_ukey UNIQUE (div_ou, div_code);

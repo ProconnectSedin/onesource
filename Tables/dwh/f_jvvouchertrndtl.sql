@@ -37,3 +37,18 @@ CREATE TABLE dwh.f_jvvouchertrndtl (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_jvvouchertrndtl ALTER COLUMN jv_vcr_trn_dtl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_jvvouchertrndtl_jv_vcr_trn_dtl_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_jvvouchertrndtl
+    ADD CONSTRAINT f_jvvouchertrndtl_pkey PRIMARY KEY (jv_vcr_trn_dtl_key);
+
+ALTER TABLE ONLY dwh.f_jvvouchertrndtl
+    ADD CONSTRAINT f_jvvouchertrndtl_ukey UNIQUE (ou_id, voucher_no, voucher_serial_no);

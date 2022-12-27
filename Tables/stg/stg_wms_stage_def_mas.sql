@@ -12,3 +12,6 @@ CREATE TABLE stg.stg_wms_stage_def_mas (
     wms_stg_appl character varying(32) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_stage_def_mas
+    ADD CONSTRAINT wms_stage_def_mas_pkey PRIMARY KEY (wms_stg_ou, wms_stg_code, wms_stg_location);

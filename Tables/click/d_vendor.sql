@@ -57,3 +57,9 @@ CREATE TABLE click.d_vendor (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE ONLY click.d_vendor
+    ADD CONSTRAINT d_vendor_pkey PRIMARY KEY (vendor_key);
+
+ALTER TABLE ONLY click.d_vendor
+    ADD CONSTRAINT d_vendor_ukey UNIQUE (vendor_id, vendor_ou);

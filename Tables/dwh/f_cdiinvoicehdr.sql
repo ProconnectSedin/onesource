@@ -82,3 +82,20 @@ CREATE TABLE dwh.f_cdiinvoicehdr (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_cdiinvoicehdr ALTER COLUMN cdi_inv_hdr_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_cdiinvoicehdr_cdi_inv_hdr_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_cdiinvoicehdr
+    ADD CONSTRAINT f_cdiinvoicehdr_pkey PRIMARY KEY (cdi_inv_hdr_key);
+
+ALTER TABLE ONLY dwh.f_cdiinvoicehdr
+    ADD CONSTRAINT f_cdiinvoicehdr_ukey UNIQUE (tran_type, tran_ou, tran_no, ctimestamp, ict_flag, lgt_invoice, mail_sent);
+
+CREATE INDEX f_cdiinvoicehdr_key_idx ON dwh.f_cdiinvoicehdr USING btree (fb_key, curr_key);

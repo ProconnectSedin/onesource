@@ -17,3 +17,6 @@ CREATE TABLE stg.stg_tms_evcsd_event_configuration_setup_dtl (
     evcsd_linked_vas character varying(160) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_tms_evcsd_event_configuration_setup_dtl
+    ADD CONSTRAINT pk_tms_evcsd_event_configuration_setup_dtl PRIMARY KEY (evcsd_ouinstance, evcsd_guid);

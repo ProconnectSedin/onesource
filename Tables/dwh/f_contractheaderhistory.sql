@@ -61,3 +61,37 @@ CREATE TABLE dwh.f_contractheaderhistory (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_contractheaderhistory ALTER COLUMN cont_hdr_hst_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_contractheaderhistory_cont_hdr_hst_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_contractheaderhistory
+    ADD CONSTRAINT f_contractheaderhistory_pkey PRIMARY KEY (cont_hdr_hst_key);
+
+ALTER TABLE ONLY dwh.f_contractheaderhistory
+    ADD CONSTRAINT f_contractheaderhistory_ukey UNIQUE (cont_id, cont_ou, cont_amendno);
+
+ALTER TABLE ONLY dwh.f_contractheaderhistory
+    ADD CONSTRAINT f_contractheaderhistory_cont_hdr_hst_curr_key_fkey FOREIGN KEY (cont_hdr_hst_curr_key) REFERENCES dwh.d_currency(curr_key);
+
+ALTER TABLE ONLY dwh.f_contractheaderhistory
+    ADD CONSTRAINT f_contractheaderhistory_cont_hdr_hst_customer_key_fkey FOREIGN KEY (cont_hdr_hst_customer_key) REFERENCES dwh.d_customer(customer_key);
+
+ALTER TABLE ONLY dwh.f_contractheaderhistory
+    ADD CONSTRAINT f_contractheaderhistory_cont_hdr_hst_datekey_fkey FOREIGN KEY (cont_hdr_hst_datekey) REFERENCES dwh.d_date(datekey);
+
+ALTER TABLE ONLY dwh.f_contractheaderhistory
+    ADD CONSTRAINT f_contractheaderhistory_cont_hdr_hst_loc_key_fkey FOREIGN KEY (cont_hdr_hst_loc_key) REFERENCES dwh.d_location(loc_key);
+
+ALTER TABLE ONLY dwh.f_contractheaderhistory
+    ADD CONSTRAINT f_contractheaderhistory_cont_hdr_hst_vendor_key_fkey FOREIGN KEY (cont_hdr_hst_vendor_key) REFERENCES dwh.d_vendor(vendor_key);
+
+CREATE INDEX f_contractheaderhistory_key_idx ON dwh.f_contractheaderhistory USING btree (cont_id, cont_ou, cont_amendno);
+
+CREATE INDEX f_contractheaderhistory_key_idx1 ON dwh.f_contractheaderhistory USING btree (cont_hdr_hst_customer_key, cont_hdr_hst_datekey, cont_hdr_hst_loc_key, cont_hdr_hst_vendor_key, cont_hdr_hst_curr_key);

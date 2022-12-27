@@ -9,3 +9,6 @@ CREATE TABLE stg.stg_wms_route_info_dtl (
     wms_rou_rev_distribution numeric,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_route_info_dtl
+    ADD CONSTRAINT wms_route_info_dtl_pk PRIMARY KEY (wms_rou_route_id, wms_rou_info_ou, wms_rou_info_lineno);

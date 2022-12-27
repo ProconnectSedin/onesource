@@ -48,3 +48,26 @@ CREATE TABLE dwh.f_sdinexpensedtl (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_sdinexpensedtl ALTER COLUMN f_sdinexpensedtl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_sdinexpensedtl_f_sdinexpensedtl_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_sdinexpensedtl
+    ADD CONSTRAINT f_sdinexpensedtl_pkey PRIMARY KEY (f_sdinexpensedtl_key);
+
+ALTER TABLE ONLY dwh.f_sdinexpensedtl
+    ADD CONSTRAINT f_sdinexpensedtl_ukey UNIQUE (tran_type, tran_ou, tran_no, line_no, s_timestamp);
+
+ALTER TABLE ONLY dwh.f_sdinexpensedtl
+    ADD CONSTRAINT f_sdinexpensedtl_account_key_fkey FOREIGN KEY (account_key) REFERENCES dwh.d_operationalaccountdetail(opcoa_key);
+
+ALTER TABLE ONLY dwh.f_sdinexpensedtl
+    ADD CONSTRAINT f_sdinexpensedtl_uom_key_fkey FOREIGN KEY (uom_key) REFERENCES dwh.d_uom(uom_key);
+
+CREATE INDEX f_sdinexpensedtl_key_idx ON dwh.f_sdinexpensedtl USING btree (tran_type, tran_ou, tran_no, line_no, s_timestamp);

@@ -80,3 +80,20 @@ CREATE TABLE dwh.f_sdininvoicehdr (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_sdininvoicehdr ALTER COLUMN sd_inv_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_sdininvoicehdr_sd_inv_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_sdininvoicehdr
+    ADD CONSTRAINT f_sdininvoicehdr_pkey PRIMARY KEY (sd_inv_key);
+
+ALTER TABLE ONLY dwh.f_sdininvoicehdr
+    ADD CONSTRAINT f_sdininvoicehdr_ukey UNIQUE (tran_type, tran_ou, tran_no, s_timestamp, payment_type, ict_flag, ales_flag, lgt_invoice, mail_sent, allow_auto_cap);
+
+CREATE INDEX f_sdininvoicehdr_key_idx ON dwh.f_sdininvoicehdr USING btree (tran_type, tran_ou, tran_no, s_timestamp, payment_type, ict_flag, ales_flag, lgt_invoice, mail_sent, allow_auto_cap);

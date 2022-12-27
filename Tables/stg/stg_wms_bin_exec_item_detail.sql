@@ -29,3 +29,6 @@ CREATE TABLE stg.stg_wms_bin_exec_item_detail (
     wms_bin_thu_id character varying(160) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_bin_exec_item_detail
+    ADD CONSTRAINT wms_bin_exec_item_detail_pk PRIMARY KEY (wms_bin_loc_code, wms_bin_exec_no, wms_bin_exec_lineno, wms_bin_ref_lineno, wms_bin_exec_ou);

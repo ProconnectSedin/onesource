@@ -33,3 +33,18 @@ CREATE TABLE dwh.d_stage (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.d_stage ALTER COLUMN stg_mas_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.d_stage_stg_mas_key_seq
+    START WITH -1
+    INCREMENT BY 1
+    MINVALUE -1
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.d_stage
+    ADD CONSTRAINT d_stage_pkey PRIMARY KEY (stg_mas_key);
+
+ALTER TABLE ONLY dwh.d_stage
+    ADD CONSTRAINT d_stage_ukey UNIQUE (stg_mas_ou, stg_mas_id, stg_mas_loc);

@@ -42,3 +42,20 @@ CREATE TABLE dwh.d_thu (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.d_thu ALTER COLUMN thu_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.d_thu_thu_key_seq
+    START WITH -1
+    INCREMENT BY 1
+    MINVALUE -1
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.d_thu
+    ADD CONSTRAINT d_thu_pkey PRIMARY KEY (thu_key);
+
+ALTER TABLE ONLY dwh.d_thu
+    ADD CONSTRAINT d_thu_ukey UNIQUE (thu_id, thu_ou);
+
+CREATE INDEX d_thu_idx ON dwh.d_thu USING btree (thu_ou, thu_id);

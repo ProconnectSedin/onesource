@@ -50,3 +50,26 @@ CREATE TABLE click.f_grn (
     etlupdatedatetime timestamp(3) without time zone,
     activeindicator integer
 );
+
+ALTER TABLE click.f_grn ALTER COLUMN grn_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME click.f_grn_grn_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY click.f_grn
+    ADD CONSTRAINT f_grn_pkey PRIMARY KEY (grn_key);
+
+ALTER TABLE ONLY click.f_grn
+    ADD CONSTRAINT f_grn_ukey UNIQUE (gr_asn_no, gr_loc_code, gr_pln_ou, gr_pln_no, gr_exec_no, gr_lineno);
+
+CREATE INDEX f_gr_po_idx ON click.f_grn USING btree (gr_po_no, gr_loc_key);
+
+CREATE INDEX f_grn_date_idx ON click.f_grn USING btree (gr_created_date, gr_modified_date);
+
+CREATE INDEX f_grn_join_idx ON click.f_grn USING btree (gr_loc_code, gr_pln_ou, gr_pln_no, gr_asn_no, gr_exec_no, gr_lineno, gr_no, gr_po_no);
+
+CREATE INDEX f_grn_key_idx ON click.f_grn USING btree (gr_pln_key, gr_dtl_key, gr_emp_hdr_key, gr_itm_dtl_key, asn_key, gr_loc_key, gr_date_key, gr_itm_dtl_itm_hdr_key, gr_itm_dtl_uom_key, gr_itm_dtl_stg_mas_key);

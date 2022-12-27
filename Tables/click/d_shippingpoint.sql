@@ -40,3 +40,9 @@ CREATE TABLE click.d_shippingpoint (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE ONLY click.d_shippingpoint
+    ADD CONSTRAINT d_shippingpoint_pkey PRIMARY KEY (shp_pt_key);
+
+ALTER TABLE ONLY click.d_shippingpoint
+    ADD CONSTRAINT d_shippingpoint_ukey UNIQUE (shp_pt_ou, shp_pt_id);

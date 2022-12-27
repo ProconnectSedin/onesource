@@ -12,3 +12,6 @@ CREATE TABLE stg.stg_wms_disp_cons_dtl (
     wms_disp_delivery_date character varying(1020) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_disp_cons_dtl
+    ADD CONSTRAINT wms_disp_cons_dtl_pk PRIMARY KEY (wms_disp_location, wms_disp_ou, wms_disp_lineno);

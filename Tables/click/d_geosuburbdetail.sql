@@ -17,3 +17,9 @@ CREATE TABLE click.d_geosuburbdetail (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE ONLY click.d_geosuburbdetail
+    ADD CONSTRAINT d_geosuburbdetail_pkey PRIMARY KEY (geo_state_key);
+
+ALTER TABLE ONLY click.d_geosuburbdetail
+    ADD CONSTRAINT d_geosuburbdetail_ukey UNIQUE (geo_country_code, geo_state_code, geo_city_code, geo_postal_code, geo_suburb_code, geo_suburb_ou, geo_suburb_lineno);

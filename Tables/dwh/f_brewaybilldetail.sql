@@ -22,3 +22,25 @@ CREATE TABLE dwh.f_brewaybilldetail (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_brewaybilldetail ALTER COLUMN ewbd_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_brewaybilldetail_ewbd_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_brewaybilldetail
+    ADD CONSTRAINT f_brewaybilldetail_pkey PRIMARY KEY (ewbd_key);
+
+ALTER TABLE ONLY dwh.f_brewaybilldetail
+    ADD CONSTRAINT f_brewaybilldetail_ukey UNIQUE (ewbd_br_no, ewbd_ouinstance);
+
+ALTER TABLE ONLY dwh.f_brewaybilldetail
+    ADD CONSTRAINT f_brewaybilldetail_br_key_fkey FOREIGN KEY (br_key) REFERENCES dwh.f_bookingrequest(br_key);
+
+CREATE INDEX f_brewaybilldetail_key_idx ON dwh.f_brewaybilldetail USING btree (br_key);
+
+CREATE INDEX f_brewaybilldetail_key_idx1 ON dwh.f_brewaybilldetail USING btree (ewbd_br_no, ewbd_ouinstance);

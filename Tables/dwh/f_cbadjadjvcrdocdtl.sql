@@ -29,3 +29,18 @@ CREATE TABLE dwh.f_cbadjadjvcrdocdtl (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_cbadjadjvcrdocdtl ALTER COLUMN adj_docdtl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_cbadjadjvcrdocdtl_adj_docdtl_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_cbadjadjvcrdocdtl
+    ADD CONSTRAINT f_cbadjadjvcrdocdtl_pkey PRIMARY KEY (adj_docdtl_key);
+
+ALTER TABLE ONLY dwh.f_cbadjadjvcrdocdtl
+    ADD CONSTRAINT f_cbadjadjvcrdocdtl_ukey UNIQUE (ou_id, adj_voucher_no, cr_doc_ou, cr_doc_type, cr_doc_no, term_no, voucher_tran_type);

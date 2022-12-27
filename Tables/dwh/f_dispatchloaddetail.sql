@@ -22,3 +22,26 @@ CREATE TABLE dwh.f_dispatchloaddetail (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_dispatchloaddetail ALTER COLUMN disp_load_dtl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_dispatchloaddetail_disp_load_dtl_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_dispatchloaddetail
+    ADD CONSTRAINT f_dispatchloaddetail_pkey PRIMARY KEY (disp_load_dtl_key);
+
+ALTER TABLE ONLY dwh.f_dispatchloaddetail
+    ADD CONSTRAINT f_dispatchloaddetail_ukey UNIQUE (disp_location, disp_ou, disp_lineno);
+
+ALTER TABLE ONLY dwh.f_dispatchloaddetail
+    ADD CONSTRAINT f_dispatchconsdetail_disp_load_customer_key_fkey FOREIGN KEY (disp_load_customer_key) REFERENCES dwh.d_customer(customer_key);
+
+ALTER TABLE ONLY dwh.f_dispatchloaddetail
+    ADD CONSTRAINT f_dispatchconsdetail_disp_load_loc_key_fkey FOREIGN KEY (disp_load_loc_key) REFERENCES dwh.d_location(loc_key);
+
+CREATE INDEX f_dispatchloaddetail_key_idx ON dwh.f_dispatchloaddetail USING btree (disp_load_loc_key, disp_load_customer_key);

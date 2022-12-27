@@ -31,3 +31,28 @@ CREATE TABLE dwh.f_brplanningprofiledetail (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_brplanningprofiledetail ALTER COLUMN brppd_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_brplanningprofiledetail_brppd_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_brplanningprofiledetail
+    ADD CONSTRAINT f_brplanningprofiledetail_pkey PRIMARY KEY (brppd_key);
+
+ALTER TABLE ONLY dwh.f_brplanningprofiledetail
+    ADD CONSTRAINT f_brplanningprofiledetail_ukey UNIQUE (brppd_ouinstance, brppd_profile_id, brppd_br_id);
+
+ALTER TABLE ONLY dwh.f_brplanningprofiledetail
+    ADD CONSTRAINT f_brplanningprofiledetail_brppd_cust_key_fkey FOREIGN KEY (brppd_cust_key) REFERENCES dwh.d_customer(customer_key);
+
+ALTER TABLE ONLY dwh.f_brplanningprofiledetail
+    ADD CONSTRAINT f_brplanningprofiledetail_brppd_loc_key_fkey FOREIGN KEY (brppd_loc_key) REFERENCES dwh.d_location(loc_key);
+
+CREATE INDEX f_brplanningprofiledetail_key_idx ON dwh.f_brplanningprofiledetail USING btree (brppd_ouinstance, brppd_profile_id, brppd_br_id);
+
+CREATE INDEX f_brplanningprofiledetail_key_idx1 ON dwh.f_brplanningprofiledetail USING btree (brppd_cust_key, brppd_loc_key);

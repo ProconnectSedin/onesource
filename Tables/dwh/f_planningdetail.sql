@@ -46,3 +46,28 @@ CREATE TABLE dwh.f_planningdetail (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_planningdetail ALTER COLUMN plph_dtl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_planningdetail_plph_dtl_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_planningdetail
+    ADD CONSTRAINT f_planningdetail_pkey PRIMARY KEY (plph_dtl_key);
+
+ALTER TABLE ONLY dwh.f_planningdetail
+    ADD CONSTRAINT f_planningdetail_ukey UNIQUE (plpd_ouinstance, plpd_plan_run_no, plpd_plan_unique_id);
+
+ALTER TABLE ONLY dwh.f_planningdetail
+    ADD CONSTRAINT f_planningdetail_plpd_cust_key_fkey FOREIGN KEY (plpd_cust_key) REFERENCES dwh.d_customer(customer_key);
+
+ALTER TABLE ONLY dwh.f_planningdetail
+    ADD CONSTRAINT f_planningdetail_plph_hdr_key_fkey FOREIGN KEY (plph_hdr_key) REFERENCES dwh.f_planningheader(plph_hdr_key);
+
+CREATE INDEX f_planningdetail_key_idx ON dwh.f_planningdetail USING btree (plpd_cust_key);
+
+CREATE INDEX f_planningdetail_key_idx1 ON dwh.f_planningdetail USING btree (plpd_ouinstance, plpd_plan_run_no, plpd_plan_unique_id);

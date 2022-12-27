@@ -19,3 +19,14 @@ CREATE TABLE stg.stg_wms_outbound_sch_dtl (
     wms_oub_sch_orderuom_ml character varying(40) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_outbound_sch_dtl
+    ADD CONSTRAINT wms_outbound_sch_dtl_pkey PRIMARY KEY (wms_oub_sch_loc_code, wms_oub_sch_ou, wms_oub_outbound_ord, wms_oub_sch_lineno, wms_oub_item_lineno);
+
+CREATE INDEX stg_wms_outbound_sch_dtl_idx ON stg.stg_wms_outbound_sch_dtl USING btree (wms_oub_sch_loc_code, wms_oub_sch_ou);
+
+CREATE INDEX stg_wms_outbound_sch_dtl_idx1 ON stg.stg_wms_outbound_sch_dtl USING btree (wms_oub_sch_item_code, wms_oub_sch_ou);
+
+CREATE INDEX stg_wms_outbound_sch_dtl_idx3 ON stg.stg_wms_outbound_sch_dtl USING btree (wms_oub_sch_ou, wms_oub_sch_loc_code, wms_oub_outbound_ord);
+
+CREATE INDEX stg_wms_outbound_sch_dtl_key_idx2 ON stg.stg_wms_outbound_sch_dtl USING btree (wms_oub_sch_ou, wms_oub_sch_loc_code, wms_oub_outbound_ord, wms_oub_sch_lineno, wms_oub_item_lineno);

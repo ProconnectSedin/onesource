@@ -13,3 +13,6 @@ CREATE TABLE stg.stg_wms_stock_lot_tracking_dtl (
     wms_stk_stock_status character varying(400) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_stock_lot_tracking_dtl
+    ADD CONSTRAINT wms_stock_lot_tracking_dtl_pk PRIMARY KEY (wms_stk_ou, wms_stk_location, wms_stk_item, wms_stk_customer, wms_stk_date, wms_stk_lot_no);

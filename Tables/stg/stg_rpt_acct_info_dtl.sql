@@ -33,3 +33,8 @@ CREATE TABLE stg.stg_rpt_acct_info_dtl (
     project_code character varying(280) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_rpt_acct_info_dtl
+    ADD CONSTRAINT rpt_acct_info_dtl_pkey PRIMARY KEY (ou_id, tran_no, account_code, tran_type, drcr_flag, posting_line_no);
+
+CREATE INDEX stg_rpt_acct_info_dtl_idx ON stg.stg_rpt_acct_info_dtl USING btree (ou_id, tran_no, account_code, tran_type, drcr_flag, posting_line_no);

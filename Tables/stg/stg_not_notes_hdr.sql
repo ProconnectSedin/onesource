@@ -22,3 +22,6 @@ CREATE TABLE stg.stg_not_notes_hdr (
     folder character varying(32) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_not_notes_hdr
+    ADD CONSTRAINT pk__not_notes_hdr__437adc30 PRIMARY KEY (notes_compkey);

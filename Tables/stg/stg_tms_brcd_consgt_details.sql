@@ -39,3 +39,5 @@ CREATE TABLE stg.stg_tms_brcd_consgt_details (
     cd_shipper_invoice_date timestamp without time zone,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+CREATE INDEX stg_tms_brcd_consgt_details_key_idx1 ON stg.stg_tms_brcd_consgt_details USING btree (cd_ouinstance, cd_br_id, cd_line_no);

@@ -20,3 +20,9 @@ CREATE TABLE click.d_tarifftype (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE ONLY click.d_tarifftype
+    ADD CONSTRAINT d_tarifftype_pkey PRIMARY KEY (tar_key);
+
+ALTER TABLE ONLY click.d_tarifftype
+    ADD CONSTRAINT d_tarifftype_ukey UNIQUE (tar_lineno, tar_ou);

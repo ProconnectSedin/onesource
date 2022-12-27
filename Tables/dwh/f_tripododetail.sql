@@ -25,3 +25,23 @@ CREATE TABLE dwh.f_tripododetail (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_tripododetail ALTER COLUMN plpto_trp_odo_dtl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_tripododetail_plpto_trp_odo_dtl_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_tripododetail
+    ADD CONSTRAINT f_tripododetail_pkey PRIMARY KEY (plpto_trp_odo_dtl_key);
+
+ALTER TABLE ONLY dwh.f_tripododetail
+    ADD CONSTRAINT f_tripododetail_ukey UNIQUE (plpto_ouinstance, plpto_guid);
+
+ALTER TABLE ONLY dwh.f_tripododetail
+    ADD CONSTRAINT f_tripododetail_plpth_hdr_key_fkey FOREIGN KEY (plpth_hdr_key) REFERENCES dwh.f_tripplanningheader(plpth_hdr_key);
+
+CREATE INDEX f_tripododetail_key_idx ON dwh.f_tripododetail USING btree (plpth_hdr_key);

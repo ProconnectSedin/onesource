@@ -20,3 +20,15 @@ CREATE TABLE ods.error (
     latestbatchid integer,
     sourcegroupflag integer
 );
+
+ALTER TABLE ods.error ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME ods.error_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY ods.error
+    ADD CONSTRAINT error_pkey PRIMARY KEY (id);

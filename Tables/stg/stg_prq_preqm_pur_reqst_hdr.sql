@@ -41,3 +41,8 @@ CREATE TABLE stg.stg_prq_preqm_pur_reqst_hdr (
     preqm_reason_return character varying(1020) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_prq_preqm_pur_reqst_hdr
+    ADD CONSTRAINT pkprq_preqm_pur_reqst_hdr PRIMARY KEY (preqm_prno, preqm_prou);
+
+CREATE INDEX stg_prq_preqm_pur_reqst_hdr_key_idx1 ON stg.stg_prq_preqm_pur_reqst_hdr USING btree (preqm_prno, preqm_prou);

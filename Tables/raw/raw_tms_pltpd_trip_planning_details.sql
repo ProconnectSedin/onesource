@@ -55,3 +55,15 @@ CREATE TABLE raw.raw_tms_pltpd_trip_planning_details (
     plptd_transit_time numeric,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE raw.raw_tms_pltpd_trip_planning_details ALTER COLUMN raw_id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME raw.raw_tms_pltpd_trip_planning_details_raw_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY raw.raw_tms_pltpd_trip_planning_details
+    ADD CONSTRAINT raw_tms_pltpd_trip_planning_details_pkey PRIMARY KEY (raw_id);

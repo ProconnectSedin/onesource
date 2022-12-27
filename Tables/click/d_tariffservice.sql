@@ -22,3 +22,9 @@ CREATE TABLE click.d_tariffservice (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE ONLY click.d_tariffservice
+    ADD CONSTRAINT d_tariffservice_pkey PRIMARY KEY (tf_key);
+
+ALTER TABLE ONLY click.d_tariffservice
+    ADD CONSTRAINT d_tariffservice_ukey UNIQUE (tf_ser_id, tf_ser_ou);

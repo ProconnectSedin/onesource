@@ -45,3 +45,8 @@ CREATE TABLE stg.stg_wms_gr_plan_dtl (
     wms_gr_pln_item_attribute9 character varying(1024) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_gr_plan_dtl
+    ADD CONSTRAINT wms_gr_plan_dtl_pk PRIMARY KEY (wms_gr_loc_code, wms_gr_pln_no, wms_gr_pln_ou);
+
+CREATE INDEX stg_wms_gr_plan_dtl_key_idx2 ON stg.stg_wms_gr_plan_dtl USING btree (wms_gr_loc_code, wms_gr_pln_no, wms_gr_pln_ou);

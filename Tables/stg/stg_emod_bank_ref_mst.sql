@@ -34,3 +34,6 @@ CREATE TABLE stg.stg_emod_bank_ref_mst (
     long_description character varying(1020) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_emod_bank_ref_mst
+    ADD CONSTRAINT emod_bank_ref_mst_pkey PRIMARY KEY (bank_ref_no, bank_status);

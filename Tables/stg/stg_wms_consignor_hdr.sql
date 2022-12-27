@@ -40,3 +40,6 @@ CREATE TABLE stg.stg_wms_consignor_hdr (
     wms_consignor_uom character varying(1020) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_consignor_hdr
+    ADD CONSTRAINT wms_consignor_hdr_pk PRIMARY KEY (wms_consignor_id, wms_consignor_ou);

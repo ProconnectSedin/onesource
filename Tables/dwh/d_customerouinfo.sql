@@ -53,3 +53,18 @@ CREATE TABLE dwh.d_customerouinfo (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.d_customerouinfo ALTER COLUMN cou_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.d_customerouinfo_cou_key_seq
+    START WITH -1
+    INCREMENT BY 1
+    MINVALUE -1
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.d_customerouinfo
+    ADD CONSTRAINT d_customerouinfo_pkey PRIMARY KEY (cou_key);
+
+ALTER TABLE ONLY dwh.d_customerouinfo
+    ADD CONSTRAINT d_customerouinfo_ukey UNIQUE (cou_cust_code, cou_lo, cou_bu, cou_ou);

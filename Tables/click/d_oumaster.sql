@@ -20,3 +20,9 @@ CREATE TABLE click.d_oumaster (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE ONLY click.d_oumaster
+    ADD CONSTRAINT d_oumaster_pkey PRIMARY KEY (ou_key);
+
+ALTER TABLE ONLY click.d_oumaster
+    ADD CONSTRAINT d_oumaster_ukey UNIQUE (ou_id, bu_id, company_code, address_id, serial_no);

@@ -15,3 +15,18 @@ CREATE TABLE dwh.d_employeeskills (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.d_employeeskills ALTER COLUMN emp_skill_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.d_employeeskills_emp_skill_key_seq
+    START WITH -1
+    INCREMENT BY 1
+    MINVALUE -1
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.d_employeeskills
+    ADD CONSTRAINT d_employeeskills_pkey PRIMARY KEY (emp_skill_key);
+
+ALTER TABLE ONLY dwh.d_employeeskills
+    ADD CONSTRAINT d_employeeskills_ukey UNIQUE (emp_employee_code, emp_ou, emp_lineno);

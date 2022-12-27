@@ -53,3 +53,9 @@ CREATE TABLE click.d_customerouinfo (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE ONLY click.d_customerouinfo
+    ADD CONSTRAINT d_customerouinfo_pkey PRIMARY KEY (cou_key);
+
+ALTER TABLE ONLY click.d_customerouinfo
+    ADD CONSTRAINT d_customerouinfo_ukey UNIQUE (cou_cust_code, cou_lo, cou_bu, cou_ou);

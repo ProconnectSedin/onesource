@@ -18,3 +18,6 @@ CREATE TABLE stg.stg_wms_contract_transfer_inv_hdr (
     wms_cont_transfer_inv_value numeric,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_contract_transfer_inv_hdr
+    ADD CONSTRAINT wms_contract_transfer_inv_hdr_pk PRIMARY KEY (wms_cont_transfer_inv_no, wms_cont_transfer_inv_ou);

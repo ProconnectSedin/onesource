@@ -50,3 +50,26 @@ CREATE TABLE dwh.f_surfbpostingsdtl (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_surfbpostingsdtl ALTER COLUMN surf_dtl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_surfbpostingsdtl_surf_dtl_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_surfbpostingsdtl
+    ADD CONSTRAINT f_surfbpostingsdtl_pkey PRIMARY KEY (surf_dtl_key);
+
+ALTER TABLE ONLY dwh.f_surfbpostingsdtl
+    ADD CONSTRAINT f_surfbpostingsdtl_ukey UNIQUE (ou_id, tran_type, fb_id, tran_no, account_code, drcr_flag, acct_lineno, "timestamp");
+
+ALTER TABLE ONLY dwh.f_surfbpostingsdtl
+    ADD CONSTRAINT f_surfbpostingsdtl_surf_trn_company_key_fkey FOREIGN KEY (surf_trn_company_key) REFERENCES dwh.d_company(company_key);
+
+ALTER TABLE ONLY dwh.f_surfbpostingsdtl
+    ADD CONSTRAINT f_surfbpostingsdtl_surf_trn_curr_key_fkey FOREIGN KEY (surf_trn_curr_key) REFERENCES dwh.d_currency(curr_key);
+
+CREATE INDEX f_surfbpostingsdtl_key_idx ON dwh.f_surfbpostingsdtl USING btree (surf_trn_curr_key, surf_trn_company_key);

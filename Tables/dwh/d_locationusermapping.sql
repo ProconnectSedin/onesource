@@ -17,3 +17,20 @@ CREATE TABLE dwh.d_locationusermapping (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.d_locationusermapping ALTER COLUMN loc_user_mapping_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.d_locationusermapping_loc_user_mapping_key_seq
+    START WITH -1
+    INCREMENT BY 1
+    MINVALUE -1
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.d_locationusermapping
+    ADD CONSTRAINT d_locationusermapping_pkey PRIMARY KEY (loc_user_mapping_key);
+
+ALTER TABLE ONLY dwh.d_locationusermapping
+    ADD CONSTRAINT d_locationusermapping_ukey UNIQUE (loc_ou, loc_code, loc_lineno);
+
+CREATE INDEX d_locationusermapping_idx ON dwh.d_locationusermapping USING btree (loc_ou, loc_code, loc_lineno);

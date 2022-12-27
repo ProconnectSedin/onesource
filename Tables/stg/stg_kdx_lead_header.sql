@@ -69,3 +69,6 @@ CREATE TABLE stg.stg_kdx_lead_header (
     kdx_customer_name character varying(160) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_kdx_lead_header
+    ADD CONSTRAINT pk__kdx_lead_header__6e6bcae6 PRIMARY KEY (kdx_ou, kdx_projectno);

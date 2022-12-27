@@ -25,3 +25,5 @@ CREATE TABLE stg.stg_wms_outbound_item_detail_h (
     wms_oub_itm_wave_no character varying(72) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+CREATE INDEX stg_wms_outbound_item_detail_h_key_idx2 ON stg.stg_wms_outbound_item_detail_h USING btree (wms_oub_itm_loc_code, wms_oub_itm_ou, wms_oub_outbound_ord, wms_oub_itm_amendno, wms_oub_itm_lineno);

@@ -20,3 +20,8 @@ CREATE TABLE stg.stg_wms_pack_plan_hdr (
     wms_pack_pln_urgent integer,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_pack_plan_hdr
+    ADD CONSTRAINT wms_pack_plan_hdr_pk PRIMARY KEY (wms_pack_loc_code, wms_pack_pln_no, wms_pack_pln_ou);
+
+CREATE INDEX stg_wms_pack_plan_hdr_idx ON stg.stg_wms_pack_plan_hdr USING btree (wms_pack_loc_code, wms_pack_pln_no, wms_pack_pln_ou);

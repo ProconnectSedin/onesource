@@ -55,3 +55,20 @@ CREATE TABLE dwh.f_spyprepayvchhdr (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_spyprepayvchhdr ALTER COLUMN prepay_vch_hdr_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_spyprepayvchhdr_prepay_vch_hdr_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_spyprepayvchhdr
+    ADD CONSTRAINT f_spyprepayvchhdr_pkey PRIMARY KEY (prepay_vch_hdr_key);
+
+ALTER TABLE ONLY dwh.f_spyprepayvchhdr
+    ADD CONSTRAINT f_spyprepayvchhdr_ukey UNIQUE (ou_id, voucher_no, tran_type, ptimestamp, lgt_invoice_flag);
+
+CREATE INDEX f_spyprepayvchhdr_key_idx ON dwh.f_spyprepayvchhdr USING btree (vendor_key, curr_key);

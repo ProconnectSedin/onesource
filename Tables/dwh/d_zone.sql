@@ -45,3 +45,18 @@ CREATE TABLE dwh.d_zone (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.d_zone ALTER COLUMN zone_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.d_zone_zone_key_seq
+    START WITH -1
+    INCREMENT BY 1
+    MINVALUE -1
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.d_zone
+    ADD CONSTRAINT d_zone_pkey PRIMARY KEY (zone_key);
+
+ALTER TABLE ONLY dwh.d_zone
+    ADD CONSTRAINT d_zone_ukey UNIQUE (zone_code, zone_ou, zone_loc_code);

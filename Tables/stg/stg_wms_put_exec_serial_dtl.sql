@@ -14,3 +14,8 @@ CREATE TABLE stg.stg_wms_put_exec_serial_dtl (
     wms_pway_warranty_sno character varying(112) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_put_exec_serial_dtl
+    ADD CONSTRAINT wms_put_exec_serial_dtl_pk PRIMARY KEY (wms_pway_loc_code, wms_pway_exec_no, wms_pway_exec_ou, wms_pway_lineno);
+
+CREATE INDEX stg_wms_put_exec_serial_dtl_key_idx1 ON stg.stg_wms_put_exec_serial_dtl USING btree (wms_pway_loc_code, wms_pway_exec_no, wms_pway_exec_ou, wms_pway_lineno);

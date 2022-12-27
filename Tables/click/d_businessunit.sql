@@ -16,3 +16,9 @@ CREATE TABLE click.d_businessunit (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE ONLY click.d_businessunit
+    ADD CONSTRAINT d_businessunit_pkey PRIMARY KEY (bu_key);
+
+ALTER TABLE ONLY click.d_businessunit
+    ADD CONSTRAINT d_businessunit_ukey UNIQUE (company_code, bu_id, serial_no);

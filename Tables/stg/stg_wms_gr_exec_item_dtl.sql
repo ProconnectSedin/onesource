@@ -85,3 +85,6 @@ CREATE TABLE stg.stg_wms_gr_exec_item_dtl (
     wms_gr_qulinfee_bil_status character varying(32) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_gr_exec_item_dtl
+    ADD CONSTRAINT wms_gr_exec_item_dtl_pk PRIMARY KEY (wms_gr_loc_code, wms_gr_exec_no, wms_gr_exec_ou, wms_gr_lineno);

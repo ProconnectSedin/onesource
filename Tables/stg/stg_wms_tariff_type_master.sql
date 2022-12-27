@@ -14,3 +14,15 @@ CREATE TABLE stg.stg_wms_tariff_type_master (
     wms_tar_revenue_split character varying(160) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE stg.stg_wms_tariff_type_master ALTER COLUMN wms_tar_lineno ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME stg.stg_wms_tariff_type_master_wms_tar_lineno_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY stg.stg_wms_tariff_type_master
+    ADD CONSTRAINT wms_tariff_type_master_pk PRIMARY KEY (wms_tar_lineno, wms_tar_ou);

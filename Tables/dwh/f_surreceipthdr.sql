@@ -55,3 +55,28 @@ CREATE TABLE dwh.f_surreceipthdr (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_surreceipthdr ALTER COLUMN surreceipthdr_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_surreceipthdr_surreceipthdr_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_surreceipthdr
+    ADD CONSTRAINT f_surreceipthdr_pkey PRIMARY KEY (surreceipthdr_key);
+
+ALTER TABLE ONLY dwh.f_surreceipthdr
+    ADD CONSTRAINT f_surreceipthdr_ukey UNIQUE (ou_id, receipt_no, receipt_type, tran_type, stimestamp, ifb_flag);
+
+ALTER TABLE ONLY dwh.f_surreceipthdr
+    ADD CONSTRAINT f_surreceipthdr_surreceipthdr_curr_key_fkey FOREIGN KEY (surreceipthdr_curr_key) REFERENCES dwh.d_currency(curr_key);
+
+ALTER TABLE ONLY dwh.f_surreceipthdr
+    ADD CONSTRAINT f_surreceipthdr_surreceipthdr_date_key_fkey FOREIGN KEY (surreceipthdr_datekey) REFERENCES dwh.d_date(datekey);
+
+CREATE INDEX f_surreceipthdr_key_idx ON dwh.f_surreceipthdr USING btree (ou_id, receipt_no, receipt_type, tran_type, stimestamp, ifb_flag);
+
+CREATE INDEX f_surreceipthdr_key_idx1 ON dwh.f_surreceipthdr USING btree (surreceipthdr_curr_key, surreceipthdr_datekey);

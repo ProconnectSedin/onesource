@@ -20,3 +20,6 @@ CREATE TABLE stg.stg_cust_group_hdr (
     cgh_addnl3 character varying(1020) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_cust_group_hdr
+    ADD CONSTRAINT cust_group_hdr_pk PRIMARY KEY (cgh_lo, cgh_cust_group_code, cgh_control_group_flag, cgh_group_type_code);

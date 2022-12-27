@@ -16,3 +16,6 @@ CREATE TABLE stg.stg_tset_tax_category (
     tax_category_type character varying(160) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_tset_tax_category
+    ADD CONSTRAINT tset_tax_category_pkey PRIMARY KEY (tax_community, tax_type, company_code, tax_category, trade_type);

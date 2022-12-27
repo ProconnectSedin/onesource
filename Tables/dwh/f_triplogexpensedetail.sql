@@ -51,3 +51,17 @@ CREATE TABLE dwh.f_triplogexpensedetail (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_triplogexpensedetail ALTER COLUMN tled_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_triplogexpensedetail_tled_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_triplogexpensedetail
+    ADD CONSTRAINT f_triplogexpensedetail_pkey PRIMARY KEY (tled_key);
+
+CREATE INDEX f_triplogexpensedetail_key_idx ON dwh.f_triplogexpensedetail USING btree (tled_ouinstance, tled_trip_plan_id, tled_trip_plan_line_id);

@@ -13,3 +13,9 @@ CREATE TABLE click.d_locationshiftdetails (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE ONLY click.d_locationshiftdetails
+    ADD CONSTRAINT d_locationshiftdetails_pkey PRIMARY KEY (loc_shft_dtl_key);
+
+ALTER TABLE ONLY click.d_locationshiftdetails
+    ADD CONSTRAINT d_locationshiftdetails_ukey UNIQUE (loc_code, loc_shft_lineno, loc_ou);

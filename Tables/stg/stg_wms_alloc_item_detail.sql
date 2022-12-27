@@ -38,3 +38,8 @@ CREATE TABLE stg.stg_wms_alloc_item_detail (
     allc_su_serial_no2 character varying(112) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_alloc_item_detail
+    ADD CONSTRAINT wms_alloc_item_detail_pk PRIMARY KEY (allc_doc_no, allc_doc_ou, allc_doc_line_no, allc_alloc_line_no);
+
+CREATE INDEX stg_wms_alloc_item_detail_key_idx1 ON stg.stg_wms_alloc_item_detail USING btree (allc_doc_no, allc_doc_ou, allc_doc_line_no, allc_alloc_line_no);

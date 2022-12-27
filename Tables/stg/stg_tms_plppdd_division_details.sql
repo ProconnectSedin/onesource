@@ -11,3 +11,6 @@ CREATE TABLE stg.stg_tms_plppdd_division_details (
     plpph_timestamp integer,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_tms_plppdd_division_details
+    ADD CONSTRAINT pk_tms_plppdd_division_details PRIMARY KEY (plppdd_ouinstance, plppd_profile_id, plppd_line_no);

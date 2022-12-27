@@ -37,3 +37,6 @@ CREATE TABLE stg.stg_wms_draft_bill_hdr (
     wms_draft_bill_br_remittance_yn character varying(1020) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_draft_bill_hdr
+    ADD CONSTRAINT wms_draft_bill_hdr_pk PRIMARY KEY (wms_draft_bill_no, wms_draft_bill_ou);

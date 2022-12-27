@@ -122,3 +122,6 @@ CREATE TABLE stg.stg_scdn_dcnote_hdr (
     ifb_flag character varying(48) DEFAULT 'N'::character varying NOT NULL COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_scdn_dcnote_hdr
+    ADD CONSTRAINT scdn_dcnote_hdr_pkey PRIMARY KEY (tran_type, tran_ou, tran_no);

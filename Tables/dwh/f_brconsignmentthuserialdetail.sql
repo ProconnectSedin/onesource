@@ -26,3 +26,25 @@ CREATE TABLE dwh.f_brconsignmentthuserialdetail (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_brconsignmentthuserialdetail ALTER COLUMN ctsd_thu_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_brconsignmentthuserialdetail_ctsd_thu_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_brconsignmentthuserialdetail
+    ADD CONSTRAINT f_brconsignmentthuserialdetail_pkey PRIMARY KEY (ctsd_thu_key);
+
+ALTER TABLE ONLY dwh.f_brconsignmentthuserialdetail
+    ADD CONSTRAINT f_brconsignmentthuserialdetail_ukey UNIQUE (ctsd_ouinstance, ctsd_br_id, ctsd_thu_line_no, ctsd_thu_serial_line_no);
+
+ALTER TABLE ONLY dwh.f_brconsignmentthuserialdetail
+    ADD CONSTRAINT f_brconsignmentthuserialdetail_ctsd_br_key_fkey FOREIGN KEY (ctsd_br_key) REFERENCES dwh.f_bookingrequest(br_key);
+
+CREATE INDEX f_brconsignmentthuserialdetail_key_idx ON dwh.f_brconsignmentthuserialdetail USING btree (ctsd_ouinstance, ctsd_br_id, ctsd_thu_line_no, ctsd_thu_serial_line_no);
+
+CREATE INDEX f_brconsignmentthuserialdetail_key_idx1 ON dwh.f_brconsignmentthuserialdetail USING btree (ctsd_br_key);

@@ -26,3 +26,15 @@ CREATE TABLE click.f_sla_shipment (
     deliver_ontime_flag integer,
     createddate timestamp(3) without time zone
 );
+
+ALTER TABLE click.f_sla_shipment ALTER COLUMN sla_shipment_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME click.f_sla_shipment_sla_shipment_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY click.f_sla_shipment
+    ADD CONSTRAINT f_sla_shipment_pkey PRIMARY KEY (sla_shipment_key);

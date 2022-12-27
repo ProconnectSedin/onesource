@@ -38,3 +38,5 @@ CREATE TABLE stg.stg_wms_alloc_item_detail_hist (
     allc_su2 character varying(40) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+CREATE INDEX stg_wms_alloc_item_detail_hist_key_idx ON stg.stg_wms_alloc_item_detail_hist USING btree (allc_ouinstid, allc_doc_no, allc_doc_ou, allc_doc_line_no, allc_alloc_line_no);

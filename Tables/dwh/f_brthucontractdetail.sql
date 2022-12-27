@@ -56,3 +56,25 @@ CREATE TABLE dwh.f_brthucontractdetail (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_brthucontractdetail ALTER COLUMN brctd_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_brthucontractdetail_brctd_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_brthucontractdetail
+    ADD CONSTRAINT f_brthucontractdetail_pkey PRIMARY KEY (brctd_key);
+
+ALTER TABLE ONLY dwh.f_brthucontractdetail
+    ADD CONSTRAINT f_brthucontractdetail_ukey UNIQUE (brctd_ou, brctd_br_id, brctd_tariff_id, brctd_thu_line_no, brctd_staging_ref_document);
+
+ALTER TABLE ONLY dwh.f_brthucontractdetail
+    ADD CONSTRAINT f_brthucontractdetail_br_key_fkey FOREIGN KEY (br_key) REFERENCES dwh.f_bookingrequest(br_key);
+
+CREATE INDEX f_brthucontractdetail_key_idx ON dwh.f_brthucontractdetail USING btree (br_key);
+
+CREATE INDEX f_brthucontractdetail_key_idx1 ON dwh.f_brthucontractdetail USING btree (brctd_ou, brctd_br_id, brctd_tariff_id, brctd_thu_line_no, brctd_staging_ref_document);

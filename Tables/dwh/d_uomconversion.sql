@@ -18,3 +18,18 @@ CREATE TABLE dwh.d_uomconversion (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.d_uomconversion ALTER COLUMN uom_con_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.d_uomconversion_uom_con_key_seq
+    START WITH -1
+    INCREMENT BY 1
+    MINVALUE -1
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.d_uomconversion
+    ADD CONSTRAINT d_uomconversion_pkey PRIMARY KEY (uom_con_key);
+
+ALTER TABLE ONLY dwh.d_uomconversion
+    ADD CONSTRAINT d_uomconversion_ukey UNIQUE (con_fromuomcode, con_touomcode);

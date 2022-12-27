@@ -29,3 +29,20 @@ CREATE TABLE click.f_skumaster (
     d_ex_itm_key bigint,
     ex_itm_line_no integer
 );
+
+ALTER TABLE click.f_skumaster ALTER COLUMN skumaster_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME click.f_skumaster_skumaster_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY click.f_skumaster
+    ADD CONSTRAINT f_skumaster_pkey PRIMARY KEY (skumaster_key);
+
+ALTER TABLE ONLY click.f_skumaster
+    ADD CONSTRAINT f_skumaster_ukey UNIQUE (sku_ou, itm_hdr_key, d_ex_itm_key, ex_itm_line_no, customer_key);
+
+CREATE INDEX f_skumaster_idx ON click.f_skumaster USING btree (sku_ou, sku_code);

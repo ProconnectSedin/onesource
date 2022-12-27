@@ -17,3 +17,9 @@ CREATE TABLE click.d_geozone (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE ONLY click.d_geozone
+    ADD CONSTRAINT d_geozone_pkey PRIMARY KEY (geo_zone_key);
+
+ALTER TABLE ONLY click.d_geozone
+    ADD CONSTRAINT d_geozone_ukey UNIQUE (geo_zone, geo_zone_ou);

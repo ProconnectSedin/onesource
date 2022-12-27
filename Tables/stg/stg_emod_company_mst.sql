@@ -33,3 +33,6 @@ CREATE TABLE stg.stg_emod_company_mst (
     longitude numeric,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_emod_company_mst
+    ADD CONSTRAINT emod_company_mst_pkey PRIMARY KEY (company_code, serial_no);

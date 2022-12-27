@@ -20,3 +20,6 @@ CREATE TABLE stg.stg_wms_loc_prop_hdr (
     warehouse_loc_radio character varying(1020) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_loc_prop_hdr
+    ADD CONSTRAINT wms_loc_prop_hdr_pk PRIMARY KEY (wms_loc_pop_code, wms_loc_pop_ou);

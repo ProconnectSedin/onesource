@@ -59,3 +59,15 @@ CREATE TABLE stg.stg_wms_stock_ledger_dtl (
     wms_stkled_su_type character varying(40) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE stg.stg_wms_stock_ledger_dtl ALTER COLUMN wms_stkled_identity_no ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME stg.stg_wms_stock_ledger_dtl_wms_stkled_identity_no_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY stg.stg_wms_stock_ledger_dtl
+    ADD CONSTRAINT pk_wms_stkled_guid PRIMARY KEY (wms_stkled_guid);

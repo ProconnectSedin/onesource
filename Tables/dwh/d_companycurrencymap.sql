@@ -18,3 +18,18 @@ CREATE TABLE dwh.d_companycurrencymap (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.d_companycurrencymap ALTER COLUMN d_companycurrencymap_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.d_companycurrencymap_d_companycurrencymap_key_seq
+    START WITH -1
+    INCREMENT BY 1
+    MINVALUE -1
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.d_companycurrencymap
+    ADD CONSTRAINT d_companycurrencymap_pkey PRIMARY KEY (d_companycurrencymap_key);
+
+ALTER TABLE ONLY dwh.d_companycurrencymap
+    ADD CONSTRAINT d_companycurrencymap_ukey UNIQUE (serial_no, company_code, currency_code);

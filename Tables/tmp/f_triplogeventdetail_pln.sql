@@ -12,3 +12,5 @@ CREATE TABLE tmp.f_triplogeventdetail_pln (
     planneddeliverydepart timestamp without time zone,
     plannedtripend timestamp without time zone
 );
+
+CREATE INDEX f_triplogeventdetail_pln_ndx ON tmp.f_triplogeventdetail_pln USING btree (tled_ouinstance, tled_trip_plan_id, tled_leg_no);

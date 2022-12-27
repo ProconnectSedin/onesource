@@ -55,3 +55,23 @@ CREATE TABLE click.f_putaway (
     etlupdatedatetime timestamp(3) without time zone,
     activeindicator integer
 );
+
+ALTER TABLE click.f_putaway ALTER COLUMN pway_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME click.f_putaway_pway_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY click.f_putaway
+    ADD CONSTRAINT f_putaway_pkey PRIMARY KEY (pway_key);
+
+CREATE INDEX f_putaway_date_idx ON click.f_putaway USING btree (created_date, modified_date);
+
+CREATE INDEX f_putaway_join_idx ON click.f_putaway USING btree (pway_loc_code, pway_pln_no, pway_pln_ou, pway_lineno, pway_po_no, pway_item, pway_gr_no, pway_exec_no);
+
+CREATE INDEX f_putaway_key_idx ON click.f_putaway USING btree (pway_pln_dtl_key, pway_pln_itm_dtl_key, pway_itm_dtl_key, pway_exe_dtl_key, grn_key, pway_pln_dtl_loc_key, pway_pln_dtl_date_key, pway_pln_dtl_stg_mas_key, pway_pln_dtl_emp_hdr_key, pway_pln_itm_dtl_itm_hdr_key, pway_pln_itm_dtl_zone_key);
+
+CREATE INDEX f_putaway_po_idx ON click.f_putaway USING btree (pway_po_no, pway_pln_dtl_loc_key);

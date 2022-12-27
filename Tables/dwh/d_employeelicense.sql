@@ -17,3 +17,18 @@ CREATE TABLE dwh.d_employeelicense (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.d_employeelicense ALTER COLUMN emp_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.d_employeelicense_emp_key_seq
+    START WITH -1
+    INCREMENT BY 1
+    MINVALUE -1
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.d_employeelicense
+    ADD CONSTRAINT d_employeelicense_pkey PRIMARY KEY (emp_key);
+
+ALTER TABLE ONLY dwh.d_employeelicense
+    ADD CONSTRAINT d_employeelicense_ukey UNIQUE (emp_employee_code, emp_ou, emp_lineno);

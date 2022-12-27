@@ -17,3 +17,18 @@ CREATE TABLE dwh.d_geozone (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.d_geozone ALTER COLUMN geo_zone_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.d_geozone_geo_zone_key_seq
+    START WITH -1
+    INCREMENT BY 1
+    MINVALUE -1
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.d_geozone
+    ADD CONSTRAINT d_geozone_pkey PRIMARY KEY (geo_zone_key);
+
+ALTER TABLE ONLY dwh.d_geozone
+    ADD CONSTRAINT d_geozone_ukey UNIQUE (geo_zone, geo_zone_ou);
