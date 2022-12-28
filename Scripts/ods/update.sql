@@ -34,8 +34,6 @@ where dwobjectname in ( 'd_astaxyearhdr', 	'd_finquickcodemet',
 'f_tbpvoucherhdr', 	'f_tcaltranhdr');
 
 
-
-
 update ods.controlheader set  adlscontainername = 'Operational' 
 where dwobjectname  not in ( 'd_astaxyearhdr', 	'd_finquickcodemet', 
 'f_abbaccountbudgetdtl', 	'f_acapassethdr', 
