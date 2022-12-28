@@ -126,6 +126,21 @@ BEGIN
     AND 	t.asn_lineno 	= s.wms_asn_lineno;
 	--and COALESCE(h.asn_modified_date,h.asn_created_date)::DATE >= (CURRENT_DATE - INTERVAL '90 days')::DATE;
 */
+
+UPDATE dwh.f_asndetailhistory t1
+     SET etlactiveind =  0,
+     etlupdatedatetime = Now()::timestamp
+     FROM dwh.f_asndetailhistory t
+     LEFT join stg.stg_wms_asn_detail_h s
+     ON      t.asn_ou       = s.wms_asn_ou
+    AND     t.asn_location  = s.wms_asn_location
+    AND     t.asn_no        = s.wms_asn_no
+    AND     t.asn_amendno   = s.wms_asn_amendno
+    AND     t.asn_lineno    = s.wms_asn_lineno
+     WHERE t.asn_dtl_hst_key = t1.asn_dtl_hst_key
+     AND   COALESCE(t.etlupdatedatetime,t.etlcreatedatetime)::date >= NOW()::DATE
+     AND  s.wms_asn_ou is null;
+
     INSERT INTO dwh.F_ASNDetailHistory
     (
 		asn_hdr_hst_key,	  	asn_dtl_hst_loc_key,		asn_dtl_hst_itm_hdr_key,asn_dtl_hst_thu_key,
