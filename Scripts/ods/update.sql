@@ -57,3 +57,6 @@ where dwobjectname  not in ( 'd_astaxyearhdr', 	'd_finquickcodemet',
 'f_surreceiptdtl', 	'f_surreceipthdr', 
 'f_tbpvoucherhdr', 	'f_tcaltranhdr');
 
+update  ods.controlheader 
+set  connectionstr = 'host:52.140.55.131;database:SVPDB;username:sedindwuser;password:Welcome@123'
+where sourceid = 'ainq_cwip_accounting_info'
