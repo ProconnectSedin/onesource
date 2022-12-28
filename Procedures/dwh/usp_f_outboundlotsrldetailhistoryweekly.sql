@@ -1,8 +1,8 @@
--- PROCEDURE: dwh.usp_f_outboundlotsrldetailweekly(character varying, character varying, character varying, character varying)
+-- PROCEDURE: dwh.usp_f_outboundlotsrldetailhistoryweekly(character varying, character varying, character varying, character varying)
 
--- DROP PROCEDURE IF EXISTS dwh.usp_f_outboundlotsrldetailweekly(character varying, character varying, character varying, character varying);
+-- DROP PROCEDURE IF EXISTS dwh.usp_f_outboundlotsrldetailhistoryweekly(character varying, character varying, character varying, character varying);
 
-CREATE OR REPLACE PROCEDURE dwh.usp_f_outboundlotsrldetailweekly(
+CREATE OR REPLACE PROCEDURE dwh.usp_f_outboundlotsrldetailhistoryweekly(
 	IN p_sourceid character varying,
 	IN p_dataflowflag character varying,
 	IN p_targetobject character varying,
@@ -215,5 +215,5 @@ BEGIN
        select 0 into updcnt;
 END;
 $BODY$;
-ALTER PROCEDURE dwh.usp_f_outboundlotsrldetailweekly(character varying, character varying, character varying, character varying)
+ALTER PROCEDURE dwh.usp_f_outboundlotsrldetailhistoryweekly(character varying, character varying, character varying, character varying)
     OWNER TO proconnect;
