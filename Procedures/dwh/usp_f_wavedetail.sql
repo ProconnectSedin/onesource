@@ -83,8 +83,7 @@ BEGIN
     WHERE t.wave_ou                     = s.wms_wave_ou
 	 AND  t.wave_loc_code               = s.wms_wave_loc_code
 	 AND  t.wave_no                     = s.wms_wave_no
-	 AND  t.wave_lineno					= s.wms_wave_lineno
-	 AND  t.wave_hdr_key                = fh.wave_hdr_key;
+	 AND  t.wave_lineno					= s.wms_wave_lineno;
 
     GET DIAGNOSTICS updcnt = ROW_COUNT;
 
@@ -116,7 +115,6 @@ BEGIN
 	 AND  s.wms_wave_ou                 = t.wave_ou 
 	 AND  s.wms_wave_loc_code           = t.wave_loc_code
 	 AND  s.wms_wave_no                 = t.wave_no
-	 AND  fh.wave_hdr_key               = t.wave_hdr_key
     WHERE t.wave_no IS NULL;
 
     GET DIAGNOSTICS inscnt = ROW_COUNT;

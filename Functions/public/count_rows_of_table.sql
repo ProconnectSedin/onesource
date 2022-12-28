@@ -1,4 +1,4 @@
-CREATE FUNCTION public.count_rows_of_table(schema text, tablename text) RETURNS integer
+CREATE OR REPLACE FUNCTION public.count_rows_of_table(schema text, tablename text) RETURNS integer
     LANGUAGE plpgsql
     AS $$
 declare
