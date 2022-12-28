@@ -115,3 +115,15 @@ CREATE TABLE raw.raw_tms_br_booking_request_hdr (
     br_promo_code text COLLATE public.nocase,
     etlcreateddatetime timestamp without time zone
 );
+
+ALTER TABLE raw.raw_tms_br_booking_request_hdr ALTER COLUMN raw_id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME raw.raw_tms_br_booking_request_hdr_raw_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY raw.raw_tms_br_booking_request_hdr
+    ADD CONSTRAINT raw_tms_br_booking_request_hdr_pkey PRIMARY KEY (raw_id);

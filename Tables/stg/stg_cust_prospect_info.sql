@@ -49,3 +49,6 @@ CREATE TABLE stg.stg_cust_prospect_info (
     cpr_job_title character varying(32) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_cust_prospect_info
+    ADD CONSTRAINT cust_prospect_info_pk PRIMARY KEY (cpr_lo, cpr_prosp_cust_code);

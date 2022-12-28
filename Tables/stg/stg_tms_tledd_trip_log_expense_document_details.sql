@@ -17,3 +17,6 @@ CREATE TABLE stg.stg_tms_tledd_trip_log_expense_document_details (
     tledd_attachment character varying(1020) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_tms_tledd_trip_log_expense_document_details
+    ADD CONSTRAINT pk_tms_tledd_trip_log_expense_document_details PRIMARY KEY (tledd_ouinstance, tledd_doc_guid);

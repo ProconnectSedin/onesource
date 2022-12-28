@@ -65,3 +65,26 @@ CREATE TABLE dwh.f_sidochdr (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_sidochdr ALTER COLUMN sidochdr_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_sidochdr_sidochdr_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_sidochdr
+    ADD CONSTRAINT f_sidochdr_pkey PRIMARY KEY (sidochdr_key);
+
+ALTER TABLE ONLY dwh.f_sidochdr
+    ADD CONSTRAINT f_sidochdr_ukey UNIQUE (tran_ou, tran_type, tran_no);
+
+ALTER TABLE ONLY dwh.f_sidochdr
+    ADD CONSTRAINT f_sidochdr_sidochdr_currency_key_fkey FOREIGN KEY (sidochdr_currency_key) REFERENCES dwh.d_currency(curr_key);
+
+ALTER TABLE ONLY dwh.f_sidochdr
+    ADD CONSTRAINT f_sidochdr_sidochdr_vendor_key_fkey FOREIGN KEY (sidochdr_vendor_key) REFERENCES dwh.d_vendor(vendor_key);
+
+CREATE INDEX f_sidochdr_key_idx ON dwh.f_sidochdr USING btree (tran_ou, tran_type, tran_no);

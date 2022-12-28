@@ -57,3 +57,20 @@ CREATE TABLE dwh.d_vendor (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.d_vendor ALTER COLUMN vendor_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.d_vendor_vendor_key_seq
+    START WITH -1
+    INCREMENT BY 1
+    MINVALUE -1
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.d_vendor
+    ADD CONSTRAINT d_vendor_pkey PRIMARY KEY (vendor_key);
+
+ALTER TABLE ONLY dwh.d_vendor
+    ADD CONSTRAINT d_vendor_ukey UNIQUE (vendor_id, vendor_ou);
+
+CREATE INDEX d_vendor_idx_1 ON dwh.d_vendor USING btree (vendor_ou, vendor_id);

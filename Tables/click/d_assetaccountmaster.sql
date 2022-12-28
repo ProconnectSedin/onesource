@@ -21,3 +21,9 @@ CREATE TABLE click.d_assetaccountmaster (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE ONLY click.d_assetaccountmaster
+    ADD CONSTRAINT d_assetaccountmaster_pkey PRIMARY KEY (d_asset_mst_key);
+
+ALTER TABLE ONLY click.d_assetaccountmaster
+    ADD CONSTRAINT d_assetaccountmaster_ukey UNIQUE (company_code, fb_id, asset_class, asset_usage, effective_from, sequence_no);

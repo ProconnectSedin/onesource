@@ -9,3 +9,8 @@ CREATE TABLE stg.stg_wms_putaway_bin_capacity_dtl (
     wms_pway_occu_capacity numeric,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_putaway_bin_capacity_dtl
+    ADD CONSTRAINT wms_putaway_bin_capacity_dtl_pk PRIMARY KEY (wms_pway_loc_code, wms_pway_pln_no, wms_pway_pln_ou, wms_pway_lineno);
+
+CREATE INDEX stg_wms_putaway_bin_capacity_dtl_idx1 ON stg.stg_wms_putaway_bin_capacity_dtl USING btree (wms_pway_loc_code, wms_pway_pln_no, wms_pway_pln_ou, wms_pway_lineno);

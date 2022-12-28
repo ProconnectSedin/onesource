@@ -39,3 +39,5 @@ CREATE TABLE stg.stg_tms_tarcd_tariff_rev_cost_dtl (
     tarcd_exchange_rate numeric,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+CREATE INDEX stg_tms_tarcd_tariff_rev_cost_dtl_idx ON stg.stg_tms_tarcd_tariff_rev_cost_dtl USING btree (tarcd_ouinstance, tarcd_trip_plan_id, tarcd_booking_request, tarcd_unique_id, tarcd_stage_of_derivation, tarcd_buy_sell_type);

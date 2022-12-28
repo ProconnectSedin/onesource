@@ -28,3 +28,6 @@ CREATE TABLE stg.stg_wms_leg_hdr (
     wms_leg_to_geo_type character varying(160) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_leg_hdr
+    ADD CONSTRAINT wms_leg_mst_hdr_pk PRIMARY KEY (wms_leg_leg_id, wms_leg_ou);

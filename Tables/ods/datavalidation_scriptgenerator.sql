@@ -21,3 +21,4 @@ TABLESPACE pg_default;
 
 ALTER TABLE IF EXISTS ods.datavalidation_scriptgenerator
     OWNER to proconnect;
+

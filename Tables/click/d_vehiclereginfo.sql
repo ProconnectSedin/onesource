@@ -19,3 +19,9 @@ CREATE TABLE click.d_vehiclereginfo (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE ONLY click.d_vehiclereginfo
+    ADD CONSTRAINT d_vehiclereginfo_pkey PRIMARY KEY (veh_rifo_key);
+
+ALTER TABLE ONLY click.d_vehiclereginfo
+    ADD CONSTRAINT d_vehiclereginfo_ukey UNIQUE (veh_ou, veh_id, veh_line_no);

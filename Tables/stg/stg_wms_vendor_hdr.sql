@@ -62,3 +62,6 @@ CREATE TABLE stg.stg_wms_vendor_hdr (
     wms_vendor_tempid character varying(72) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_vendor_hdr
+    ADD CONSTRAINT wms_vendor_hdr_pk PRIMARY KEY (wms_vendor_id, wms_vendor_ou);

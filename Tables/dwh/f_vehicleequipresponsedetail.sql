@@ -37,3 +37,23 @@ CREATE TABLE dwh.f_vehicleequipresponsedetail (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_vehicleequipresponsedetail ALTER COLUMN vrve_vhl_dtl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_vehicleequipresponsedetail_vrve_vhl_dtl_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_vehicleequipresponsedetail
+    ADD CONSTRAINT f_vehicleequipresponsedetail_pkey PRIMARY KEY (vrve_vhl_dtl_key);
+
+ALTER TABLE ONLY dwh.f_vehicleequipresponsedetail
+    ADD CONSTRAINT f_vehicleequipresponsedetail_ukey UNIQUE (vrve_ouinstance, vrve_tend_req_no, vrve_line_no);
+
+ALTER TABLE ONLY dwh.f_vehicleequipresponsedetail
+    ADD CONSTRAINT f_vehicleequipresponsedetail_vrve_vendor_key_fkey FOREIGN KEY (vrve_vendor_key) REFERENCES dwh.d_vendor(vendor_key);
+
+CREATE INDEX f_vehicleequipresponsedetail_key_idx ON dwh.f_vehicleequipresponsedetail USING btree (vrve_vendor_key);

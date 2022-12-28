@@ -33,3 +33,9 @@ CREATE TABLE click.d_stage (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE ONLY click.d_stage
+    ADD CONSTRAINT d_stage_pkey PRIMARY KEY (stg_mas_key);
+
+ALTER TABLE ONLY click.d_stage
+    ADD CONSTRAINT d_stage_ukey UNIQUE (stg_mas_ou, stg_mas_id, stg_mas_loc);

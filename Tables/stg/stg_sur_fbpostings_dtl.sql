@@ -54,3 +54,6 @@ CREATE TABLE stg.stg_sur_fbpostings_dtl (
     tran_lineno integer,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_sur_fbpostings_dtl
+    ADD CONSTRAINT sur_fbpostings_dtl_pkey PRIMARY KEY (ou_id, tran_type, fb_id, tran_no, account_code, drcr_flag, acct_lineno);

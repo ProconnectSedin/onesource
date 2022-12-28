@@ -81,3 +81,6 @@ CREATE TABLE stg.stg_wms_employee_hdr (
     wms_emp_last_prev_bil_date timestamp without time zone,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_employee_hdr
+    ADD CONSTRAINT wms_employee_hdr_pk PRIMARY KEY (wms_emp_employee_code, wms_emp_ou);

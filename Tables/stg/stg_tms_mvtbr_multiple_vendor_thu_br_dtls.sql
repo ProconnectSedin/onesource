@@ -21,3 +21,6 @@ CREATE TABLE stg.stg_tms_mvtbr_multiple_vendor_thu_br_dtls (
     mvtbr_timestamp integer,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_tms_mvtbr_multiple_vendor_thu_br_dtls
+    ADD CONSTRAINT pk_tms_mvtbr_multiple_vendor_thu_br_dtls PRIMARY KEY (mvtbr_ouinstance, mvtbr_guid);

@@ -16,3 +16,6 @@ CREATE TABLE stg.stg_tms_tlcd_trip_log_event_contact_details (
     tled_timestamp integer,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_tms_tlcd_trip_log_event_contact_details
+    ADD CONSTRAINT pk_tms_tlcd_trip_log_event_contact_details PRIMARY KEY (tlecd_ouinstance, tlecd_con_guid);

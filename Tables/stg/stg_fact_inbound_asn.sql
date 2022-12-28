@@ -75,3 +75,6 @@ CREATE TABLE stg.stg_fact_inbound_asn (
     asn_reason_code character varying(100) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_fact_inbound_asn
+    ADD CONSTRAINT pk__fact_inb__b48ae12d4b0b8b08 PRIMARY KEY (reference_no);

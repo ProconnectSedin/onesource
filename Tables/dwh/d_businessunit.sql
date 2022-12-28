@@ -16,3 +16,18 @@ CREATE TABLE dwh.d_businessunit (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.d_businessunit ALTER COLUMN bu_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.d_businessunit_bu_key_seq
+    START WITH -1
+    INCREMENT BY 1
+    MINVALUE -1
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.d_businessunit
+    ADD CONSTRAINT d_businessunit_pkey PRIMARY KEY (bu_key);
+
+ALTER TABLE ONLY dwh.d_businessunit
+    ADD CONSTRAINT d_businessunit_ukey UNIQUE (company_code, bu_id, serial_no);

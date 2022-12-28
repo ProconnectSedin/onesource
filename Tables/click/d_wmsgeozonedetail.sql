@@ -12,3 +12,9 @@ CREATE TABLE click.d_wmsgeozonedetail (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE ONLY click.d_wmsgeozonedetail
+    ADD CONSTRAINT d_wmsgeozonedetail_pkey PRIMARY KEY (geo_zone_key);
+
+ALTER TABLE ONLY click.d_wmsgeozonedetail
+    ADD CONSTRAINT d_wmsgeozonedetail_ukey UNIQUE (geo_zone, geo_zone_ou, geo_zone_lineno, geo_zone_type_code);

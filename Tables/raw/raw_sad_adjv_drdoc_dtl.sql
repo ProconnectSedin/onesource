@@ -26,3 +26,15 @@ CREATE TABLE raw.raw_sad_adjv_drdoc_dtl (
     tax_adj_jvno character varying(16000) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE raw.raw_sad_adjv_drdoc_dtl ALTER COLUMN raw_id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME raw.raw_sad_adjv_drdoc_dtl_raw_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY raw.raw_sad_adjv_drdoc_dtl
+    ADD CONSTRAINT raw_sad_adjv_drdoc_dtl_pkey PRIMARY KEY (raw_id);

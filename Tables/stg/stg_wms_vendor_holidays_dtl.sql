@@ -6,3 +6,6 @@ CREATE TABLE stg.stg_wms_vendor_holidays_dtl (
     wms_vendor_date timestamp without time zone,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_vendor_holidays_dtl
+    ADD CONSTRAINT wms_vendor_holidays_dtl_pk PRIMARY KEY (wms_vendor_id, wms_vendor_ou, wms_vendor_lineno);

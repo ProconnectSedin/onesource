@@ -31,3 +31,12 @@ CREATE TABLE stg.stg_wms_stock_inprocess_tracking_dtl (
     etlcreateddatetime timestamp(3) without time zone DEFAULT now(),
     CONSTRAINT wms_stock_inprocess_tracking_dtl_chk CHECK ((wms_stk_qty >= (0)::numeric))
 );
+
+ALTER TABLE stg.stg_wms_stock_inprocess_tracking_dtl ALTER COLUMN wms_stk_line_no ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME stg.stg_wms_stock_inprocess_tracking_dtl_wms_stk_line_no_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);

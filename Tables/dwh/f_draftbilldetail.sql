@@ -141,3 +141,24 @@ CREATE TABLE dwh.f_draftbilldetail (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_draftbilldetail ALTER COLUMN draft_bill_dtl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_draftbilldetail_draft_bill_dtl_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_draftbilldetail
+    ADD CONSTRAINT f_draftbilldetail_pkey PRIMARY KEY (draft_bill_dtl_key);
+
+ALTER TABLE ONLY dwh.f_draftbilldetail
+    ADD CONSTRAINT f_draftbilldetail_ukey UNIQUE (draft_bill_no, draft_bill_ou, draft_bill_lineno);
+
+CREATE INDEX f_draftbilldetail_key_idx ON dwh.f_draftbilldetail USING btree (draft_bill_hdr_key);
+
+CREATE INDEX f_draftbilldetail_key_idx1 ON dwh.f_draftbilldetail USING btree (draft_bill_no, draft_bill_ou, draft_bill_lineno);
+
+CREATE INDEX f_draftbilldetail_ndx ON dwh.f_draftbilldetail USING btree (draft_bill_triggerring_no, draft_bill_ref_doc_no, draft_bill_ou);

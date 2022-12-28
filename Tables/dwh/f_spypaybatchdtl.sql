@@ -38,3 +38,26 @@ CREATE TABLE dwh.f_spypaybatchdtl (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_spypaybatchdtl ALTER COLUMN paybatch_dtl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_spypaybatchdtl_paybatch_dtl_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_spypaybatchdtl
+    ADD CONSTRAINT f_spypaybatchdtl_pkey PRIMARY KEY (paybatch_dtl_key);
+
+ALTER TABLE ONLY dwh.f_spypaybatchdtl
+    ADD CONSTRAINT f_spypaybatchdtl_ukey UNIQUE (ou_id, paybatch_no, cr_doc_ou, cr_doc_no, term_no, tran_type, ptimestamp);
+
+ALTER TABLE ONLY dwh.f_spypaybatchdtl
+    ADD CONSTRAINT f_spypaybatchdtl_curr_key_fkey FOREIGN KEY (curr_key) REFERENCES dwh.d_currency(curr_key);
+
+ALTER TABLE ONLY dwh.f_spypaybatchdtl
+    ADD CONSTRAINT f_spypaybatchdtl_vendor_key_fkey FOREIGN KEY (vendor_key) REFERENCES dwh.d_vendor(vendor_key);
+
+CREATE INDEX f_spypaybatchdtl_key_idx ON dwh.f_spypaybatchdtl USING btree (curr_key, vendor_key);

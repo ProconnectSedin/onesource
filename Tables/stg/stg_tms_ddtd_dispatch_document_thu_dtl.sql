@@ -30,3 +30,8 @@ CREATE TABLE stg.stg_tms_ddtd_dispatch_document_thu_dtl (
     ddtd_thu_qty_uom character varying(160) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_tms_ddtd_dispatch_document_thu_dtl
+    ADD CONSTRAINT pk_tms_ddtd_dispatch_document_thu_dtl PRIMARY KEY (ddtd_ouinstance, ddtd_dispatch_doc_no, ddtd_thu_line_no);
+
+CREATE INDEX stg_tms_ddtd_dispatch_document_thu_dtl_key_idx1 ON stg.stg_tms_ddtd_dispatch_document_thu_dtl USING btree (ddtd_ouinstance, ddtd_dispatch_doc_no, ddtd_thu_line_no);

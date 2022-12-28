@@ -49,3 +49,35 @@ CREATE TABLE dwh.f_stockconversiondetail (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_stockconversiondetail ALTER COLUMN stk_con_dtl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_stockconversiondetail_stk_con_dtl_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_stockconversiondetail
+    ADD CONSTRAINT f_stockconversiondetail_pkey PRIMARY KEY (stk_con_dtl_key);
+
+ALTER TABLE ONLY dwh.f_stockconversiondetail
+    ADD CONSTRAINT f_stockconversiondetail_ukey UNIQUE (stk_con_loc_code, stk_con_proposal_no, stk_con_proposal_ou, stk_con_lineno);
+
+ALTER TABLE ONLY dwh.f_stockconversiondetail
+    ADD CONSTRAINT f_stockconversiondetail_stk_con_dtl_customer_key_fkey FOREIGN KEY (stk_con_dtl_customer_key) REFERENCES dwh.d_customer(customer_key);
+
+ALTER TABLE ONLY dwh.f_stockconversiondetail
+    ADD CONSTRAINT f_stockconversiondetail_stk_con_dtl_itm_hdr_key_fkey FOREIGN KEY (stk_con_dtl_itm_hdr_key) REFERENCES dwh.d_itemheader(itm_hdr_key);
+
+ALTER TABLE ONLY dwh.f_stockconversiondetail
+    ADD CONSTRAINT f_stockconversiondetail_stk_con_dtl_loc_key_fkey FOREIGN KEY (stk_con_dtl_loc_key) REFERENCES dwh.d_location(loc_key);
+
+ALTER TABLE ONLY dwh.f_stockconversiondetail
+    ADD CONSTRAINT f_stockconversiondetail_stk_con_dtl_zone_key_fkey FOREIGN KEY (stk_con_dtl_zone_key) REFERENCES dwh.d_zone(zone_key);
+
+ALTER TABLE ONLY dwh.f_stockconversiondetail
+    ADD CONSTRAINT f_stockconversiondetail_stk_con_hdr_key_fkey FOREIGN KEY (stk_con_hdr_key) REFERENCES dwh.f_stockconversionheader(stk_con_hdr_key);
+
+CREATE INDEX f_stockconversiondetail_key_idx ON dwh.f_stockconversiondetail USING btree (stk_con_hdr_key, stk_con_dtl_loc_key, stk_con_dtl_customer_key, stk_con_dtl_itm_hdr_key, stk_con_dtl_zone_key);

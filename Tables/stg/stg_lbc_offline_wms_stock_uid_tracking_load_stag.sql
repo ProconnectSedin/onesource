@@ -20,3 +20,15 @@ CREATE TABLE stg.stg_lbc_offline_wms_stock_uid_tracking_load_stag (
     qname character varying(80) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE stg.stg_lbc_offline_wms_stock_uid_tracking_load_stag ALTER COLUMN running_no ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME stg.stg_lbc_offline_wms_stock_uid_tracking_load_stag_running_no_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    MAXVALUE 2147483647
+    CACHE 1
+);
+
+ALTER TABLE ONLY stg.stg_lbc_offline_wms_stock_uid_tracking_load_stag
+    ADD CONSTRAINT pk__lbc_offl__7171e4ff54a9e818 PRIMARY KEY (running_no);

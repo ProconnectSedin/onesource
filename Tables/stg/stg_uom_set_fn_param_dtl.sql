@@ -7,3 +7,6 @@ CREATE TABLE stg.stg_uom_set_fn_param_dtl (
     ufnd_uomcode character varying(40) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_uom_set_fn_param_dtl
+    ADD CONSTRAINT uom_set_fn_param_dtl_pk PRIMARY KEY (ufnd_lo, ufnd_ou, ufnd_lineno);

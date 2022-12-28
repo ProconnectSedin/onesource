@@ -48,3 +48,6 @@ CREATE TABLE stg.stg_sdin_ap_postings_dtl (
     item_tcd_type character varying(48) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_sdin_ap_postings_dtl
+    ADD CONSTRAINT sdin_ap_postings_dtl_pkey PRIMARY KEY (tran_type, tran_ou, tran_no, posting_line_no);

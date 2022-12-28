@@ -30,3 +30,8 @@ CREATE TABLE stg.stg_wms_putaway_exec_dtl (
     wms_pway_gen_from character varying(32) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_putaway_exec_dtl
+    ADD CONSTRAINT wms_putaway_exec_dtl_pk PRIMARY KEY (wms_pway_loc_code, wms_pway_exec_no, wms_pway_exec_ou);
+
+CREATE INDEX stg_wms_putaway_exec_dtl_key_idx1 ON stg.stg_wms_putaway_exec_dtl USING btree (wms_pway_loc_code, wms_pway_exec_no, wms_pway_exec_ou);

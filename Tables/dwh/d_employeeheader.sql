@@ -63,3 +63,18 @@ CREATE TABLE dwh.d_employeeheader (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.d_employeeheader ALTER COLUMN emp_hdr_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.d_employeeheader_emp_hdr_key_seq
+    START WITH -1
+    INCREMENT BY 1
+    MINVALUE -1
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.d_employeeheader
+    ADD CONSTRAINT d_employeeheader_pkey PRIMARY KEY (emp_hdr_key);
+
+ALTER TABLE ONLY dwh.d_employeeheader
+    ADD CONSTRAINT d_employeeheader_ukey UNIQUE (emp_employee_code, emp_ou);

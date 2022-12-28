@@ -66,3 +66,8 @@ CREATE TABLE stg.stg_po_pomas_pur_order_hdr (
     pomas_reason_return character varying(600) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_po_pomas_pur_order_hdr
+    ADD CONSTRAINT pkpo_pomas_pur_order_hdr PRIMARY KEY (pomas_pono, pomas_poamendmentno, pomas_poou);
+
+CREATE INDEX stg_po_pomas_pur_order_hdr_key_idx1 ON stg.stg_po_pomas_pur_order_hdr USING btree (pomas_pono, pomas_poamendmentno, pomas_poou);

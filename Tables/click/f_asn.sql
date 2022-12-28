@@ -60,3 +60,26 @@ CREATE TABLE click.f_asn (
     asn_itm_class character varying(80),
     activeindicator integer
 );
+
+ALTER TABLE click.f_asn ALTER COLUMN asn_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME click.f_asn_asn_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY click.f_asn
+    ADD CONSTRAINT f_asn_pkey PRIMARY KEY (asn_key);
+
+ALTER TABLE ONLY click.f_asn
+    ADD CONSTRAINT f_asn_ukey UNIQUE (asn_ou, asn_location, asn_no, asn_lineno);
+
+CREATE INDEX f_asn_date_idx ON click.f_asn USING btree (asn_created_date, asn_modified_date);
+
+CREATE INDEX f_asn_inb_idx ON click.f_asn USING btree (asn_ib_order, asn_loc_key);
+
+CREATE INDEX f_asn_join_idx ON click.f_asn USING btree (asn_no, asn_ou, asn_location, asn_gate_no, asn_lineno, asn_prefdoc_type, asn_type, asn_status, asn_sup_asn_no);
+
+CREATE INDEX f_asn_key_idx ON click.f_asn USING btree (asn_hr_key, asn_dtl_key, gate_exec_dtl_key, asn_loc_key, asn_date_key, asn_cust_key, asn_dtl_itm_hdr_key, gate_exec_dtl_veh_key);

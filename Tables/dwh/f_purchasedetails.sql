@@ -53,3 +53,37 @@ CREATE TABLE dwh.f_purchasedetails (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_purchasedetails ALTER COLUMN po_dtl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_purchasedetails_po_dtl_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_purchasedetails
+    ADD CONSTRAINT f_purchasedetails_pkey PRIMARY KEY (po_dtl_key);
+
+ALTER TABLE ONLY dwh.f_purchasedetails
+    ADD CONSTRAINT f_purchasedetails_ukey UNIQUE (poou, pono, poamendmentno, polineno);
+
+ALTER TABLE ONLY dwh.f_purchasedetails
+    ADD CONSTRAINT f_purchasedetails_po_dtl_cust_key_fkey FOREIGN KEY (po_dtl_cust_key) REFERENCES dwh.d_customer(customer_key);
+
+ALTER TABLE ONLY dwh.f_purchasedetails
+    ADD CONSTRAINT f_purchasedetails_po_dtl_loc_key_fkey FOREIGN KEY (po_dtl_loc_key) REFERENCES dwh.d_location(loc_key);
+
+ALTER TABLE ONLY dwh.f_purchasedetails
+    ADD CONSTRAINT f_purchasedetails_po_dtl_uom_key_fkey FOREIGN KEY (po_dtl_uom_key) REFERENCES dwh.d_uom(uom_key);
+
+ALTER TABLE ONLY dwh.f_purchasedetails
+    ADD CONSTRAINT f_purchasedetails_po_dtl_wh_key_fkey FOREIGN KEY (po_dtl_wh_key) REFERENCES dwh.d_warehouse(wh_key);
+
+ALTER TABLE ONLY dwh.f_purchasedetails
+    ADD CONSTRAINT f_purchasedetails_po_hr_key_fkey FOREIGN KEY (po_hr_key) REFERENCES dwh.f_purchaseheader(po_hr_key);
+
+CREATE INDEX f_purchasedetails_key_idx ON dwh.f_purchasedetails USING btree (po_hr_key, po_dtl_cust_key, po_dtl_loc_key, po_dtl_wh_key, po_dtl_uom_key);
+
+CREATE INDEX f_purchasedetails_key_idx1 ON dwh.f_purchasedetails USING btree (poou, pono, poamendmentno, polineno);

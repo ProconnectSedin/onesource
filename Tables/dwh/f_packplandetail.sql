@@ -38,3 +38,34 @@ CREATE TABLE dwh.f_packplandetail (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_packplandetail ALTER COLUMN pack_pln_dtl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_packplandetail_pack_pln_dtl_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_packplandetail
+    ADD CONSTRAINT f_packplandetail_pkey PRIMARY KEY (pack_pln_dtl_key);
+
+ALTER TABLE ONLY dwh.f_packplandetail
+    ADD CONSTRAINT f_packplandetail_ukey UNIQUE (pack_loc_code, pack_pln_no, pack_pln_ou, pack_lineno);
+
+ALTER TABLE ONLY dwh.f_packplandetail
+    ADD CONSTRAINT f_packplandetail_pack_pln_dtl_itm_hdr_key_fkey FOREIGN KEY (pack_pln_dtl_itm_hdr_key) REFERENCES dwh.d_itemheader(itm_hdr_key);
+
+ALTER TABLE ONLY dwh.f_packplandetail
+    ADD CONSTRAINT f_packplandetail_pack_pln_dtl_loc_key_fkey FOREIGN KEY (pack_pln_dtl_loc_key) REFERENCES dwh.d_location(loc_key);
+
+ALTER TABLE ONLY dwh.f_packplandetail
+    ADD CONSTRAINT f_packplandetail_pack_pln_dtl_thu_key_fkey FOREIGN KEY (pack_pln_dtl_thu_key) REFERENCES dwh.d_thu(thu_key);
+
+ALTER TABLE ONLY dwh.f_packplandetail
+    ADD CONSTRAINT f_packplandetail_pack_pln_hdr_key_fkey FOREIGN KEY (pack_pln_hdr_key) REFERENCES dwh.f_packplanheader(pack_pln_hdr_key);
+
+CREATE INDEX f_packplandetail_key_idx ON dwh.f_packplandetail USING btree (pack_loc_code, pack_pln_no, pack_pln_ou, pack_lineno);
+
+CREATE INDEX f_packplandetail_key_idx1 ON dwh.f_packplandetail USING btree (pack_pln_hdr_key, pack_pln_dtl_loc_key, pack_pln_dtl_itm_hdr_key, pack_pln_dtl_thu_key);

@@ -32,3 +32,6 @@ CREATE TABLE stg.stg_cbadj_adjv_crdoc_dtl (
     au_crosscur_erate numeric,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_cbadj_adjv_crdoc_dtl
+    ADD CONSTRAINT cbadj_adjv_crdoc_dtl_pkey PRIMARY KEY (ou_id, adj_voucher_no, cr_doc_ou, cr_doc_type, cr_doc_no, term_no, voucher_tran_type);

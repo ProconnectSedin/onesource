@@ -26,3 +26,15 @@ CREATE TABLE ods.audit (
     useragent character varying,
     sourcegroupflag integer
 );
+
+ALTER TABLE ods.audit ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME ods.audit_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY ods.audit
+    ADD CONSTRAINT audit_pkey PRIMARY KEY (id);

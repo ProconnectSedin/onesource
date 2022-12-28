@@ -22,3 +22,6 @@ CREATE TABLE stg.stg_emod_addr_mst (
     email_id character varying(240) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_emod_addr_mst
+    ADD CONSTRAINT emod_addr_mst_pkey PRIMARY KEY (address_id);

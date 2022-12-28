@@ -7,3 +7,6 @@ CREATE TABLE stg.stg_wms_cust_attribute_dtl (
     wms_cust_attr_value character varying(1020) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_cust_attribute_dtl
+    ADD CONSTRAINT wms_cust_attribute_dtl_pk PRIMARY KEY (wms_cust_attr_cust_code, wms_cust_attr_lineno, wms_cust_attr_ou);

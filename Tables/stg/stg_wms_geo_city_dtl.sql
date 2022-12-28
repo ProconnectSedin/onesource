@@ -10,3 +10,6 @@ CREATE TABLE stg.stg_wms_geo_city_dtl (
     wms_geo_city_rsn character varying(1020) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_geo_city_dtl
+    ADD CONSTRAINT wms_geo_city_dtl_pk PRIMARY KEY (wms_geo_country_code, wms_geo_state_code, wms_geo_city_code, wms_geo_city_ou, wms_geo_city_lineno);

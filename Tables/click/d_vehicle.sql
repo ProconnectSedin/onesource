@@ -61,3 +61,9 @@ CREATE TABLE click.d_vehicle (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE ONLY click.d_vehicle
+    ADD CONSTRAINT d_vehicle_pkey PRIMARY KEY (veh_key);
+
+ALTER TABLE ONLY click.d_vehicle
+    ADD CONSTRAINT d_vehicle_ukey UNIQUE (veh_ou, veh_id);

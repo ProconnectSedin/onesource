@@ -27,3 +27,6 @@ CREATE TABLE stg.stg_bnkdef_acc_mst (
     echeq character varying(12) DEFAULT '0'::character varying NOT NULL COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_bnkdef_acc_mst
+    ADD CONSTRAINT bnkdef_acc_mst_pkey PRIMARY KEY (company_code, bank_ref_no, bank_acc_no, serial_no);

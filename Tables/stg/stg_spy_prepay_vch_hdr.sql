@@ -73,3 +73,6 @@ CREATE TABLE stg.stg_spy_prepay_vch_hdr (
     lgt_rev_guid character varying(512) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_spy_prepay_vch_hdr
+    ADD CONSTRAINT spy_prepay_vch_hdr_pkey PRIMARY KEY (ou_id, voucher_no, tran_type);

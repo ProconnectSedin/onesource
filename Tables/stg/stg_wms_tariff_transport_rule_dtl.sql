@@ -11,3 +11,6 @@ CREATE TABLE stg.stg_wms_tariff_transport_rule_dtl (
     rules_satisfied_yn character varying(1020) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_tariff_transport_rule_dtl
+    ADD CONSTRAINT wms_tariff_transport_rule_dtl_pk PRIMARY KEY (wms_tf_tp_id, wms_tf_tp_ou, wms_tf_tp_lineno);

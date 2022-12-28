@@ -40,3 +40,6 @@ CREATE TABLE stg.stg_wms_stage_mas_hdr (
     wms_stg_height numeric,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_stage_mas_hdr
+    ADD CONSTRAINT wms_stage_mas_hdr_pk PRIMARY KEY (wms_stg_mas_ou, wms_stg_mas_id, wms_stg_mas_loc);

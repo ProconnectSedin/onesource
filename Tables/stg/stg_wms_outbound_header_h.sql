@@ -93,3 +93,5 @@ CREATE TABLE stg.stg_wms_outbound_header_h (
     wms_oub_br_ou character varying(160) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+CREATE INDEX stg_wms_outbound_header_h_key_idx2 ON stg.stg_wms_outbound_header_h USING btree (wms_oub_ou, wms_oub_loc_code, wms_oub_outbound_ord, wms_oub_amendno);

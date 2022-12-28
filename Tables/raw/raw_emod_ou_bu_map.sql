@@ -18,3 +18,15 @@ CREATE TABLE raw.raw_emod_ou_bu_map (
     modifieddate timestamp without time zone,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE raw.raw_emod_ou_bu_map ALTER COLUMN raw_id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME raw.raw_emod_ou_bu_map_raw_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY raw.raw_emod_ou_bu_map
+    ADD CONSTRAINT emod_ou_bu_map_pkey PRIMARY KEY (raw_id);

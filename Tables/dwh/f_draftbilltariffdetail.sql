@@ -86,3 +86,20 @@ CREATE TABLE dwh.f_draftbilltariffdetail (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_draftbilltariffdetail ALTER COLUMN draft_bill_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_draftbilltariffdetail_draft_bill_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_draftbilltariffdetail
+    ADD CONSTRAINT f_draftbilltariffdetail_pkey PRIMARY KEY (draft_bill_key);
+
+ALTER TABLE ONLY dwh.f_draftbilltariffdetail
+    ADD CONSTRAINT f_draftbilltariffdetail_ukey UNIQUE (draft_bill_ou, draft_bill_line_no, draft_bill_tran_type);
+
+CREATE INDEX f_draftbilltariffdetail_key_idx ON dwh.f_draftbilltariffdetail USING btree (draft_bill_ou, draft_bill_line_no, draft_bill_tran_type);

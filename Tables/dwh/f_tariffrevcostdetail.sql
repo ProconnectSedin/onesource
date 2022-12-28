@@ -35,3 +35,22 @@ CREATE TABLE dwh.f_tariffrevcostdetail (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_tariffrevcostdetail ALTER COLUMN tarcd_dtl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_tariffrevcostdetail_tarcd_dtl_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_tariffrevcostdetail
+    ADD CONSTRAINT f_tariffrevcostdetail_pkey PRIMARY KEY (tarcd_dtl_key);
+
+ALTER TABLE ONLY dwh.f_tariffrevcostdetail
+    ADD CONSTRAINT f_tariffrevcostdetail_ukey UNIQUE (tarcd_ouinstance, tarcd_trip_plan_id, tarcd_booking_request, tarcd_unique_id, tarcd_stage_of_derivation, tarcd_buy_sell_type);
+
+CREATE INDEX f_tariffrevcostdetail_key_idx ON dwh.f_tariffrevcostdetail USING btree (tarcd_ouinstance, tarcd_trip_plan_id, tarcd_booking_request, tarcd_unique_id, tarcd_stage_of_derivation, tarcd_buy_sell_type);
+
+CREATE INDEX f_tariffrevcostdetail_key_idx1 ON dwh.f_tariffrevcostdetail USING btree (tarcd_trip_hdr_key);

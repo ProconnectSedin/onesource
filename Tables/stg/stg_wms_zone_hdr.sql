@@ -49,3 +49,6 @@ CREATE TABLE stg.stg_wms_zone_hdr (
     pcs_noofmnth integer,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_zone_hdr
+    ADD CONSTRAINT wms_zone_hdr_pk PRIMARY KEY (wms_zone_code, wms_zone_ou, wms_zone_loc_code);

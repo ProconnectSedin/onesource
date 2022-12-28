@@ -23,3 +23,18 @@ CREATE TABLE dwh.d_route (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.d_route ALTER COLUMN rou_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.d_route_rou_key_seq
+    START WITH -1
+    INCREMENT BY 1
+    MINVALUE -1
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.d_route
+    ADD CONSTRAINT d_route_pkey PRIMARY KEY (rou_key);
+
+ALTER TABLE ONLY dwh.d_route
+    ADD CONSTRAINT d_route_ukey UNIQUE (rou_route_id, rou_ou);

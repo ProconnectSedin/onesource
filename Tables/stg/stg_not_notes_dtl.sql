@@ -17,3 +17,6 @@ CREATE TABLE stg.stg_not_notes_dtl (
     line_df_desc character varying COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_not_notes_dtl
+    ADD CONSTRAINT pk__not_notes_dtl__409e6f85 PRIMARY KEY (notes_compkey, line_no, line_entity);

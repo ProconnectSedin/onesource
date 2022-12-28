@@ -11,3 +11,6 @@ CREATE TABLE stg.stg_adep_depr_rate_hdr (
     modifieddate timestamp without time zone,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_adep_depr_rate_hdr
+    ADD CONSTRAINT adep_depr_rate_hdr_pkey PRIMARY KEY (ou_id, asset_class, depr_rate_id);

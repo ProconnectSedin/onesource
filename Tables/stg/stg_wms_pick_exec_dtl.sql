@@ -84,3 +84,8 @@ CREATE TABLE stg.stg_wms_pick_exec_dtl (
     wms_pick_rev_qty numeric,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_pick_exec_dtl
+    ADD CONSTRAINT pk_wms_pick_exec_dtl PRIMARY KEY (wms_pick_loc_code, wms_pick_exec_no, wms_pick_exec_ou, wms_pick_lineno);
+
+CREATE INDEX stg_stg_wms_pick_exec_dtl_idx2 ON stg.stg_wms_pick_exec_dtl USING btree (wms_pick_loc_code, wms_pick_exec_no, wms_pick_exec_ou, wms_pick_lineno);

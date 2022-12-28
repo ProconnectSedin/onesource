@@ -28,3 +28,18 @@ CREATE TABLE dwh.d_accountadditionalmaster (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.d_accountadditionalmaster ALTER COLUMN acc_mst_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.d_accountadditionalmaster_acc_mst_key_seq
+    START WITH -1
+    INCREMENT BY 1
+    MINVALUE -1
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.d_accountadditionalmaster
+    ADD CONSTRAINT d_accountadditionalmaster_pkey PRIMARY KEY (acc_mst_key);
+
+ALTER TABLE ONLY dwh.d_accountadditionalmaster
+    ADD CONSTRAINT d_accountadditionalmaster_ukey UNIQUE (company_code, fb_id, usage_id, effective_from, currency_code, drcr_flag, dest_fbid, child_company, dest_company, sequence_no);

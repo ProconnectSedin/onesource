@@ -21,3 +21,21 @@ CREATE TABLE click.f_outboundsladetail (
     sla_procontimeflag integer,
     sla_loadeddatetime timestamp without time zone DEFAULT CURRENT_DATE
 );
+
+ALTER TABLE click.f_outboundsladetail ALTER COLUMN sla_ob_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME click.f_outboundsladetail_sla_ob_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY click.f_outboundsladetail
+    ADD CONSTRAINT f_outboundsladetail_pk PRIMARY KEY (sla_ob_key);
+
+CREATE INDEX f_outboundsladetail_ndx ON click.f_outboundsladetail USING btree (sla_ordkey);
+
+CREATE INDEX f_outboundsladetail_ndx1 ON click.f_outboundsladetail USING btree (sla_ou, sla_loccode, sla_ordertype, sla_shipmenttype);
+
+CREATE INDEX f_outboundsladetail_ndx2 ON click.f_outboundsladetail USING btree (sla_ou, sla_loccode, sla_sono);

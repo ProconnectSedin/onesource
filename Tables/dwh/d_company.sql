@@ -31,3 +31,18 @@ CREATE TABLE dwh.d_company (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.d_company ALTER COLUMN company_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.d_company_company_key_seq
+    START WITH -1
+    INCREMENT BY 1
+    MINVALUE -1
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.d_company
+    ADD CONSTRAINT d_company_pkey PRIMARY KEY (company_key);
+
+ALTER TABLE ONLY dwh.d_company
+    ADD CONSTRAINT d_company_ukey UNIQUE (company_code, serial_no);

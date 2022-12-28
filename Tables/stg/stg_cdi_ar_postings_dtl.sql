@@ -49,3 +49,6 @@ CREATE TABLE stg.stg_cdi_ar_postings_dtl (
     address_id character varying(24) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_cdi_ar_postings_dtl
+    ADD CONSTRAINT cdi_ar_postings_dtl_pk1 PRIMARY KEY (tran_type, tran_ou, tran_no, posting_line_no);

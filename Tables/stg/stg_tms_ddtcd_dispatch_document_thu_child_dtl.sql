@@ -14,3 +14,6 @@ CREATE TABLE stg.stg_tms_ddtcd_dispatch_document_thu_child_dtl (
     ddtcd_main_thu_child_serial_no character varying(160) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_tms_ddtcd_dispatch_document_thu_child_dtl
+    ADD CONSTRAINT pk_tms_ddtcd_dispatch_document_thu_child_dtl PRIMARY KEY (ddtcd_ouinstance, ddtcd_dispatch_doc_no, ddtcd_thu_line_no, ddtcd_thu_child_line_no);

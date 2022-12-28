@@ -18,3 +18,6 @@ CREATE TABLE stg.stg_tms_pltpo_trip_odo_details (
     plpto_flag character varying(48) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_tms_pltpo_trip_odo_details
+    ADD CONSTRAINT pk_tms_pltpo_trip_odo_details PRIMARY KEY (plpto_ouinstance, plpto_guid);

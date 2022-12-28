@@ -20,3 +20,23 @@ CREATE TABLE dwh.f_tripvendortariffrevcostheader (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_tripvendortariffrevcostheader ALTER COLUMN tvtrch_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_tripvendortariffrevcostheader_tvtrch_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_tripvendortariffrevcostheader
+    ADD CONSTRAINT f_tripvendortariffrevcostheader_pkey PRIMARY KEY (tvtrch_key);
+
+ALTER TABLE ONLY dwh.f_tripvendortariffrevcostheader
+    ADD CONSTRAINT f_tripvendortariffrevcostheader_ukey UNIQUE (tvtrch_ouinstance, tvtrch_trip_plan_id, tvtrch_unique_id, tvtrch_stage_of_derivation);
+
+ALTER TABLE ONLY dwh.f_tripvendortariffrevcostheader
+    ADD CONSTRAINT f_tripvendortariffrevcostheader_tvtrch_trip_plan_hrd_key_fkey FOREIGN KEY (tvtrch_trip_plan_hrd_key) REFERENCES dwh.f_tripplanningheader(plpth_hdr_key);
+
+CREATE INDEX f_tripvendortariffrevcostheader_key_idx ON dwh.f_tripvendortariffrevcostheader USING btree (tvtrch_ouinstance, tvtrch_trip_plan_id, tvtrch_unique_id, tvtrch_stage_of_derivation);

@@ -42,3 +42,8 @@ CREATE TABLE stg.stg_wms_gate_exec_dtl (
     wms_gate_noofunits integer,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_gate_exec_dtl
+    ADD CONSTRAINT wms_gate_exec_dtl_pk PRIMARY KEY (wms_gate_loc_code, wms_gate_exec_no, wms_gate_exec_ou);
+
+CREATE INDEX stg_wms_gate_exec_dtl_key_idx1 ON stg.stg_wms_gate_exec_dtl USING btree (wms_gate_loc_code, wms_gate_exec_no, wms_gate_exec_ou);

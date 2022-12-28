@@ -1,6 +1,19 @@
-CREATE OR REPLACE PROCEDURE dwh.usp_d_wmsoutboundtat(IN p_sourceid character varying, IN p_dataflowflag character varying, IN p_targetobject character varying, OUT srccnt integer, OUT inscnt integer, OUT updcnt integer, OUT dltcount integer, INOUT flag1 character varying, OUT flag2 character varying)
-    LANGUAGE plpgsql
-    AS $$
+-- PROCEDURE: dwh.usp_d_outboundtat(character varying, character varying, character varying, character varying)
+
+-- DROP PROCEDURE IF EXISTS dwh.usp_d_outboundtat(character varying, character varying, character varying, character varying);
+
+CREATE OR REPLACE PROCEDURE dwh.usp_d_outboundtat(
+	IN p_sourceid character varying,
+	IN p_dataflowflag character varying,
+	IN p_targetobject character varying,
+	OUT srccnt integer,
+	OUT inscnt integer,
+	OUT updcnt integer,
+	OUT dltcount integer,
+	INOUT flag1 character varying,
+	OUT flag2 character varying)
+LANGUAGE 'plpgsql'
+AS $BODY$
 
 DECLARE
     p_etljobname VARCHAR(100);
@@ -27,13 +40,13 @@ BEGIN
     SELECT COUNT(1) INTO srccnt
     FROM stg.stg_dim_outbound_Tat;
 
-    TRUNCATE only dwh.D_WMSOutboundTAT  RESTART identity;
+    TRUNCATE only dwh.d_OutboundTAT  RESTART identity;
 	
     GET DIAGNOSTICS updcnt = ROW_COUNT;
 
-    INSERT INTO dwh.D_WMSOutboundTAT
+    INSERT INTO dwh.d_OutboundTAT
     (
-       wms_loc_key, id, ou, locationcode, orderType, ServiceType, ProcessTAT, pickTAT, PackTAT, DispTAT, DelTAT, picktat1, packtat1, disptat1, deltat1, etlactiveind, etljobname, envsourcecd, datasourcecd, etlcreatedatetime
+       loc_key, id, ou, locationcode, orderType, ServiceType, ProcessTAT, pickTAT, PackTAT, DispTAT, DelTAT, picktat1, packtat1, disptat1, deltat1, etlactiveind, etljobname, envsourcecd, datasourcecd, etlcreatedatetime
     )
 
     SELECT
@@ -67,4 +80,6 @@ BEGIN
        select 0 into inscnt;
        select 0 into updcnt;
 END;
-$$;
+$BODY$;
+ALTER PROCEDURE dwh.usp_d_outboundtat(character varying, character varying, character varying, character varying)
+    OWNER TO proconnect;

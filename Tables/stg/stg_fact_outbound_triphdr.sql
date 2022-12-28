@@ -29,3 +29,6 @@ CREATE TABLE stg.stg_fact_outbound_triphdr (
     trip_plan_to_type character varying(400) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_fact_outbound_triphdr
+    ADD CONSTRAINT pk__fact_out__4e83131435d1dbc0 PRIMARY KEY (refkey);

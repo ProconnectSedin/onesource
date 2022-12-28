@@ -40,3 +40,20 @@ CREATE TABLE dwh.d_location (
     div_key bigint,
     div_code character varying(20) COLLATE public.nocase
 );
+
+ALTER TABLE dwh.d_location ALTER COLUMN loc_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.d_location_loc_key_seq
+    START WITH -1
+    INCREMENT BY 1
+    MINVALUE -1
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.d_location
+    ADD CONSTRAINT d_location_pkey PRIMARY KEY (loc_key);
+
+ALTER TABLE ONLY dwh.d_location
+    ADD CONSTRAINT d_location_ukey UNIQUE (loc_code, loc_ou);
+
+CREATE INDEX d_location_key_idx ON dwh.d_location USING btree (loc_code, loc_ou);

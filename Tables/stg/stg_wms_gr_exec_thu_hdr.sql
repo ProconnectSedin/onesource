@@ -19,3 +19,6 @@ CREATE TABLE stg.stg_wms_gr_exec_thu_hdr (
     wms_gr_thu_uid2_ser_no character varying(112) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_gr_exec_thu_hdr
+    ADD CONSTRAINT wms_gr_exec_thu_hdr_pk PRIMARY KEY (wms_gr_loc_code, wms_gr_exec_no, wms_gr_exec_ou, wms_gr_thu_id, wms_gr_thu_sno, wms_gr_thu_su, wms_gr_thu_uid_ser_no);

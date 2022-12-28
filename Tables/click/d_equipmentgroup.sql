@@ -16,3 +16,9 @@ CREATE TABLE click.d_equipmentgroup (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE ONLY click.d_equipmentgroup
+    ADD CONSTRAINT d_equipmentgroup_pkey PRIMARY KEY (egrp_key);
+
+ALTER TABLE ONLY click.d_equipmentgroup
+    ADD CONSTRAINT d_equipmentgroup_ukey UNIQUE (egrp_id, egrp_ou);

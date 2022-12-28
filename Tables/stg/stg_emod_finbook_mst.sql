@@ -15,3 +15,6 @@ CREATE TABLE stg.stg_emod_finbook_mst (
     modifieddate timestamp without time zone,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_emod_finbook_mst
+    ADD CONSTRAINT emod_finbook_mst_pkey PRIMARY KEY (fb_id, company_code, serial_no, fb_type);

@@ -77,3 +77,6 @@ CREATE TABLE stg.stg_tms_plpph_planning_profile_hdr (
     plpph_use_ven_rout_verdhas character(4) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_tms_plpph_planning_profile_hdr
+    ADD CONSTRAINT pk_tms_plpph_planning_profile_hdr PRIMARY KEY (plpph_ouinstance, plpph_profile_id);

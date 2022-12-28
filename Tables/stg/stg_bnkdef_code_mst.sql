@@ -33,3 +33,6 @@ CREATE TABLE stg.stg_bnkdef_code_mst (
     wfflag character varying(4) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_bnkdef_code_mst
+    ADD CONSTRAINT bnkdef_code_mst_pkey PRIMARY KEY (company_code, bank_ref_no, bank_acc_no, bank_code, serial_no);

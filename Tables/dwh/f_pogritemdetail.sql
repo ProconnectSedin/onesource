@@ -33,3 +33,28 @@ CREATE TABLE dwh.f_pogritemdetail (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_pogritemdetail ALTER COLUMN gr_itm_dtl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_pogritemdetail_gr_itm_dtl_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_pogritemdetail
+    ADD CONSTRAINT f_pogritemdetail_pkey PRIMARY KEY (gr_itm_dtl_key);
+
+ALTER TABLE ONLY dwh.f_pogritemdetail
+    ADD CONSTRAINT f_pogritemdetail_ukey UNIQUE (gr_loc_code, gr_pln_no, gr_pln_ou, gr_lineno);
+
+ALTER TABLE ONLY dwh.f_pogritemdetail
+    ADD CONSTRAINT f_pogritemdetail_gr_pln_key_fkey FOREIGN KEY (gr_pln_key) REFERENCES dwh.f_grplandetail(gr_pln_key);
+
+ALTER TABLE ONLY dwh.f_pogritemdetail
+    ADD CONSTRAINT f_pogritemdetail_gr_po_loc_key_fkey FOREIGN KEY (gr_po_loc_key) REFERENCES dwh.d_location(loc_key);
+
+CREATE INDEX f_pogritemdetail_key_idx ON dwh.f_pogritemdetail USING btree (gr_po_loc_key);
+
+CREATE INDEX f_pogritemdetail_key_idx1 ON dwh.f_pogritemdetail USING btree (gr_loc_code, gr_pln_no, gr_pln_ou, gr_lineno);

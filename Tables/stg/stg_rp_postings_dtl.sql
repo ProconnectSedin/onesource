@@ -57,3 +57,8 @@ CREATE TABLE stg.stg_rp_postings_dtl (
     line_no integer,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_rp_postings_dtl
+    ADD CONSTRAINT rp_postings_dtl_pkey PRIMARY KEY (ou_id, serial_no, unique_no, doc_type, tran_ou, document_no, account_code, tran_type);
+
+CREATE INDEX stg_rp_postings_dtl_idx ON stg.stg_rp_postings_dtl USING btree (ou_id, serial_no, unique_no, doc_type, tran_ou, document_no, account_code, tran_type);

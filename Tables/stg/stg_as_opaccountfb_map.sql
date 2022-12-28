@@ -12,3 +12,6 @@ CREATE TABLE stg.stg_as_opaccountfb_map (
     modifieddate timestamp without time zone,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_as_opaccountfb_map
+    ADD CONSTRAINT as_opaccountfb_map_pkey PRIMARY KEY (opcoa_id, account_code, company_code, fb_id);

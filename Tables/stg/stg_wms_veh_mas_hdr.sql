@@ -102,3 +102,6 @@ CREATE TABLE stg.stg_wms_veh_mas_hdr (
     wms_veh_last_prev_bill_date timestamp without time zone,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_veh_mas_hdr
+    ADD CONSTRAINT wms_veh_mas_hdr_pk PRIMARY KEY (wms_veh_ou, wms_veh_id);

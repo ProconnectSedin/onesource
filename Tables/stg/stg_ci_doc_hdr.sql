@@ -66,3 +66,6 @@ CREATE TABLE stg.stg_ci_doc_hdr (
     otc_flag character varying(48) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_ci_doc_hdr
+    ADD CONSTRAINT ci_doc_hdr_pkey PRIMARY KEY (tran_ou, tran_type, tran_no);

@@ -58,3 +58,8 @@ CREATE TABLE stg.stg_wms_asn_header_h (
     wms_asn_reason_code character varying(160) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_asn_header_h
+    ADD CONSTRAINT wms_asn_header_h_pk PRIMARY KEY (wms_asn_ou, wms_asn_location, wms_asn_no, wms_asn_amendno);
+
+CREATE INDEX stg_wms_asn_header_h_idx ON stg.stg_wms_asn_header_h USING btree (wms_asn_ou, wms_asn_location, wms_asn_no, wms_asn_amendno);

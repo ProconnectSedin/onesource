@@ -24,3 +24,25 @@ CREATE TABLE dwh.f_purchasereceiptheader (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_purchasereceiptheader ALTER COLUMN rcgh_receipt_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_purchasereceiptheader_rcgh_receipt_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_purchasereceiptheader
+    ADD CONSTRAINT f_purchasereceiptheader_pkey PRIMARY KEY (rcgh_receipt_key);
+
+ALTER TABLE ONLY dwh.f_purchasereceiptheader
+    ADD CONSTRAINT f_purchasereceiptheader_ukey UNIQUE (rcgh_ouinstid, rcgh_receipt_no);
+
+ALTER TABLE ONLY dwh.f_purchasereceiptheader
+    ADD CONSTRAINT f_purchasereceiptheader_rcgh_date_key_fkey FOREIGN KEY (rcgh_date_key) REFERENCES dwh.d_date(datekey);
+
+CREATE INDEX f_purchasereceiptheader_key_idx ON dwh.f_purchasereceiptheader USING btree (rcgh_date_key);
+
+CREATE INDEX f_purchasereceiptheader_key_idx1 ON dwh.f_purchasereceiptheader USING btree (rcgh_ouinstid, rcgh_receipt_no);

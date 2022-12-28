@@ -15,3 +15,6 @@ CREATE TABLE stg.stg_wms_div_prop_hdr (
     wms_div_outbound_area numeric,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_div_prop_hdr
+    ADD CONSTRAINT wms_div_prop_hdr_pk PRIMARY KEY (wms_div_code, wms_div_ou);

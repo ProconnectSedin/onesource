@@ -17,3 +17,5 @@ CREATE TABLE stg.stg_wms_outbound_lot_ser_dtl_h (
     wms_oub_cus_srno character varying(280) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+CREATE INDEX stg_wms_outbound_lot_ser_dtl_h_key_idx2 ON stg.stg_wms_outbound_lot_ser_dtl_h USING btree (wms_oub_lotsl_loc_code, wms_oub_lotsl_ou, wms_oub_outbound_ord, wms_oub_lotsl_lineno, wms_oub_lotsl_amendno);

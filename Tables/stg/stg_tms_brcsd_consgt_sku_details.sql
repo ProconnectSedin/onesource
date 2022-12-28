@@ -25,3 +25,5 @@ CREATE TABLE stg.stg_tms_brcsd_consgt_sku_details (
     brcsd_cess_amount numeric,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+CREATE INDEX stg_tms_brcsd_consgt_sku_details_key_idx1 ON stg.stg_tms_brcsd_consgt_sku_details USING btree (brcsd_ou, brcsd_br_id, brcsd_thu_line_no, brcsd_sku_line_no);

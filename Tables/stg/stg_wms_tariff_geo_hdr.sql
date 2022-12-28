@@ -25,3 +25,6 @@ CREATE TABLE stg.stg_wms_tariff_geo_hdr (
     wms_tr_geo_dec_id character varying(160) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_tariff_geo_hdr
+    ADD CONSTRAINT wms_tariff_geo_hdr_pk PRIMARY KEY (wms_tr_geo_id, wms_tr_geo_ou);

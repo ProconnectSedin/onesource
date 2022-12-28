@@ -28,3 +28,9 @@ CREATE TABLE click.d_accountadditionalmaster (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE ONLY click.d_accountadditionalmaster
+    ADD CONSTRAINT d_accountadditionalmaster_pkey PRIMARY KEY (acc_mst_key);
+
+ALTER TABLE ONLY click.d_accountadditionalmaster
+    ADD CONSTRAINT d_accountadditionalmaster_ukey UNIQUE (company_code, fb_id, usage_id, effective_from, currency_code, drcr_flag, dest_fbid, child_company, dest_company, sequence_no);

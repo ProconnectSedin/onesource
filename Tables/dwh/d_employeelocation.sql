@@ -12,3 +12,18 @@ CREATE TABLE dwh.d_employeelocation (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.d_employeelocation ALTER COLUMN emp_loc_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.d_employeelocation_emp_loc_key_seq
+    START WITH -1
+    INCREMENT BY 1
+    MINVALUE -1
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.d_employeelocation
+    ADD CONSTRAINT d_employeelocation_pkey PRIMARY KEY (emp_loc_key);
+
+ALTER TABLE ONLY dwh.d_employeelocation
+    ADD CONSTRAINT d_employeelocation_ukey UNIQUE (emp_employee_code, emp_ou, emp_lineno);

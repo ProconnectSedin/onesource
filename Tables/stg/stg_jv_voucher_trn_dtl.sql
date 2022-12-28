@@ -50,3 +50,6 @@ CREATE TABLE stg.stg_jv_voucher_trn_dtl (
     writeoff_doc_lineno integer,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_jv_voucher_trn_dtl
+    ADD CONSTRAINT jv_voucher_trn_dtl_pkey PRIMARY KEY (ou_id, voucher_no, voucher_serial_no);

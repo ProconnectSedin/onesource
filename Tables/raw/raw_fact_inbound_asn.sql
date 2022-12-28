@@ -76,3 +76,15 @@ CREATE TABLE raw.raw_fact_inbound_asn (
     asn_reason_code character varying(100) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE raw.raw_fact_inbound_asn ALTER COLUMN raw_id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME raw.raw_fact_inbound_asn_raw_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY raw.raw_fact_inbound_asn
+    ADD CONSTRAINT raw_fact_inbound_asn_pkey PRIMARY KEY (raw_id);

@@ -82,3 +82,8 @@ CREATE TABLE stg.stg_sur_receipt_hdr (
     ifb_flag character varying(48) DEFAULT 'N'::character varying NOT NULL COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_sur_receipt_hdr
+    ADD CONSTRAINT sur_receipt_hdr_pkey PRIMARY KEY (ou_id, receipt_no, receipt_type, tran_type);
+
+CREATE INDEX stg_sur_receipt_hdr_idx ON stg.stg_sur_receipt_hdr USING btree (ou_id, receipt_no, receipt_type, tran_type);

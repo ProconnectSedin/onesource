@@ -69,3 +69,32 @@ CREATE TABLE dwh.f_grheader (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_grheader ALTER COLUMN gr_hdr_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_grheader_gr_hdr_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_grheader
+    ADD CONSTRAINT f_grheader_pkey PRIMARY KEY (gr_hdr_key);
+
+ALTER TABLE ONLY dwh.f_grheader
+    ADD CONSTRAINT f_grheader_ukey UNIQUE (ouinstid, grno);
+
+ALTER TABLE ONLY dwh.f_grheader
+    ADD CONSTRAINT f_grheader_gr_cur_key_fkey FOREIGN KEY (gr_curr_key) REFERENCES dwh.d_currency(curr_key);
+
+ALTER TABLE ONLY dwh.f_grheader
+    ADD CONSTRAINT f_grheader_gr_date_key_fkey FOREIGN KEY (gr_date_key) REFERENCES dwh.d_date(datekey);
+
+ALTER TABLE ONLY dwh.f_grheader
+    ADD CONSTRAINT f_grheader_gr_emp_hdr_key_fkey FOREIGN KEY (gr_emp_hdr_key) REFERENCES dwh.d_employeeheader(emp_hdr_key);
+
+ALTER TABLE ONLY dwh.f_grheader
+    ADD CONSTRAINT f_grheader_gr_vendor_key_fkey FOREIGN KEY (gr_vendor_key) REFERENCES dwh.d_vendor(vendor_key);
+
+CREATE INDEX f_grheader_key_idx ON dwh.f_grheader USING btree (gr_date_key, gr_emp_hdr_key, gr_vendor_key, gr_curr_key);

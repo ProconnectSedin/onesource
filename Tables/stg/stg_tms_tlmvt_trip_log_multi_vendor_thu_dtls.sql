@@ -23,3 +23,6 @@ CREATE TABLE stg.stg_tms_tlmvt_trip_log_multi_vendor_thu_dtls (
     tlmvt_ethu_customs_seal_no character varying(160) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_tms_tlmvt_trip_log_multi_vendor_thu_dtls
+    ADD CONSTRAINT tms_tlmvt_trip_log_mul_ven_thu_pk PRIMARY KEY (tlmvt_ouinstance, tlmvt_guid);

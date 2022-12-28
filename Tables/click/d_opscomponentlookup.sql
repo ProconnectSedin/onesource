@@ -18,3 +18,6 @@ CREATE TABLE click.d_opscomponentlookup (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE ONLY click.d_opscomponentlookup
+    ADD CONSTRAINT d_opscomponentlookup_pkey PRIMARY KEY (comp_lkp_key);

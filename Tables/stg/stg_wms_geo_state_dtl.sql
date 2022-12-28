@@ -11,3 +11,6 @@ CREATE TABLE stg.stg_wms_geo_state_dtl (
     wms_ge_holidays character varying(160) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_geo_state_dtl
+    ADD CONSTRAINT wms_geo_state_dtl_pk PRIMARY KEY (wms_geo_country_code, wms_geo_state_code, wms_geo_state_ou, wms_geo_state_lineno);

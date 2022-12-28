@@ -14,3 +14,9 @@ CREATE TABLE click.d_employeeunavdate (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE ONLY click.d_employeeunavdate
+    ADD CONSTRAINT d_employeeunavdate_pkey PRIMARY KEY (emp_udate_key);
+
+ALTER TABLE ONLY click.d_employeeunavdate
+    ADD CONSTRAINT d_employeeunavdate_ukey UNIQUE (emp_employee_code, emp_lineno, emp_ou);

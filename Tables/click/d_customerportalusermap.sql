@@ -15,3 +15,9 @@ CREATE TABLE click.d_customerportalusermap (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE ONLY click.d_customerportalusermap
+    ADD CONSTRAINT d_customerportalusermap_pkey PRIMARY KEY (customer_key);
+
+ALTER TABLE ONLY click.d_customerportalusermap
+    ADD CONSTRAINT d_customerportalusermap_ukey UNIQUE (customer_id, customer_ou, customer_lineno);

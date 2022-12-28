@@ -23,3 +23,9 @@ CREATE TABLE click.d_route (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE ONLY click.d_route
+    ADD CONSTRAINT d_route_pkey PRIMARY KEY (rou_key);
+
+ALTER TABLE ONLY click.d_route
+    ADD CONSTRAINT d_route_ukey UNIQUE (rou_route_id, rou_ou);

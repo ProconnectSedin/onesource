@@ -30,3 +30,9 @@ CREATE TABLE click.d_bintypes (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE ONLY click.d_bintypes
+    ADD CONSTRAINT d_bintypes_pkey PRIMARY KEY (bin_typ_key);
+
+ALTER TABLE ONLY click.d_bintypes
+    ADD CONSTRAINT d_bintypes_ukey UNIQUE (bin_typ_ou, bin_typ_code, bin_typ_loc_code);

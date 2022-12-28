@@ -65,3 +65,20 @@ CREATE TABLE dwh.f_scdndcnotehdr (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_scdndcnotehdr ALTER COLUMN f_scdndcnotehdr_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_scdndcnotehdr_f_scdndcnotehdr_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_scdndcnotehdr
+    ADD CONSTRAINT f_scdndcnotehdr_pkey PRIMARY KEY (f_scdndcnotehdr_key);
+
+ALTER TABLE ONLY dwh.f_scdndcnotehdr
+    ADD CONSTRAINT f_scdndcnotehdr_ukey UNIQUE (tran_type, tran_ou, tran_no, ict_flag, ifb_flag);
+
+CREATE INDEX f_scdndcnotehdr_key_idx ON dwh.f_scdndcnotehdr USING btree (tran_type, tran_ou, tran_no, ict_flag, ifb_flag);

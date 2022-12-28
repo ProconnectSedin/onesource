@@ -17,3 +17,11 @@ CREATE TABLE click.d_locationusermapping (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE ONLY click.d_locationusermapping
+    ADD CONSTRAINT d_locationusermapping_pkey PRIMARY KEY (loc_user_mapping_key);
+
+ALTER TABLE ONLY click.d_locationusermapping
+    ADD CONSTRAINT d_locationusermapping_ukey UNIQUE (loc_ou, loc_code, loc_lineno);
+
+CREATE INDEX d_locationusermapping_idx ON click.d_locationusermapping USING btree (loc_ou, loc_code, loc_lineno);

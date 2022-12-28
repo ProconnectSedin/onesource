@@ -60,3 +60,6 @@ CREATE TABLE stg.stg_cust_ou_info (
     cou_cust_category character varying(60) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_cust_ou_info
+    ADD CONSTRAINT cust_ou_info_pk PRIMARY KEY (cou_lo, cou_bu, cou_ou, cou_cust_code);

@@ -38,3 +38,11 @@ CREATE TABLE click.d_location (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE ONLY click.d_location
+    ADD CONSTRAINT d_location_pkey PRIMARY KEY (loc_key);
+
+ALTER TABLE ONLY click.d_location
+    ADD CONSTRAINT d_location_ukey UNIQUE (loc_code, loc_ou);
+
+CREATE INDEX d_location_key_idx ON click.d_location USING btree (loc_code, loc_ou);

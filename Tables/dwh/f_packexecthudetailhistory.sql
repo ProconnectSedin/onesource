@@ -36,3 +36,33 @@ CREATE TABLE dwh.f_packexecthudetailhistory (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_packexecthudetailhistory ALTER COLUMN pack_exec_thu_dtl_hst_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_packexecthudetailhistory_pack_exec_thu_dtl_hst_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_packexecthudetailhistory
+    ADD CONSTRAINT f_packexecthudetailhistory_pkey PRIMARY KEY (pack_exec_thu_dtl_hst_key);
+
+ALTER TABLE ONLY dwh.f_packexecthudetailhistory
+    ADD CONSTRAINT f_packexecthudetailhistory_pack_exe_thu_key_fkey FOREIGN KEY (pack_exec_thu_key) REFERENCES dwh.d_thu(thu_key);
+
+ALTER TABLE ONLY dwh.f_packexecthudetailhistory
+    ADD CONSTRAINT f_packexecthudetailhistory_pack_exec_loc_key_fkey FOREIGN KEY (pack_exec_loc_key) REFERENCES dwh.d_location(loc_key);
+
+CREATE INDEX f_packexecthudetailhistory_key_idx ON dwh.f_packexecthudetailhistory USING btree (pack_exec_thu_dtl_hst_key);
+
+CREATE INDEX f_packexecthudetailhistory_key_idx2 ON dwh.f_packexecthudetailhistory USING btree (pack_exec_hdr_key);
+
+CREATE INDEX f_packexecthudetailhistory_key_idx3 ON dwh.f_packexecthudetailhistory USING btree (pack_exec_loc_key);
+
+CREATE INDEX f_packexecthudetailhistory_key_idx4 ON dwh.f_packexecthudetailhistory USING btree (pack_exec_thu_key);
+
+CREATE INDEX f_packexecthudetailhistory_key_idx5 ON dwh.f_packexecthudetailhistory USING btree (pack_exec_ou, pack_loc_code, pack_exec_no, pack_thu_id, pack_thu_lineno, pack_thu_ser_no);
+
+CREATE INDEX f_packexecthudetailhistory_key_idx6 ON dwh.f_packexecthudetailhistory USING btree (pack_exec_ou, pack_loc_code, pack_exec_no);

@@ -22,3 +22,11 @@ CREATE TABLE click.d_exchangerate (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE ONLY click.d_exchangerate
+    ADD CONSTRAINT d_exchangerate_pkey PRIMARY KEY (d_exchangerate_key);
+
+ALTER TABLE ONLY click.d_exchangerate
+    ADD CONSTRAINT d_exchangerate_ukey UNIQUE (ou_id, exchrate_type, from_currency, to_currency, inverse_typeno, start_date);
+
+CREATE INDEX d_exchangerate_idx ON click.d_exchangerate USING btree (ou_id, exchrate_type, from_currency, to_currency, inverse_typeno, start_date);

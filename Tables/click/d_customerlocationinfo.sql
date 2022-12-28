@@ -45,3 +45,9 @@ CREATE TABLE click.d_customerlocationinfo (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE ONLY click.d_customerlocationinfo
+    ADD CONSTRAINT d_customerlocationinfo_pkey PRIMARY KEY (clo_key);
+
+ALTER TABLE ONLY click.d_customerlocationinfo
+    ADD CONSTRAINT d_customerlocationinfo_ukey UNIQUE (clo_lo, clo_cust_code);

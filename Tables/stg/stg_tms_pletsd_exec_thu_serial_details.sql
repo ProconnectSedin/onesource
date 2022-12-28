@@ -31,3 +31,5 @@ CREATE TABLE stg.stg_tms_pletsd_exec_thu_serial_details (
     pletsd_picked_shortclosure integer,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+CREATE INDEX stg_tms_pletsd_exec_thu_serial_details_key_idx2 ON stg.stg_tms_pletsd_exec_thu_serial_details USING btree (pletsd_ouinstance, pletsd_execution_plan_id, pletsd_line_no, pletsd_thu_line_no, pletsd_serial_line_no);

@@ -13,3 +13,18 @@ CREATE TABLE dwh.d_divloclist (
     div_loc_hdr_key bigint,
     div_hdr_key bigint
 );
+
+ALTER TABLE dwh.d_divloclist ALTER COLUMN div_loc_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.d_divloclist_div_loc_key_seq
+    START WITH -1
+    INCREMENT BY 1
+    MINVALUE -1
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.d_divloclist
+    ADD CONSTRAINT d_divloclist_pkey PRIMARY KEY (div_loc_key);
+
+ALTER TABLE ONLY dwh.d_divloclist
+    ADD CONSTRAINT d_divloclist_ukey UNIQUE (div_ou, div_code, div_lineno);

@@ -13,3 +13,18 @@ CREATE TABLE dwh.d_geocountrydetail (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.d_geocountrydetail ALTER COLUMN geo_country_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.d_geocountrydetail_geo_country_key_seq
+    START WITH -1
+    INCREMENT BY 1
+    MINVALUE -1
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.d_geocountrydetail
+    ADD CONSTRAINT d_geocountrydetail_pkey PRIMARY KEY (geo_country_key);
+
+ALTER TABLE ONLY dwh.d_geocountrydetail
+    ADD CONSTRAINT d_geocountrydetail_ukey UNIQUE (geo_country_code, geo_country_ou, geo_country_lineno);

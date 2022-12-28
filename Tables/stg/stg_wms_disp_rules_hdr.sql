@@ -23,3 +23,6 @@ CREATE TABLE stg.stg_wms_disp_rules_hdr (
     pcs_autoload character varying(48) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_disp_rules_hdr
+    ADD CONSTRAINT wms_disp_rules_hdr_pk PRIMARY KEY (wms_disp_location, wms_disp_ou);

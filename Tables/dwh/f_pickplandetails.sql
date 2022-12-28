@@ -64,3 +64,34 @@ CREATE TABLE dwh.f_pickplandetails (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_pickplandetails ALTER COLUMN pick_pln_dtl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_pickplandetails_pick_pln_dtl_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_pickplandetails
+    ADD CONSTRAINT f_pickplandetails_pkey PRIMARY KEY (pick_pln_dtl_key);
+
+ALTER TABLE ONLY dwh.f_pickplandetails
+    ADD CONSTRAINT f_pickplandetails_ukey UNIQUE (pick_loc_code, pick_pln_no, pick_pln_ou, pick_lineno);
+
+ALTER TABLE ONLY dwh.f_pickplandetails
+    ADD CONSTRAINT f_pickplandetails_pick_pln_hdr_key_fkey FOREIGN KEY (pick_pln_hdr_key) REFERENCES dwh.f_pickplanheader(pick_pln_hdr_key);
+
+ALTER TABLE ONLY dwh.f_pickplandetails
+    ADD CONSTRAINT f_pickplandetails_pick_pln_item_key_fkey FOREIGN KEY (pick_pln_item_key) REFERENCES dwh.d_itemheader(itm_hdr_key);
+
+ALTER TABLE ONLY dwh.f_pickplandetails
+    ADD CONSTRAINT f_pickplandetails_pick_pln_loc_key_fkey FOREIGN KEY (pick_pln_loc_key) REFERENCES dwh.d_location(loc_key);
+
+ALTER TABLE ONLY dwh.f_pickplandetails
+    ADD CONSTRAINT f_pickplandetails_pick_pln_thu_key_fkey FOREIGN KEY (pick_pln_thu_key) REFERENCES dwh.d_thu(thu_key);
+
+CREATE INDEX f_pickplandetails_key_idx ON dwh.f_pickplandetails USING btree (pick_pln_loc_key, pick_pln_item_key, pick_pln_thu_key, pick_pln_hdr_key);
+
+CREATE INDEX f_pickplandetails_key_idx1 ON dwh.f_pickplandetails USING btree (pick_loc_code, pick_pln_no, pick_pln_ou, pick_lineno);

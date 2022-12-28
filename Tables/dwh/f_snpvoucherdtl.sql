@@ -36,3 +36,23 @@ CREATE TABLE dwh.f_snpvoucherdtl (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.f_snpvoucherdtl ALTER COLUMN voucher_dtl_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.f_snpvoucherdtl_voucher_dtl_key_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.f_snpvoucherdtl
+    ADD CONSTRAINT f_snpvoucherdtl_pkey PRIMARY KEY (voucher_dtl_key);
+
+ALTER TABLE ONLY dwh.f_snpvoucherdtl
+    ADD CONSTRAINT f_snpvoucherdtl_ukey UNIQUE (ou_id, voucher_no, voucher_type, account_lineno, tran_type, vtimestamp);
+
+ALTER TABLE ONLY dwh.f_snpvoucherdtl
+    ADD CONSTRAINT f_snpvoucherdtl_curr_key_fkey FOREIGN KEY (curr_key) REFERENCES dwh.d_currency(curr_key);
+
+CREATE INDEX f_snpvoucherdtl_key_idx ON dwh.f_snpvoucherdtl USING btree (curr_key);

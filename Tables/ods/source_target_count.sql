@@ -21,3 +21,4 @@ TABLESPACE pg_default;
 
 ALTER TABLE IF EXISTS ods.source_target_count
     OWNER to proconnect;
+

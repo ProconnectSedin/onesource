@@ -54,3 +54,5 @@ CREATE TABLE stg.stg_at_wms_asn_header (
     wms_asn_reason_code character varying(160) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+CREATE INDEX stg_at_wms_asn_header_idx1 ON stg.stg_at_wms_asn_header USING btree (wms_asn_ou, wms_asn_location, wms_asn_no);

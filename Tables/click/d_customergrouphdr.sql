@@ -23,3 +23,9 @@ CREATE TABLE click.d_customergrouphdr (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE ONLY click.d_customergrouphdr
+    ADD CONSTRAINT d_customergrouphdr_pkey PRIMARY KEY (cgh_key);
+
+ALTER TABLE ONLY click.d_customergrouphdr
+    ADD CONSTRAINT d_customergrouphdr_ukey UNIQUE (cgh_cust_group_code, cgh_group_type_code, cgh_control_group_flag, cgh_lo);

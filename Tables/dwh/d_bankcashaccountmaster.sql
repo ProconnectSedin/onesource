@@ -22,3 +22,18 @@ CREATE TABLE dwh.d_bankcashaccountmaster (
     etlcreatedatetime timestamp(3) without time zone,
     etlupdatedatetime timestamp(3) without time zone
 );
+
+ALTER TABLE dwh.d_bankcashaccountmaster ALTER COLUMN d_bank_mst_key ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME dwh.d_bankcashaccountmaster_d_bank_mst_key_seq
+    START WITH -1
+    INCREMENT BY 1
+    MINVALUE -1
+    NO MAXVALUE
+    CACHE 1
+);
+
+ALTER TABLE ONLY dwh.d_bankcashaccountmaster
+    ADD CONSTRAINT d_bankcashaccountmaster_pkey PRIMARY KEY (d_bank_mst_key);
+
+ALTER TABLE ONLY dwh.d_bankcashaccountmaster
+    ADD CONSTRAINT d_bankcashaccountmaster_ukey UNIQUE (company_code, fb_id, bank_ptt_code, effective_from, sequence_no);

@@ -18,3 +18,6 @@ CREATE TABLE stg.stg_wms_stock_item_tracking_gr_load_dtl (
     wms_stk_write_off_qty numeric,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_wms_stock_item_tracking_gr_load_dtl
+    ADD CONSTRAINT wms_stock_item_tracking_gr_load_dtl_pk PRIMARY KEY (wms_stk_ou, wms_stk_location, wms_stk_customer, wms_stk_date, wms_stk_uid_serial_no, wms_stk_lot_no, wms_stk_pack_thu_serial_no);

@@ -16,3 +16,6 @@ CREATE TABLE stg.stg_tbp_voucher_hdr (
     modifieddate timestamp without time zone,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now()
 );
+
+ALTER TABLE ONLY stg.stg_tbp_voucher_hdr
+    ADD CONSTRAINT tbp_voucher_hdr_pkey PRIMARY KEY (current_key, company_code, component_name, bu_id, fb_id, fb_voucher_no);
