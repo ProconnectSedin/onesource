@@ -26,7 +26,6 @@ DECLARE
     p_errordesc character varying;
     p_errorline integer;
     p_depsource VARCHAR(100);
-
     p_rawstorageflag integer;
 
 BEGIN
