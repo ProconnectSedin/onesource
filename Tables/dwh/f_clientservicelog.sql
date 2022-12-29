@@ -40,3 +40,5 @@ CREATE INDEX IF NOT EXISTS f_clientservicelog_key_idx
     ON dwh.f_clientservicelog USING btree
     ( Cust_Id ASC NULLS LAST)
     TABLESPACE pg_default;
+
+    --testing
