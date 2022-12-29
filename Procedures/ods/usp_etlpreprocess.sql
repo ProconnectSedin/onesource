@@ -2,6 +2,7 @@
 
 -- DROP PROCEDURE IF EXISTS ods.usp_etlpreprocess(character varying, character varying, character varying, integer, integer, character varying, character varying, integer);
 
+-- added sourcegroupflag in sp
 CREATE OR REPLACE PROCEDURE ods.usp_etlpreprocess(
 	IN psourceid character varying,
 	IN ptargetobject character varying,
