@@ -86,7 +86,7 @@ BEGIN
     WHERE	t.cust_Id IS NULL;
 
     GET DIAGNOSTICS inscnt = ROW_COUNT;
-	select 0 into updcnt;
+
 	
     IF p_rawstorageflag = 1
     THEN
