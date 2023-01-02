@@ -39,7 +39,7 @@ DECLARE
 			OU					, Division				, bin_location			, Bin_type		,
 			Bin_count			, Bin_length			, Bin_breadth			, Bin_height	,
 			bin_typ_dim_uom		, Actual_bin_volume		, Calculated_bin_volume	,
-			Volume_uom			, createddate
+			Volume_uom			, createddate			, activeindicator
 			)
 
 		SELECT
@@ -47,7 +47,7 @@ DECLARE
 			bt.bin_typ_ou		, bt.bin_typ_div_code	, bt.bin_typ_loc_code	, bt.bin_typ_code	,		
 			count(bd.bin_code)	, bt.bin_typ_height		, bt.bin_typ_width		, bt.bin_typ_depth	,		
 			bt.bin_typ_dim_uom	, bt.bin_typ_vol_actual	, bt.bin_typ_vol_calc	,
-			bt.bin_typ_vol_uom	, NOW()::TIMESTAMP
+			bt.bin_typ_vol_uom	, NOW()::TIMESTAMP		, (bt.etlactiveind * bd.etlactiveind)
 			
 		FROM dwh.d_bintypes bt
 		INNER JOIN dwh.f_bindetails bd

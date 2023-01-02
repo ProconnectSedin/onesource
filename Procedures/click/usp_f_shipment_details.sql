@@ -28,11 +28,12 @@ INSERT INTO click.f_shipment_details
 	    Planned_TripEnd,		    Actual_TripStart,		    Actual_Arrived,			        Actual_TakenOver_HandedOver,	   Actual_Departed,
 	    Actual_TripEnd,		     	br_invoice_value,		    OnTime_Pickup_Delivery,	        ShipmentDays,					   createddatetime,					
 	  	trip_plan_DateKey,		    trip_Exec_DateKey,			Trip_Volume,					Trip_Volume_uom,
-		trip_plan_createddate,		from_pincode,				to_pincode
+		trip_plan_createddate,		from_pincode,				to_pincode,
+ 		activeindicator
 )
  SELECT   
 		 br_key,					 br_loc_key,				br_customer_key,
-		 br_ouinstance,				     br_request_id,			    br_customer_id,				    br_customer_ref_no,					br_status,
+		 br_ouinstance,				 br_request_id,			    br_customer_id,				    br_customer_ref_no,					br_status,
 		 br_service_type,		     br_sub_service_type,	    plpth_trip_plan_id,			    plpth_trip_plan_status,				plpth_vehicle_type,		
 		 plpth_vehicle_id,		     plpth_agent_id,		    plpth_agent_resource,	    	plpth_location,						brsd_from_city,
 		 brsd_from_state,		     brsd_to_city,			    brsd_to_state,				    plptd_leg_behaviour,				plpth_trip_plan_date,
@@ -42,7 +43,8 @@ INSERT INTO click.f_shipment_details
 		 Actual_TripEnd,			 br_invoice_value,			CASE WHEN Actual_TakenOver_HandedOver  <= Planned_TakenOver_HandedOver THEN 1 ELSE 0 END AS OnTime_Pickup_Delivery,
 		 NULL AS ShipmentDays,		 CURRENT_DATE AS CreatedDate,								trip_plan_DateKey,					COALESCE(TO_CHAR(Actual_TakenOver_HandedOver, 'YYYYMMDD')::INTEGER,-1) as trip_exec_DateKey,
 		 tltd_volume,				 tltd_volume_uom,			
-		 trip_plan_createddate,		 brsd_from_postal_code,		brsd_to_postal_code
+		 trip_plan_createddate,		 brsd_from_postal_code,		brsd_to_postal_code,
+		 activeindicator
 FROM(
 	SELECT 	 
 		 a.br_key,					 a.br_loc_key,				a.br_customer_key,
@@ -73,7 +75,8 @@ FROM(
 		COALESCE(H.plpth_trip_plan_DateKey,-1)	trip_plan_datekey,
 		tlog.tltd_volume,tlog.tltd_volume_uom,
 		COALESCE(plpth_last_modified_date,plpth_created_date) as trip_plan_createddate,
-		b.brsd_from_postal_code as brsd_from_postal_code	,	b.brsd_to_postal_code as brsd_to_postal_code
+		b.brsd_from_postal_code as brsd_from_postal_code	,	b.brsd_to_postal_code as brsd_to_postal_code,
+		(h.etlactiveind * D.etlactiveind * a.etlactiveind * b.etlactiveind * c.etlactiveind) as activeindicator
 	FROM dwh.F_tripplanningheader H
 	INNER JOIN dwh.f_tripplanningdetail D
 	ON  D.plpth_hdr_key = H.plpth_hdr_key
@@ -245,6 +248,7 @@ update click.f_shipment_details
 set podflag = 0 
 where podflag IS NULL
 AND trip_plan_createddate::DATE >= (CURRENT_DATE - INTERVAL '90 DAYS')::DATE;
+
 --UPDATING Expected_DatetoDeliver OPEN
 		
 	UPDATE	click.f_shipment_details sh
@@ -290,7 +294,7 @@ AND trip_plan_createddate::DATE >= (CURRENT_DATE - INTERVAL '90 DAYS')::DATE;
 	
 --UPDATING Expected_DatetoDeliver CLOSED
 
---ON_TIME_DELIVERY_FLAG UPDATE OPEN
+--ON_TIME_DELIVERY_FLAG UPDATE OPEN;
 
 	UPDATE	click.f_shipment_details
 	SET		OnTimeDelvry_count	= CASE WHEN
@@ -301,7 +305,7 @@ AND trip_plan_createddate::DATE >= (CURRENT_DATE - INTERVAL '90 DAYS')::DATE;
 	--WHERE EXTRACT(YEAR FROM trip_plan_createddate::DATE) = 2019									
 	WHERE	trip_plan_createddate::DATE >= (CURRENT_DATE - INTERVAL '90 DAYS')::DATE;
 	
---ON_TIME_DELIVERY_FLAG UPDATE OPEN
+--ON_TIME_DELIVERY_FLAG UPDATE ENDS;
 
 	
 	EXCEPTION WHEN others THEN       

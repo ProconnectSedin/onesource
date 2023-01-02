@@ -1,10 +1,13 @@
-CREATE OR REPLACE PROCEDURE click.usp_f_bin_utilization()
-    LANGUAGE plpgsql
-    AS $$
+-- PROCEDURE: click.usp_f_bin_utilization()
 
-BEGIN
- 
- 
+-- DROP PROCEDURE IF EXISTS click.usp_f_bin_utilization();
+
+CREATE OR REPLACE PROCEDURE click.usp_f_bin_utilization(
+	)
+LANGUAGE 'plpgsql'
+AS $BODY$
+
+BEGIN 
 
 
 INSERT INTO click.f_bin_utilization
@@ -12,7 +15,8 @@ INSERT INTO click.f_bin_utilization
     ou,	                location,	        customer_code,	       zone,	               bin_id,	
     bin_type,	        bin_volume,	        bin_volume_uom,	       bin_area,	           stock_date,
     item_code,	        bin_on_hand_qty,	item_volume,	       item_volume_uom,	       item_area,
-    utilized_volume_pct,utilized_area_pct
+    utilized_volume_pct,utilized_area_pct	,
+	activeindicator
 )
 select 
     a.bin_ou,           a.bin_loc_code,     b.stock_customer,      a.bin_zone,              a.bin_code,
@@ -21,7 +25,9 @@ select
     b.stock_bin_qty,    (c.itm_volume)*(b.stock_bin_qty) as Item_Volume,                    c.itm_volume_uom ,
     ((c.itm_length)*(c.itm_breadth))*(b.stock_bin_qty) as Item_Area,
     ((((c.itm_volume)*(b.stock_bin_qty))/d.bin_typ_volume)*100) as Utilized_Volume,
-    (((c.itm_length)*(c.itm_breadth))/((d.bin_typ_width)*(d.bin_typ_height))*100) as Utilized_Area
+    (((c.itm_length)*(c.itm_breadth))/((d.bin_typ_width)*(d.bin_typ_height))*100) as Utilized_Area,
+	(a.etlactiveind*b.etlactiveind*c.etlactiveind*d.etlactiveind)
+
 from dwh.f_bindetails a
 join dwh.f_stockbinhistorydetail b
 on  a.bin_dtl_key   = b.bin_dtl_key
@@ -31,4 +37,6 @@ join dwh.d_bintypes d
 on  a.bin_typ_key  = d.bin_typ_key;
 
 END;
-$$;
+$BODY$;
+ALTER PROCEDURE click.usp_f_bin_utilization()
+    OWNER TO proconnect;
