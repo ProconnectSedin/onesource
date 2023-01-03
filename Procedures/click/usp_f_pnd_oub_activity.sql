@@ -94,7 +94,7 @@ AS $BODY$
 		
 		INSERT INTO click.f_pnd_oub_activity
 			(
-				obh_loc_key		, obh_cust_key		, obd_itm_key		,
+				obh_loc_key		, obh_cust_key		, obd_itm_key		, activeindicator,
 				ou				, oub_date			, oub_loc			, customer		,
 				order_no		, order_status		, invoice_type		, invoice_no	, 
 				service_type	, line_no			, item_code			, item_qty		,
@@ -103,11 +103,11 @@ AS $BODY$
 				pack_status		,
 				wave_pln_end_date		,
 				pick_exec_ml_end_date	,
-				etlcreatedatetime		, etlupdatedatetime	, createdate
+				etlcreatedatetime		, etlupdatedatetime	, createdate	
 			)
 	
 		SELECT
-			OBH.obh_loc_key			, OBH.obh_cust_key		, OBI.obd_itm_key		,
+			OBH.obh_loc_key			, OBH.obh_cust_key		, OBI.obd_itm_key		, MAX(OBH.etlactiveind * OBI.etlactiveind)	,
 			OBH.oub_ou				, OBH.oub_orderdate		, OBH.oub_loc_code		, OBH.oub_cust_code		,
 			OBH.oub_outbound_ord	, OBH.oub_ob_status		, OBH.oub_prim_rf_dc_typ, OBH.oub_prim_rf_dc_no	,
 			OBH.oub_shipment_type	, OBI.oub_itm_lineno	, OBI.oub_item_code		, OBI.oub_itm_order_qty	,
