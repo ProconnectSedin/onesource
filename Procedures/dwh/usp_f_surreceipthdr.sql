@@ -84,6 +84,8 @@ BEGIN
         afe_number                = s.afe_number,
         job_number                = s.job_number,
         report_flag               = s.report_flag,
+        stimestamp 	              = s.stimestamp,
+        ifb_flag 		          = s.ifb_flag,
         etlactiveind              = 1,
         etljobname                = p_etljobname,
         envsourcecd               = p_envsourcecd,
@@ -97,9 +99,7 @@ BEGIN
     WHERE 	t.ou_id 		= s.ou_id
     AND 	t.receipt_no 	= s.receipt_no
     AND 	t.receipt_type 	= s.receipt_type
-    AND 	t.tran_type 	= s.tran_type
-    AND 	t.stimestamp 	= s.stimestamp
-    AND 	t.ifb_flag 		= s.ifb_flag;
+    AND 	t.tran_type 	= s.tran_type;
 
     GET DIAGNOSTICS updcnt = ROW_COUNT;
 
@@ -142,8 +142,6 @@ BEGIN
     AND 	s.receipt_no 	= t.receipt_no
     AND 	s.receipt_type 	= t.receipt_type
     AND 	s.tran_type		= t.tran_type
-    AND 	s.stimestamp 	= t.stimestamp
-    AND 	s.ifb_flag 		= t.ifb_flag
     WHERE t.ou_id IS NULL;
 
     GET DIAGNOSTICS inscnt = ROW_COUNT;
