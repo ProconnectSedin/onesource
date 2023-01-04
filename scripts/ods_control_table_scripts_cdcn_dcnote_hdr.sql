@@ -1,6 +1,6 @@
 DO $$
-BEGIN
 
+BEGIN   
 
 IF NOT EXISTS (SELECT 1 FROM ods.controlheader WHERE sourceid = 'cdcn_dcnote_hdr') THEN INSERT INTO ods.controlheader(sourcename,sourcetype,sourcedescription,sourceid,connectionstr,adlscontainername,dwobjectname,objecttype,dldirstructure,dlpurgeflag,dwpurgeflag,ftpcheck,status,createddate,lastupdateddate,createduser,isapplicable,profilename,emailto,archcondition,depsource,archintvlcond,sourcecallingseq,apiurl,apimethod,apiauthorizationtype,apiaccesstoken,apipymodulename,apiqueryparameters,apirequestbody,envsourcecode,datasourcecode,sourcedelimiter,rawstorageflag,sourcegroup) VALUES ('scmdb','SQL Server','cdcn_dcnote_hdr','cdcn_dcnote_hdr','host:52.140.55.131;database:scmdb;username:sedindwuser;password:Welcome@123','Finance','F_cdcndcnotehdr','Fact',NULL,'0','0','0','Completed','2022-12-30 01:14:36.015359','2023-01-04 10:02:36.532724','Super User','1','DB Profile',NULL,NULL,NULL,'0','4',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'SCMDB','DW',NULL,'1',NULL); END IF;
 
