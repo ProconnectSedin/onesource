@@ -1,20 +1,24 @@
-CREATE TABLE click.f_inboundsladetail (
-    sla_ib_key bigint NOT NULL,
+-- Table: click.f_inboundsladetail
+
+DROP TABLE IF EXISTS click.f_inboundsladetail;
+
+CREATE TABLE IF NOT EXISTS click.f_inboundsladetail
+(
+    sla_ib_key bigint NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 9223372036854775807 CACHE 1 ),
     sla_ouid integer,
     sla_lockey bigint,
     sla_customerkey bigint,
     sla_datekey bigint,
     sla_customerid character varying(40) COLLATE public.nocase,
     sla_loccode character varying(20) COLLATE public.nocase,
-    sla_dateactual date,
+    sla_dateactual timestamp without time zone,
     sla_prefdocno character varying(80) COLLATE public.nocase,
     sla_supasnno character varying(80) COLLATE public.nocase,
     sla_ordtime time without time zone,
     sla_cutofftime time without time zone,
+    sla_openingtime time without time zone,
     sla_asntype character varying(20) COLLATE public.nocase,
     sla_preftype character varying(20) COLLATE public.nocase,
-    sla_grnstatus character varying(20) COLLATE public.nocase,
-    sla_pwaystatus character varying(20) COLLATE public.nocase,
     sla_equipmentflag integer,
     sla_grexecdate timestamp without time zone,
     sla_putawayexecdate timestamp without time zone,
@@ -28,19 +32,22 @@ CREATE TABLE click.f_inboundsladetail (
     asn_timediff_inmin integer,
     grn_timediff_inmin integer,
     pway_timediff_inmin integer,
-    sla_loadeddatetime timestamp without time zone DEFAULT CURRENT_DATE
-);
+    sla_loadeddatetime timestamp without time zone DEFAULT CURRENT_DATE,
+    activeindicator integer,
+    sla_orderaccountdatekey bigint,
+    sla_orderaccountdate timestamp without time zone,
+    CONSTRAINT f_inboundsladetail_pk PRIMARY KEY (sla_ib_key)
+)
 
-ALTER TABLE click.f_inboundsladetail ALTER COLUMN sla_ib_key ADD GENERATED ALWAYS AS IDENTITY (
-    SEQUENCE NAME click.f_inboundsladetail_sla_ib_key_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1
-);
+TABLESPACE pg_default;
 
-ALTER TABLE ONLY click.f_inboundsladetail
-    ADD CONSTRAINT f_inboundsladetail_pk PRIMARY KEY (sla_ib_key);
+ALTER TABLE IF EXISTS click.f_inboundsladetail
+    OWNER to proconnect;
+-- Index: f_inboundsladetail_ndx
 
-CREATE INDEX f_inboundsladetail_ndx ON click.f_inboundsladetail USING btree (sla_ouid, sla_customerkey, sla_datekey, sla_lockey, sla_prefdocno);
+-- DROP INDEX IF EXISTS click.f_inboundsladetail_ndx;
+
+CREATE INDEX IF NOT EXISTS f_inboundsladetail_ndx
+    ON click.f_inboundsladetail USING btree
+    (sla_ouid ASC NULLS LAST, sla_customerkey ASC NULLS LAST, sla_datekey ASC NULLS LAST, sla_lockey ASC NULLS LAST, sla_prefdocno COLLATE public.nocase ASC NULLS LAST)
+    TABLESPACE pg_default;
