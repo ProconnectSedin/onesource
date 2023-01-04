@@ -67,6 +67,7 @@ SELECT 	depsource
     join f_sla_shipment_pick_tmp tmp
     on  a.ouinstance     = tmp.ouinstance
     and a.trip_plan_id   = tmp.trip_plan_id
+    and a.br_request_id  = tmp.br_request_id
 	left join dwh.f_outboundheader b
 	on  a.ouinstance        = b.oub_ou
 	and a.loc               = left(b.oub_loc_code,6)
