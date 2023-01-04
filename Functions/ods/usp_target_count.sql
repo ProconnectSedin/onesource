@@ -2,7 +2,7 @@ CREATE FUNCTION ods.usp_target_count(v_rowid bigint) RETURNS TABLE(v_sourcetable
     LANGUAGE plpgsql
     AS $$
 
-declare v_max int;
+declare v_max int; 
  v_id integer =1;
  v_Data text;
  v_DB text;

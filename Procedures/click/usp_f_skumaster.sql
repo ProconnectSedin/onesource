@@ -69,7 +69,7 @@ BEGIN
 		INSERT INTO click.f_skumaster
 			(
 				customer_key		, itm_hdr_key		, ex_location_key,
-				ex_itm_loc_code		,
+				ex_itm_loc_code		, activeindicator	,
 				sku_ou				, customer_code		, customer_name	, sku_code		,
 				sku_name			, sku_type			, sku_length	, sku_breadth	, 
 				sku_height 			, lbh_uom			, wght_in_kg	, sku_wght_uom	, 
@@ -84,7 +84,7 @@ BEGIN
 
 		SELECT 
 				cus.customer_key		, it.itm_hdr_key		, ex.ex_location_key,
-				ex.ex_itm_loc_code		,
+				ex.ex_itm_loc_code		, (ex.etlactiveind * it.etlactiveind * cus.etlactiveind)	,
 				it.itm_ou				, it.itm_customer		, cus.customer_name	, it.itm_code		,
 				it.itm_long_desc		, it.itm_type			, it.itm_length		, it.itm_breadth	,
 				it.itm_height			, it.itm_uom			, it.Itm_weight		, it.itm_weight_uom	, 

@@ -23,7 +23,7 @@ BEGIN
             CarpeT_Area,            IB_staging_area,    OB_staging_area,  		Office_area,                Others,                 
             Storage_area,           Area_UOM,           Customer_IB_area, 		Customer_OB_area,           Customer_Office_area,   
             Customer_storage_area,  Customer_other_area,Customer_Total_area,	Customer_area_uom,	        Not_Allocated,          
-            Status, 			    createddate
+            Status, 			    createddate,		activeindicator
 		)
 		select 
 			COALESCE(a.loc_pop_loc_key,-1), COALESCE(b.div_key,-1),a.loc_pop_ou,				e.div_code,					d.div_desc,				
@@ -37,7 +37,7 @@ BEGIN
 				WHEN (((COALESCE(e.div_storg_area,0))-(COALESCE(a.loc_pop_storg_area,0)+COALESCE(a.loc_other_area,0))))=0 Then 'Good'
 				WHEN (((COALESCE(e.div_storg_area,0))-(COALESCE(a.loc_pop_storg_area,0)+COALESCE(a.loc_other_area,0))))<0 Then 'Conflict'
 				WHEN (((COALESCE(e.div_storg_area,0))-(COALESCE(a.loc_pop_storg_area,0)+COALESCE(a.loc_other_area,0))))>0 Then 'Free Space'
-			END) as Status, 		NOW()::TIMESTAMP
+			END) as Status, 		NOW()::TIMESTAMP,	a.etlactiveind
 		from  dwh.f_locationareadetail a
 		left join  dwh.d_location b
 		on    a.loc_pop_loc_key = b.loc_key

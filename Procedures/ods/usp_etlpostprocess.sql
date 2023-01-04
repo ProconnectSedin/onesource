@@ -1,6 +1,7 @@
 -- PROCEDURE: ods.usp_etlpostprocess(character varying, character varying, character varying, integer, integer, integer, integer, integer)
 
 -- DROP PROCEDURE IF EXISTS ods.usp_etlpostprocess(character varying, character varying, character varying, integer, integer, integer, integer, integer);
+-- added sourcegroupflag in sp
 
 CREATE OR REPLACE PROCEDURE ods.usp_etlpostprocess(
 	IN psourceid character varying,
