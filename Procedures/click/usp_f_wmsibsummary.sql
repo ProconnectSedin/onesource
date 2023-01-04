@@ -69,8 +69,8 @@ BEGIN
 	GROUP BY
 		fa.asn_ou,			fa.asn_cust_key,	fa.asn_cust_code,	d.datekey, 
 		fa.asn_hr_key,		fa.asn_no,			fa.asn_prefdoc_no,	(COALESCE(fa.asn_modified_date,fa.asn_created_date))::DATE,	i.itm_itemgroup,
-		i.itm_class,		fa.asn_loc_key,		fa.asn_location,	fa.asn_prefdoc_type,fa.asn_type,		fg.gr_pln_status,
-		fp.pway_pln_status,i.itm_volume_uom;
+		i.itm_class,		fa.asn_loc_key,		fa.asn_location,	fa.asn_prefdoc_type,fa.asn_type,		fg.gr_exec_status,
+		fp.pway_exec_status,i.itm_volume_uom;
 		
 	
     ELSE	
