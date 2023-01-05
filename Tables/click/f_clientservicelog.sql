@@ -1,0 +1,26 @@
+CREATE TABLE IF NOT EXISTS click.f_clientservicelog
+(
+    clientservicelog_key bigint NOT NULL GENERATED ALWAYS AS IDENTITY ,
+    cust_id integer,
+    client_name character varying(50) ,
+    service_name character varying(50) ,
+    service_type character varying(50) ,
+    agentdocketno character varying(50) ,
+    trackingstatus character varying(50) ,
+    status character varying(50) ,
+    error_message text  ,
+    location_id character varying(50) ,
+    customer_id character varying(50) ,
+    trip_plan_id character varying(50) ,
+    ord_sono character varying(50) ,
+    ip_address character varying(20) ,
+    csl_created_date timestamp(3) without time zone,
+    etlactiveind integer,
+    etljobname character varying(200) ,
+    etlcreatedatetime timestamp(3) without time zone,
+    etlupdatedatetime timestamp(3) without time zone,
+    created_date timestamp(3) without time zone,
+    updatedatetime timestamp(3) without time zone,
+    CONSTRAINT f_clientservicelog_pkey PRIMARY KEY (clientservicelog_key),
+    CONSTRAINT f_clientservicelog_ukey UNIQUE (cust_id)
+)
