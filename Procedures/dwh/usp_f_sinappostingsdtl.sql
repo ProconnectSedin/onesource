@@ -1,6 +1,19 @@
-CREATE OR REPLACE PROCEDURE dwh.usp_f_sinappostingsdtl(IN p_sourceid character varying, IN p_dataflowflag character varying, IN p_targetobject character varying, OUT srccnt integer, OUT inscnt integer, OUT updcnt integer, OUT dltcount integer, INOUT flag1 character varying, OUT flag2 character varying)
-    LANGUAGE plpgsql
-    AS $$
+-- PROCEDURE: dwh.usp_f_sinappostingsdtl(character varying, character varying, character varying, character varying)
+
+-- DROP PROCEDURE IF EXISTS dwh.usp_f_sinappostingsdtl(character varying, character varying, character varying, character varying);
+
+CREATE OR REPLACE PROCEDURE dwh.usp_f_sinappostingsdtl(
+	IN p_sourceid character varying,
+	IN p_dataflowflag character varying,
+	IN p_targetobject character varying,
+	OUT srccnt integer,
+	OUT inscnt integer,
+	OUT updcnt integer,
+	OUT dltcount integer,
+	INOUT flag1 character varying,
+	OUT flag2 character varying)
+LANGUAGE 'plpgsql'
+AS $BODY$
 
 DECLARE
     p_etljobname VARCHAR(100);
@@ -63,6 +76,7 @@ BEGIN
         mlremarks                = s.mlremarks,
         roundoff_flag            = s.roundoff_flag,
         item_tcd_type            = s.item_tcd_type,
+    	a_timestamp	  			 = s.timestamp,
         etlactiveind             = 1,
         etljobname               = p_etljobname,
         envsourcecd              = p_envsourcecd,
@@ -72,8 +86,7 @@ BEGIN
     WHERE t.tran_type =		s.tran_type
     AND t.tran_ou	  =		s.tran_ou
     AND t.tran_no	  =		s.tran_no
-    AND t.posting_line_no = s.posting_line_no
-    AND t.a_timestamp	  =		s.timestamp;
+    AND t.posting_line_no = s.posting_line_no;
 
     GET DIAGNOSTICS updcnt = ROW_COUNT;
 
@@ -97,7 +110,6 @@ BEGIN
     AND s.tran_ou = t.tran_ou
     AND s.tran_no = t.tran_no
     AND s.posting_line_no = t.posting_line_no
-    AND s.timestamp = t.a_timestamp
     WHERE t.tran_type IS NULL;
 
     GET DIAGNOSTICS inscnt = ROW_COUNT;
@@ -124,4 +136,6 @@ BEGIN
        select 0 into inscnt;
        select 0 into updcnt;
 END;
-$$;
+$BODY$;
+ALTER PROCEDURE dwh.usp_f_sinappostingsdtl(character varying, character varying, character varying, character varying)
+    OWNER TO proconnect;

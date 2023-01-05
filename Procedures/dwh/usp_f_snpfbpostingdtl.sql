@@ -1,6 +1,19 @@
-CREATE OR REPLACE PROCEDURE dwh.usp_f_snpfbpostingdtl(IN p_sourceid character varying, IN p_dataflowflag character varying, IN p_targetobject character varying, OUT srccnt integer, OUT inscnt integer, OUT updcnt integer, OUT dltcount integer, INOUT flag1 character varying, OUT flag2 character varying)
-    LANGUAGE plpgsql
-    AS $$
+-- PROCEDURE: dwh.usp_f_snpfbpostingdtl(character varying, character varying, character varying, character varying)
+
+-- DROP PROCEDURE IF EXISTS dwh.usp_f_snpfbpostingdtl(character varying, character varying, character varying, character varying);
+
+CREATE OR REPLACE PROCEDURE dwh.usp_f_snpfbpostingdtl(
+	IN p_sourceid character varying,
+	IN p_dataflowflag character varying,
+	IN p_targetobject character varying,
+	OUT srccnt integer,
+	OUT inscnt integer,
+	OUT updcnt integer,
+	OUT dltcount integer,
+	INOUT flag1 character varying,
+	OUT flag2 character varying)
+LANGUAGE 'plpgsql'
+AS $BODY$
 
 DECLARE
     p_etljobname VARCHAR(100);
@@ -58,6 +71,7 @@ BEGIN
         reftran_ou              = s.reftran_ou,
         reftran_type            = s.reftran_type,
         reftran_fbid            = s.reftran_fbid,
+		timestamp				= s.timestamp,
         etlactiveind            = 1,
         etljobname              = p_etljobname,
         envsourcecd             = p_envsourcecd,
@@ -68,8 +82,7 @@ BEGIN
     AND t.ou_id = s.ou_id
     AND t.document_no = s.document_no
     AND t.account_lineno = s.account_lineno
-    AND t.account_code = s.account_code
-    AND t.timestamp = s.timestamp;
+    AND t.account_code = s.account_code;
 
     GET DIAGNOSTICS updcnt = ROW_COUNT;
 
@@ -87,7 +100,6 @@ BEGIN
     AND s.document_no = t.document_no
     AND s.account_lineno = t.account_lineno
     AND s.account_code = t.account_code
-    AND s.timestamp = t.timestamp
     WHERE t.batch_id IS NULL;
 
     GET DIAGNOSTICS inscnt = ROW_COUNT;
@@ -112,4 +124,6 @@ BEGIN
        select 0 into inscnt;
        select 0 into updcnt;
 END;
-$$;
+$BODY$;
+ALTER PROCEDURE dwh.usp_f_snpfbpostingdtl(character varying, character varying, character varying, character varying)
+    OWNER TO proconnect;

@@ -1,6 +1,19 @@
-CREATE OR REPLACE PROCEDURE dwh.usp_f_spypaybatchhdr(IN p_sourceid character varying, IN p_dataflowflag character varying, IN p_targetobject character varying, OUT srccnt integer, OUT inscnt integer, OUT updcnt integer, OUT dltcount integer, INOUT flag1 character varying, OUT flag2 character varying)
-    LANGUAGE plpgsql
-    AS $$
+-- PROCEDURE: dwh.usp_f_spypaybatchhdr(character varying, character varying, character varying, character varying)
+
+-- DROP PROCEDURE IF EXISTS dwh.usp_f_spypaybatchhdr(character varying, character varying, character varying, character varying);
+
+CREATE OR REPLACE PROCEDURE dwh.usp_f_spypaybatchhdr(
+	IN p_sourceid character varying,
+	IN p_dataflowflag character varying,
+	IN p_targetobject character varying,
+	OUT srccnt integer,
+	OUT inscnt integer,
+	OUT updcnt integer,
+	OUT dltcount integer,
+	INOUT flag1 character varying,
+	OUT flag2 character varying)
+LANGUAGE 'plpgsql'
+AS $BODY$
 
 DECLARE
     p_etljobname VARCHAR(100);
@@ -54,6 +67,8 @@ BEGIN
         unadjppchk_flag           = s.unadjppchk_flag,
         crosscur_erate            = s.crosscur_erate,
         unadjdebitchk_flag        = s.unadjdebitchk_flag,
+		ptimestamp				= s.ptimestamp,
+		ict_flag				= s.ict_flag,
         etlactiveind              = 1,
         etljobname                = p_etljobname,
         envsourcecd               = p_envsourcecd,
@@ -63,9 +78,7 @@ BEGIN
 	LEFT JOIN dwh.d_currency cr
 		ON  s.pay_currency		= cr.iso_curr_code	
     WHERE t.ou_id = s.ou_id
-    AND t.paybatch_no = s.paybatch_no
-    AND t.ptimestamp = s.ptimestamp
-    AND t.ict_flag = s.ict_flag;
+    AND t.paybatch_no = s.paybatch_no;
 
     GET DIAGNOSTICS updcnt = ROW_COUNT;
 
@@ -82,8 +95,6 @@ BEGIN
     LEFT JOIN dwh.F_spypaybatchhdr t
     ON s.ou_id = t.ou_id
     AND s.paybatch_no = t.paybatch_no
-    AND s.ptimestamp = t.ptimestamp
-    AND s.ict_flag = t.ict_flag
     WHERE t.ou_id IS NULL;
 
     GET DIAGNOSTICS inscnt = ROW_COUNT;
@@ -108,4 +119,6 @@ BEGIN
        select 0 into inscnt;
        select 0 into updcnt;
 END;
-$$;
+$BODY$;
+ALTER PROCEDURE dwh.usp_f_spypaybatchhdr(character varying, character varying, character varying, character varying)
+    OWNER TO proconnect;
