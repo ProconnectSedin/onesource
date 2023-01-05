@@ -1,6 +1,19 @@
-CREATE OR REPLACE PROCEDURE dwh.usp_f_snpvoucherhdr(IN p_sourceid character varying, IN p_dataflowflag character varying, IN p_targetobject character varying, OUT srccnt integer, OUT inscnt integer, OUT updcnt integer, OUT dltcount integer, INOUT flag1 character varying, OUT flag2 character varying)
-    LANGUAGE plpgsql
-    AS $$
+-- PROCEDURE: dwh.usp_f_snpvoucherhdr(character varying, character varying, character varying, character varying)
+
+-- DROP PROCEDURE IF EXISTS dwh.usp_f_snpvoucherhdr(character varying, character varying, character varying, character varying);
+
+CREATE OR REPLACE PROCEDURE dwh.usp_f_snpvoucherhdr(
+	IN p_sourceid character varying,
+	IN p_dataflowflag character varying,
+	IN p_targetobject character varying,
+	OUT srccnt integer,
+	OUT inscnt integer,
+	OUT updcnt integer,
+	OUT dltcount integer,
+	INOUT flag1 character varying,
+	OUT flag2 character varying)
+LANGUAGE 'plpgsql'
+AS $BODY$
 
 DECLARE
     p_etljobname VARCHAR(100);
@@ -73,6 +86,8 @@ BEGIN
         receipt_ou                  = s.receipt_ou,
         workflow_status             = s.workflow_status,
         recon_reqflg                = s.recon_reqflg,
+		vtimestamp 					= s.vtimestamp,
+    	ifb_flag 					= s.ifb_flag,		
         etlactiveind                = 1,
         etljobname                  = p_etljobname,
         envsourcecd                 = p_envsourcecd,
@@ -84,9 +99,7 @@ BEGIN
     WHERE t.ou_id = s.ou_id
     AND t.voucher_no = s.voucher_no
     AND t.voucher_type = s.voucher_type
-    AND t.tran_type = s.tran_type
-    AND t.vtimestamp = s.vtimestamp
-    AND t.ifb_flag = s.ifb_flag;
+    AND t.tran_type = s.tran_type;
 
     GET DIAGNOSTICS updcnt = ROW_COUNT;
 
@@ -105,8 +118,6 @@ BEGIN
     AND s.voucher_no = t.voucher_no
     AND s.voucher_type = t.voucher_type
     AND s.tran_type = t.tran_type
-    AND s.vtimestamp = t.vtimestamp
-    AND s.ifb_flag = t.ifb_flag
     WHERE t.ou_id IS NULL;
 
     GET DIAGNOSTICS inscnt = ROW_COUNT;
@@ -131,4 +142,6 @@ BEGIN
        select 0 into inscnt;
        select 0 into updcnt;
 END;
-$$;
+$BODY$;
+ALTER PROCEDURE dwh.usp_f_snpvoucherhdr(character varying, character varying, character varying, character varying)
+    OWNER TO proconnect;

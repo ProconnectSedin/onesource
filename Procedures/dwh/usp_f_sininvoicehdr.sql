@@ -1,6 +1,19 @@
-CREATE OR REPLACE PROCEDURE dwh.usp_f_sininvoicehdr(IN p_sourceid character varying, IN p_dataflowflag character varying, IN p_targetobject character varying, OUT srccnt integer, OUT inscnt integer, OUT updcnt integer, OUT dltcount integer, INOUT flag1 character varying, OUT flag2 character varying)
-    LANGUAGE plpgsql
-    AS $$
+-- PROCEDURE: dwh.usp_f_sininvoicehdr(character varying, character varying, character varying, character varying)
+
+-- DROP PROCEDURE IF EXISTS dwh.usp_f_sininvoicehdr(character varying, character varying, character varying, character varying);
+
+CREATE OR REPLACE PROCEDURE dwh.usp_f_sininvoicehdr(
+	IN p_sourceid character varying,
+	IN p_dataflowflag character varying,
+	IN p_targetobject character varying,
+	OUT srccnt integer,
+	OUT inscnt integer,
+	OUT updcnt integer,
+	OUT dltcount integer,
+	INOUT flag1 character varying,
+	OUT flag2 character varying)
+LANGUAGE 'plpgsql'
+AS $BODY$
 
 DECLARE
     p_etljobname VARCHAR(100);
@@ -90,6 +103,9 @@ BEGIN
         autogen_flag                   = s.autogen_flag,
         Variance_Acct                  = s.Variance_Acct,
         hold_inv_pay                   = s.hold_inv_pay,
+    	timestamp 						= s.timestamp,
+    	tms_flag 						= s.tms_flag,
+    	gen_from_MntFrght 				= s.gen_from_MntFrght,
         etlactiveind                   = 1,
         etljobname                     = p_etljobname,
         envsourcecd                    = p_envsourcecd,
@@ -98,10 +114,7 @@ BEGIN
     FROM stg.stg_sin_invoice_hdr s
     WHERE t.tran_type = s.tran_type
     AND t.tran_ou = s.tran_ou
-    AND t.tran_no = s.tran_no
-    AND t.timestamp = s.timestamp
-    AND t.tms_flag = s.tms_flag
-    AND t.gen_from_MntFrght = s.gen_from_MntFrght;
+    AND t.tran_no = s.tran_no;
 
     GET DIAGNOSTICS updcnt = ROW_COUNT;
 
@@ -117,9 +130,6 @@ BEGIN
     ON s.tran_type = t.tran_type
     AND s.tran_ou = t.tran_ou
     AND s.tran_no = t.tran_no
-    AND s.timestamp = t.timestamp
-    AND s.tms_flag = t.tms_flag
-    AND s.gen_from_MntFrght = t.gen_from_MntFrght
     WHERE t.tran_type IS NULL;
 
     GET DIAGNOSTICS inscnt = ROW_COUNT;
@@ -144,4 +154,6 @@ BEGIN
        select 0 into inscnt;
        select 0 into updcnt;
 END;
-$$;
+$BODY$;
+ALTER PROCEDURE dwh.usp_f_sininvoicehdr(character varying, character varying, character varying, character varying)
+    OWNER TO proconnect;

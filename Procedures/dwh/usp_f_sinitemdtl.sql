@@ -97,6 +97,8 @@ BEGIN
         own_tax_region               = s.own_tax_region,
         party_tax_region             = s.party_tax_region,
         decl_tax_region              = s.decl_tax_region,
+		ipv_flag 					 = s.ipv_flag,
+    	epv_flag 					 = s.epv_flag,
         etlactiveind                 = 1,
         etljobname                   = p_etljobname,
         envsourcecd                  = p_envsourcecd,
@@ -110,9 +112,7 @@ BEGIN
     WHERE t.tran_type = s.tran_type
     AND t.tran_ou = s.tran_ou
     AND t.tran_no = s.tran_no
-    AND t.line_no = s.line_no
-    AND t.ipv_flag = s.ipv_flag
-    AND t.epv_flag = s.epv_flag;
+    AND t.line_no = s.line_no;
 
     GET DIAGNOSTICS updcnt = ROW_COUNT;
 
@@ -145,8 +145,6 @@ BEGIN
     AND s.tran_ou = t.tran_ou
     AND s.tran_no = t.tran_no
     AND s.line_no = t.line_no
-    AND s.ipv_flag = t.ipv_flag
-    AND s.epv_flag = t.epv_flag
     WHERE t.tran_type IS NULL;
 
     GET DIAGNOSTICS inscnt = ROW_COUNT;
