@@ -30,15 +30,15 @@ SELECT 	depsource
 		INSERT INTO click.f_inboundsladetail
 			(
 				sla_ouid, 			sla_customerkey, 	sla_customerid,     sla_datekey, 			sla_dateactual, 	
-				sla_lockey, 		sla_loccode, 		sla_preftype, 		sla_asntype,			sla_grnstatus,			
-				sla_prefdocno,		sla_pwaystatus,		sla_supasnno,
+				sla_lockey, 		sla_loccode, 		sla_preftype, 		sla_asntype,						
+				sla_prefdocno,		sla_supasnno,
 				sla_grexpclstime,	sla_pwayexpclstime,	sla_prexpclstime,	sla_ordtime,
-				sla_cutofftime,		sla_Putawayexecdate,sla_grexecdate
+				sla_cutofftime,sla_openingtime,		sla_Putawayexecdate,sla_grexecdate,		sla_Equipmentflag,	activeindicator
 			)
-	SELECT
-				fa.asn_ou,		fa.asn_cust_key,	fa.asn_cust_code,	fa.asn_date_key,	MAX(COALESCE(fa.asn_modified_date,fa.asn_created_date,'1900-01-01'))::DATE,      
-				fa.asn_loc_key, fa.asn_location,	fa.asn_prefdoc_type,fa.asn_type,		fg.gr_pln_status,	
-				asn_prefdoc_no, fp.pway_pln_status,	fa.asn_sup_asn_no,
+		SELECT
+				fa.asn_ou,		fa.asn_cust_key,	fa.asn_cust_code,	d.datekey,	MAX(COALESCE(fa.asn_modified_date,fa.asn_created_date,'1900-01-01')),      
+				fa.asn_loc_key, fa.asn_location,	fa.asn_prefdoc_type,fa.asn_type,
+				fa.asn_prefdoc_no, fa.asn_sup_asn_no,
 			(CASE WHEN MAX(COALESCE(fa.asn_modified_date,fa.asn_created_date,'1900-01-01'))::TIME < MAX(cutofftime)
 			THEN 
 			MAX(COALESCE(fa.asn_modified_date,fa.asn_created_date))::timestamp + (MAX(grtat) || ' Minutes')::INTERVAL
@@ -64,8 +64,11 @@ SELECT 	depsource
 			 ((MAX(COALESCE(fa.asn_modified_date,fa.asn_created_date))+ INTERVAL '1 DAY')::DATE ||' '||(MAX(openingtime)))::TIMESTAMP + (MAX(processtat) || ' Minutes')::INTERVAL 
 				END)ExpClosureDateTime,
 				MAX(COALESCE(fa.asn_modified_date,fa.asn_created_date,'1900-01-01'))::TIME,
-				MAX(tat.cutofftime),	MAX(fp.pway_exec_end_date)::timestamp,	MAX(fg.gr_itmexecution_date)::timestamp
+				MAX(tat.cutofftime),MAX(tat.openingtime),	MAX(fp.pway_exec_end_date)::timestamp,	MAX(COALESCE(fg.gr_end_date,fg.gr_modified_date))::timestamp,
+			CASE WHEN pway_mhe_id IS NOT NULL THEN 1 ELSE 0 END, MAX(fa.activeindicator*fg.activeindicator*fp.activeindicator)
 		FROM click.f_asn fa
+		INNER JOIN click.d_date d
+		ON dateactual = (COALESCE(fa.asn_modified_date,fa.asn_created_date))::DATE
 		LEFT JOIN click.f_grn fg
 			ON  fa.asn_key				= fg.asn_key
 		LEFT JOIN dwh.d_inboundtat tat
@@ -78,10 +81,70 @@ SELECT 	depsource
 		WHERE COALESCE(fa.asn_modified_date,fa.asn_created_date)::DATE	>= (CURRENT_DATE)::DATE
 		AND fa.asn_status 				NOT IN('FR','UA','CNL')
 		GROUP BY
-			fa.asn_ou,		fa.asn_cust_key,	fa.asn_cust_code,	fa.asn_date_key,	
-			fa.asn_loc_key, fa.asn_location,	fa.asn_prefdoc_type,fa.asn_sup_asn_no,fa.asn_type,		fg.gr_pln_status,	
-			asn_prefdoc_no, fp.pway_pln_status;
-			
+			fa.asn_ou,		fa.asn_cust_key,	fa.asn_cust_code,	d.datekey,      
+			fa.asn_loc_key, fa.asn_location,	fa.asn_prefdoc_type,fa.asn_type,
+			fa.asn_prefdoc_no, fa.asn_sup_asn_no,pway_mhe_id;
+		
+
+		UPDATE click.f_inboundsladetail
+		SET sla_orderaccountdate = 	(CASE WHEN sla_ordtime <= sla_cutofftime THEN sla_dateactual
+										  WHEN sla_ordtime > sla_cutofftime  AND sla_Putawayexecdate::DATE = sla_dateactual
+									 	  THEN sla_dateactual
+										  WHEN sla_ordtime > sla_cutofftime  
+									 	  AND (sla_Putawayexecdate IS NULL OR sla_Putawayexecdate::DATE > sla_dateactual)
+									 	  THEN ((sla_dateactual + INTERVAL '1 DAY')::DATE + (sla_openingtime))::TIMESTAMP  ELSE sla_dateactual END)
+		WHERE sla_dateactual >= (CURRENT_DATE)::DATE;
+		
+		UPDATE click.f_inboundsladetail
+		SET sla_orderaccountdatekey = d.datekey
+		FROM click.d_date d
+		WHERE dateactual = sla_orderaccountdate::DATE
+		AND sla_dateactual >= (CURRENT_DATE)::DATE;
+		
+	UPDATE click.f_inboundsladetail wis
+		SET asn_timediff_inmin	= 	asntime,
+			grn_timediff_inmin	=	grntime,
+			pway_timediff_inmin	=	pwaytime 
+		FROM (
+			SELECT fa.asn_ou,		fa.asn_cust_key,	fa.asn_cust_code,	d.datekey,	MAX(COALESCE(fa.asn_modified_date,fa.asn_created_date,'1900-01-01')),      
+				fa.asn_loc_key, fa.asn_location,	fa.asn_prefdoc_type,fa.asn_type,
+				fa.asn_prefdoc_no, fa.asn_sup_asn_no,
+				CASE WHEN pway_mhe_id IS NOT NULL THEN 1 ELSE 0 END as Equipmentflag,
+					ABS(CASE WHEN MIN(fa.asn_gate_no) IS NOT NULL 
+					THEN (EXTRACT(epoch from( MAX(COALESCE(fa.asn_modified_date,fa.asn_created_date))::timestamp - MAX(fa.gate_actual_date)::timestamp))/60) 
+					ELSE (EXTRACT(epoch from( MAX(COALESCE(fa.asn_modified_date,fa.asn_created_date))::timestamp - MAX(COALESCE(fa.asn_modified_date,fa.asn_created_date))::timestamp))/60) END) AS asntime,
+					ABS(CASE WHEN MAX(COALESCE(fg.gr_end_date,fg.gr_modified_date)) IS NOT NULL
+					THEN (EXTRACT(epoch from( MAX(COALESCE(fg.gr_end_date,fg.gr_modified_date))::timestamp - MIN(COALESCE(fa.asn_modified_date,fa.asn_created_date))::timestamp))/60) 
+					ELSE 0 END) AS grntime,
+					ABS(CASE WHEN MAX(fp.pway_exec_end_date) IS NOT NULL 
+					THEN (EXTRACT(epoch from( MAX(fp.pway_exec_end_date)::timestamp - MAX(COALESCE(fg.gr_end_date,fg.gr_modified_date))::timestamp))/60) 
+					ELSE 0 END) AS pwaytime
+			FROM click.f_asn fa
+		INNER JOIN click.d_date d
+		ON dateactual = (COALESCE(fa.asn_modified_date,fa.asn_created_date))::DATE
+		LEFT JOIN click.f_grn fg
+			ON  fa.asn_key				= fg.asn_key
+		LEFT JOIN dwh.d_inboundtat tat
+			ON  fa.asn_location			= tat.locationcode
+			AND fa.asn_ou				= tat.ou
+			AND fa.asn_prefdoc_type		= tat.ordertype
+			AND fa.asn_type				= tat.servicetype
+		LEFT JOIN click.f_putaway fp
+			ON  fg.grn_key 				= fp.grn_key
+		WHERE fa.asn_status 		NOT IN('FR','UA','CNL')
+		GROUP BY
+			fa.asn_ou,		fa.asn_cust_key,	fa.asn_cust_code,	d.datekey,      
+			fa.asn_loc_key, fa.asn_location,	fa.asn_prefdoc_type,fa.asn_type,
+			fa.asn_prefdoc_no, fa.asn_sup_asn_no,pway_mhe_id
+		)td
+		WHERE sla_ouid 		= 	asn_ou
+		AND sla_customerkey = 	asn_cust_key
+		AND	sla_datekey		= 	datekey
+		AND	sla_lockey	    = 	asn_loc_key
+		AND	sla_prefdocno   = 	asn_prefdoc_no
+		AND sla_dateactual >= (CURRENT_DATE)::DATE;
+		
+		
 			/*Update grontime, pwayontime and prontime column in Summary Table*/	
 		UPDATE click.f_inboundsladetail wis
 		SET
@@ -97,33 +160,47 @@ SELECT 	depsource
 		UPDATE click.f_inboundsladetail wis
 		SET
 			sla_category 	= (
-								CASE WHEN sla_prontime IN (0,1) AND Remarks IS NOT NULL THEN 'Remarks'
+								CASE WHEN sla_prontime IN (0,1) THEN 'Remarks'
 								END
 								)				
 		FROM dwh.f_deliverydelayreason dr
-		WHERE	wis.sla_dateactual >= (CURRENT_DATE)::DATE
-		AND fa.asn_loc_key			= dr.wms_loc_key
-		AND  fa.asn_sup_asn_no		= dr.invoiceno;
+		WHERE sla_dateactual >= (CURRENT_DATE)::DATE
+		AND  wis.sla_lockey			= dr.wms_loc_key
+		AND  wis.sla_supasnno		= dr.invoiceno;
 		
 		UPDATE click.f_inboundsladetail wis
 		SET	sla_category 	=(CASE WHEN sla_prontime = 1 AND sla_ordtime >= sla_cutofftime THEN 'Premium'
-									ELSE 'Achieved' END)
-		WHERE sla_dateactual >= (CURRENT_DATE)::DATE;
-		
+							WHEN sla_prontime = 1 AND sla_ordtime < sla_cutofftime THEN  'Achieved' ELSE NULL END)
+		WHERE sla_dateactual >= (CURRENT_DATE)::DATE
+		AND sla_category IS NULL;
 			
 		UPDATE click.f_inboundsladetail wis
 		SET
-			sla_category 	=  (
-								CASE WHEN sla_prontime = 0 AND Remarks IS NULL THEN 'Breach' END
-							   )				
-		WHERE	wis.sla_dateactual >= (CURRENT_DATE)::DATE;
+			sla_category 	= (
+								CASE WHEN sla_prontime = 0 THEN 'Breach'
+								END
+								)				
+		WHERE	wis.sla_dateactual >= (CURRENT_DATE)::DATE
+		AND sla_category IS NULL;
 
 		UPDATE click.f_inboundsladetail 
-		SET sla_category 	= 'Achived'	
+		SET sla_category 	= 'Achieved'
 		WHERE sla_dateactual >= (CURRENT_DATE)::DATE
 		AND sla_prontime IS NULL
 		AND sla_prexpclstime IS NULL
-		AND sla_grexecdate IS NOT NULL;			
+		AND sla_grexecdate IS NOT NULL
+		AND sla_category  IS NULL;
+		
+		ELSE	
+		p_errorid   := 0;
+			IF p_depsource IS NULL
+				THEN 
+					p_errordesc := 'The Dependent source cannot be NULL.';
+				ELSE
+					p_errordesc := 'The Dependent source '|| p_depsource || ' is not successfully executed. Please execute the source '|| p_depsource || ' then re-run the source.';
+				END IF;
+		CALL ods.usp_etlerrorinsert('CLICK','usp_f_wmsinboundsladetailday','Click',NULL,'De-Normalized','sp_ExceptionHandling',p_errorid,p_errordesc,null);
+		
 	END IF;
 		EXCEPTION WHEN others THEN       
 
