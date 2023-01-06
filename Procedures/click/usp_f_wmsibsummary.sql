@@ -35,8 +35,7 @@ BEGIN
 	INSERT INTO click.f_wmsinboundsummary
 	(
 		ou_id, 				customer_key, 		customer_id, 		datekey, 			activeindicator,
-		asn_key,			asn_no,				asn_prefdoc_no,		asn_date,			item_group, 
-		item_class, 		loc_key, 			loc_code, 			asn_type, 			inb_type,			grn_status,
+		asn_key,			asn_no,				asn_prefdoc_no,		asn_date,			loc_key, 			loc_code, 			asn_type, 			inb_type,			grn_status,
 		pway_status,		receivedlinecount,	CUMvolume,			CUCMvolume,
 		receivedunit,
 		grn_hht_ind,		
@@ -45,8 +44,8 @@ BEGIN
 	)
 	SELECT 
 		fa.asn_ou,			fa.asn_cust_key,	fa.asn_cust_code,	d.datekey,		max(fa.activeindicator*i.etlactiveind),
-		fa.asn_hr_key,		fa.asn_no,			fa.asn_prefdoc_no,	(COALESCE(fa.asn_modified_date,fa.asn_created_date))::DATE,	i.itm_itemgroup,
-		i.itm_class,		fa.asn_loc_key,		fa.asn_location,	fa.asn_prefdoc_type,fa.asn_type,		fg.gr_exec_status,
+		fa.asn_hr_key,		fa.asn_no,			fa.asn_prefdoc_no,	(COALESCE(fa.asn_modified_date,fa.asn_created_date))::DATE,	
+		fa.asn_loc_key,		fa.asn_location,	fa.asn_prefdoc_type,fa.asn_type,		fg.gr_exec_status,
 		fp.pway_exec_status,
 		COALESCE(COUNT(DISTINCT fa.asn_lineno),0) receivedline,
 		CASE WHEN itm_volume_uom ='CUM' THEN COALESCE(SUM(fa.asn_rec_qty*itm_volume_calc),0) END CUMreceivedvolume,
@@ -68,8 +67,8 @@ BEGIN
 -- 	AND 	
 	GROUP BY
 		fa.asn_ou,			fa.asn_cust_key,	fa.asn_cust_code,	d.datekey, 
-		fa.asn_hr_key,		fa.asn_no,			fa.asn_prefdoc_no,	(COALESCE(fa.asn_modified_date,fa.asn_created_date))::DATE,	i.itm_itemgroup,
-		i.itm_class,		fa.asn_loc_key,		fa.asn_location,	fa.asn_prefdoc_type,fa.asn_type,		fg.gr_exec_status,
+		fa.asn_hr_key,		fa.asn_no,			fa.asn_prefdoc_no,	(COALESCE(fa.asn_modified_date,fa.asn_created_date))::DATE,	
+		fa.asn_loc_key,		fa.asn_location,	fa.asn_prefdoc_type,fa.asn_type,		fg.gr_exec_status,
 		fp.pway_exec_status,i.itm_volume_uom;
 		
 	
