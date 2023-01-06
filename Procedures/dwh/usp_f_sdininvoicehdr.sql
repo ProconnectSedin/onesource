@@ -1,6 +1,19 @@
-CREATE OR REPLACE PROCEDURE dwh.usp_f_sdininvoicehdr(IN p_sourceid character varying, IN p_dataflowflag character varying, IN p_targetobject character varying, OUT srccnt integer, OUT inscnt integer, OUT updcnt integer, OUT dltcount integer, INOUT flag1 character varying, OUT flag2 character varying)
-    LANGUAGE plpgsql
-    AS $$
+-- PROCEDURE: dwh.usp_f_sdininvoicehdr(character varying, character varying, character varying, character varying)
+
+-- DROP PROCEDURE IF EXISTS dwh.usp_f_sdininvoicehdr(character varying, character varying, character varying, character varying);
+
+CREATE OR REPLACE PROCEDURE dwh.usp_f_sdininvoicehdr(
+	IN p_sourceid character varying,
+	IN p_dataflowflag character varying,
+	IN p_targetobject character varying,
+	OUT srccnt integer,
+	OUT inscnt integer,
+	OUT updcnt integer,
+	OUT dltcount integer,
+	INOUT flag1 character varying,
+	OUT flag2 character varying)
+LANGUAGE 'plpgsql'
+AS $BODY$
 
 DECLARE
     p_etljobname VARCHAR(100);
@@ -92,6 +105,13 @@ BEGIN
         trnsfr_bill_date             = s.trnsfr_bill_date,
         rcti_flag                    = s.rcti_flag,
         own_taxregion                = s.own_taxregion,
+    	s_timestamp					 = s.timestamp,
+    	payment_type				 = s.payment_type,
+    	ict_flag					 = s.ict_flag,
+    	Ales_Flag					 = s.Ales_Flag,
+    	lgt_invoice					 = s.lgt_invoice,
+    	MAIL_SENT					 = s.MAIL_SENT,
+    	allow_auto_cap				 = s.allow_auto_cap,
         etlactiveind                 = 1,
         etljobname                   = p_etljobname,
         envsourcecd                  = p_envsourcecd,
@@ -100,14 +120,7 @@ BEGIN
     FROM stg.stg_sdin_invoice_hdr s
     WHERE t.tran_type = s.tran_type
     AND t.tran_ou = s.tran_ou
-    AND t.tran_no = s.tran_no
-    AND t.s_timestamp = s.timestamp
-    AND t.payment_type = s.payment_type
-    AND t.ict_flag = s.ict_flag
-    AND t.Ales_Flag = s.Ales_Flag
-    AND t.lgt_invoice = s.lgt_invoice
-    AND t.MAIL_SENT = s.MAIL_SENT
-    AND t.allow_auto_cap = s.allow_auto_cap;
+    AND t.tran_no = s.tran_no;
 
     GET DIAGNOSTICS updcnt = ROW_COUNT;
 
@@ -153,13 +166,6 @@ BEGIN
     ON s.tran_type = t.tran_type
     AND s.tran_ou = t.tran_ou
     AND s.tran_no = t.tran_no
-    AND s.timestamp = t.s_timestamp
-    AND s.payment_type = t.payment_type
-    AND s.ict_flag = t.ict_flag
-    AND s.Ales_Flag = t.Ales_Flag
-    AND s.lgt_invoice = t.lgt_invoice
-    AND s.MAIL_SENT = t.MAIL_SENT
-    AND s.allow_auto_cap = t.allow_auto_cap
     WHERE t.tran_type IS NULL;
 
     GET DIAGNOSTICS inscnt = ROW_COUNT;
@@ -186,4 +192,6 @@ BEGIN
        select 0 into updcnt;
 	  
 END;
-$$;
+$BODY$;
+ALTER PROCEDURE dwh.usp_f_sdininvoicehdr(character varying, character varying, character varying, character varying)
+    OWNER TO proconnect;
