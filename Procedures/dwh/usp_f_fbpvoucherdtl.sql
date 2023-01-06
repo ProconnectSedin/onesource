@@ -1,6 +1,19 @@
-CREATE OR REPLACE PROCEDURE dwh.usp_f_fbpvoucherdtl(IN p_sourceid character varying, IN p_dataflowflag character varying, IN p_targetobject character varying, OUT srccnt integer, OUT inscnt integer, OUT updcnt integer, OUT dltcount integer, INOUT flag1 character varying, OUT flag2 character varying)
-    LANGUAGE plpgsql
-    AS $$
+-- PROCEDURE: dwh.usp_f_fbpvoucherdtl(character varying, character varying, character varying, character varying)
+
+-- DROP PROCEDURE IF EXISTS dwh.usp_f_fbpvoucherdtl(character varying, character varying, character varying, character varying);
+
+CREATE OR REPLACE PROCEDURE dwh.usp_f_fbpvoucherdtl(
+	IN p_sourceid character varying,
+	IN p_dataflowflag character varying,
+	IN p_targetobject character varying,
+	OUT srccnt integer,
+	OUT inscnt integer,
+	OUT updcnt integer,
+	OUT dltcount integer,
+	INOUT flag1 character varying,
+	OUT flag2 character varying)
+LANGUAGE 'plpgsql'
+AS $BODY$
 
 DECLARE
     p_etljobname VARCHAR(100);
@@ -67,7 +80,7 @@ BEGIN
     AND t.fb_voucher_no = s.fb_voucher_no
     AND t.serial_no = s.serial_no;
 
-    GET DIAGNOSTICS updcnt = ROW_COUNT;
+    GET DIAGNOSTICS updcnt =ROW_COUNT;
 
     INSERT INTO dwh.F_fbpvoucherdtl
     (
@@ -76,10 +89,10 @@ BEGIN
 
     SELECT
    COALESCE(c.company_key,-1), s.parent_key, s.current_key, s.company_code, s.ou_id, s.fb_id, s.fb_voucher_no, s.serial_no, s.timestamp, s.account_code, s.drcr_flag, s.cost_center, s.analysis_code, s.subanalysis_code, s.base_amount, s.par_base_amount, s.createdby, s.createddate, 1, p_etljobname, p_envsourcecd, p_datasourcecd, NOW()
-    FROM stg.stg_fbp_voucher_dtl s
+	 FROM stg.stg_fbp_voucher_dtl  s
 
        LEFT JOIN dwh.d_company C      
-        ON s.company_code  = C.company_code 
+        ON s.company_code  = C.company_code
     LEFT JOIN dwh.F_fbpvoucherdtl t
     ON s.parent_key = t.parent_key
     AND s.current_key = t.current_key
@@ -89,6 +102,7 @@ BEGIN
     AND s.fb_voucher_no = t.fb_voucher_no
     AND s.serial_no = t.serial_no
     WHERE t.parent_key IS NULL;
+	
 
     GET DIAGNOSTICS inscnt = ROW_COUNT;
 
@@ -104,12 +118,14 @@ BEGIN
     FROM stg.stg_fbp_voucher_dtl;
     
     END IF;
-   /* EXCEPTION WHEN others THEN
+   EXCEPTION WHEN others THEN
         get stacked diagnostics
             p_errorid   = returned_sqlstate,
             p_errordesc = message_text;
     CALL ods.usp_etlerrorinsert(p_sourceid, p_targetobject, p_dataflowflag, p_batchid,p_taskname, 'sp_ExceptionHandling', p_errorid, p_errordesc, null);
        select 0 into inscnt;
-       select 0 into updcnt;*/
+       select 0 into updcnt;
 END;
-$$;
+$BODY$;
+ALTER PROCEDURE dwh.usp_f_fbpvoucherdtl(character varying, character varying, character varying, character varying)
+    OWNER TO proconnect;
