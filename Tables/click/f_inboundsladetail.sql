@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS click.f_inboundsladetail
     asn_timediff_inmin integer,
     grn_timediff_inmin integer,
     pway_timediff_inmin integer,
-    sla_loadeddatetime timestamp without time zone DEFAULT CURRENT_DATE,
+    sla_loadeddatetime timestamp without time zone DEFAULT now(),
     activeindicator integer,
     sla_orderaccountdatekey bigint,
     sla_orderaccountdate timestamp without time zone,
