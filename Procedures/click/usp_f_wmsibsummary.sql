@@ -35,8 +35,9 @@ BEGIN
 	INSERT INTO click.f_wmsinboundsummary
 	(
 		ou_id, 				customer_key, 		customer_id, 		datekey, 			activeindicator,
-		asn_key,			asn_no,				asn_prefdoc_no,		asn_date,			loc_key, 			loc_code, 			asn_type, 			inb_type,			grn_status,
-		pway_status,		receivedlinecount,	CUMvolume,			CUCMvolume,
+		asn_key,			asn_no,				asn_prefdoc_no,		asn_sup_no,		asn_date,			
+		loc_key, 			loc_code, 			asn_type, 			inb_type,		gr_status,	pway_status,
+		receivedlinecount,	CUMvolume,			
 		receivedunit,
 		grn_hht_ind,		
 		pway_hht_ind
@@ -44,12 +45,13 @@ BEGIN
 	)
 	SELECT 
 		fa.asn_ou,			fa.asn_cust_key,	fa.asn_cust_code,	d.datekey,		max(fa.activeindicator*i.etlactiveind),
-		fa.asn_hr_key,		fa.asn_no,			fa.asn_prefdoc_no,	(COALESCE(fa.asn_modified_date,fa.asn_created_date))::DATE,	
-		fa.asn_loc_key,		fa.asn_location,	fa.asn_prefdoc_type,fa.asn_type,		fg.gr_exec_status,
-		fp.pway_exec_status,
+		fa.asn_hr_key,		fa.asn_no,			fa.asn_prefdoc_no,	fa.asn_sup_asn_no,(COALESCE(fa.asn_modified_date,fa.asn_created_date))::DATE,	
+		fa.asn_loc_key,		fa.asn_location,	fa.asn_type,fa.asn_prefdoc_type,fg.gr_exec_status,fp.pway_exec_status,
 		COALESCE(COUNT(DISTINCT fa.asn_lineno),0) receivedline,
-		CASE WHEN itm_volume_uom ='CUM' THEN COALESCE(SUM(fa.asn_rec_qty*itm_volume_calc),0) END CUMreceivedvolume,
-		CASE WHEN itm_volume_uom ='CUCM' THEN COALESCE(SUM(fa.asn_rec_qty*itm_volume_calc),0) END CUCMreceivedvolume,
+		CASE 
+        WHEN MIN(itm_volume_uom) ='CUCM' THEN COALESCE(SUM((fa.asn_rec_qty*itm_volume_calc)/(1000000)),0)
+        WHEN MIN(itm_volume_uom) ='CUFT' THEN COALESCE(SUM((fa.asn_rec_qty*itm_volume_calc)*(0.0283168)),0)
+        ELSE COALESCE(SUM(fa.asn_rec_qty*itm_volume_calc),0) END CUMreceivedvolume,
 		COALESCE(SUM(fa.asn_rec_qty),0) receivedunit,
 		COALESCE(CASE WHEN MIN(fg.gr_gen_from) = 'WMS_MOB' THEN 1 ELSE 0 END,0) AS grn_hht,
 		COALESCE(CASE WHEN MIN(fp.pway_gen_from) = 'WMS_MOB' THEN 1 ELSE 0 END,0) AS Pway_hht
@@ -67,9 +69,8 @@ BEGIN
 -- 	AND 	
 	GROUP BY
 		fa.asn_ou,			fa.asn_cust_key,	fa.asn_cust_code,	d.datekey, 
-		fa.asn_hr_key,		fa.asn_no,			fa.asn_prefdoc_no,	(COALESCE(fa.asn_modified_date,fa.asn_created_date))::DATE,	
-		fa.asn_loc_key,		fa.asn_location,	fa.asn_prefdoc_type,fa.asn_type,		fg.gr_exec_status,
-		fp.pway_exec_status,i.itm_volume_uom;
+		fa.asn_hr_key,		fa.asn_no,			fa.asn_prefdoc_no,	fa.asn_sup_asn_no,(COALESCE(fa.asn_modified_date,fa.asn_created_date))::DATE,	
+		fa.asn_loc_key,		fa.asn_location,	fa.asn_prefdoc_type,fg.gr_exec_status,fp.pway_exec_status,fa.asn_type;
 		
 	
     ELSE	
