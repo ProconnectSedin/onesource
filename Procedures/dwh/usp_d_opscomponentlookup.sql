@@ -1,6 +1,19 @@
-CREATE OR REPLACE PROCEDURE dwh.usp_d_opscomponentlookup(IN p_sourceid character varying, IN p_dataflowflag character varying, IN p_targetobject character varying, OUT srccnt integer, OUT inscnt integer, OUT updcnt integer, OUT dltcount integer, INOUT flag1 character varying, OUT flag2 character varying)
-    LANGUAGE plpgsql
-    AS $$
+-- PROCEDURE: dwh.usp_d_opscomponentlookup(character varying, character varying, character varying, character varying)
+
+-- DROP PROCEDURE IF EXISTS dwh.usp_d_opscomponentlookup(character varying, character varying, character varying, character varying);
+
+CREATE OR REPLACE PROCEDURE dwh.usp_d_opscomponentlookup(
+	IN p_sourceid character varying,
+	IN p_dataflowflag character varying,
+	IN p_targetobject character varying,
+	OUT srccnt integer,
+	OUT inscnt integer,
+	OUT updcnt integer,
+	OUT dltcount integer,
+	INOUT flag1 character varying,
+	OUT flag2 character varying)
+LANGUAGE 'plpgsql'
+AS $BODY$
 DECLARE 
 	p_etljobname VARCHAR(100);
 	p_envsourcecd VARCHAR(50);
@@ -28,8 +41,9 @@ BEGIN
 
     SELECT COUNT(1) INTO srccnt
 	FROM stg.stg_component_metadata_table;
-    
 
+	TRUNCATE TABLE dwh.d_opscomponentlookup
+	RESTART IDENTITY;
 	
     INSERT INTO dwh.d_opscomponentlookup
 	(
@@ -44,21 +58,7 @@ BEGIN
         s.sequenceno,        s.paramdesc,          s.paramdesc_shd,		 s.langid,         s.cml_len,
         s.cml_translate,	 1,                    p_etljobname,		 p_envsourcecd,	   p_datasourcecd,			
         NOW()
-	FROM stg.stg_component_metadata_table s
-    LEFT JOIN dwh.d_opscomponentlookup t
-    ON 	COALESCE(s.componentname,'NULL') 	    = COALESCE(t.componentname,'NULL')
-	AND COALESCE(s.paramcategory,'NULL')  		= COALESCE(t.paramcategory,'NULL')
-	AND COALESCE(s.paramtype,'NULL')  			= COALESCE(t.paramtype,'NULL')
-	AND COALESCE(s.paramcode,'NULL') 			= COALESCE(t.paramcode ,'NULL')
-    AND COALESCE(s.optionvalue,'NULL') 			= COALESCE(t.optionvalue,'NULL')
-    AND COALESCE(s.sequenceno,0) 			    = COALESCE(t.sequenceno,0)
-    AND COALESCE(s.paramdesc,'NULL') 			= COALESCE(t.paramdesc,'NULL')
-    AND COALESCE(s.paramdesc_shd,'NULL')  		= COALESCE(t.paramdesc_shd,'NULL')
-    AND COALESCE(s.langid,0) 			        = COALESCE(t.langid,0)
-    AND COALESCE(s.cml_len,0)  			        = COALESCE(t.cml_len,0)
-    AND COALESCE(s.cml_translate,'NULL') 		= COALESCE(t.cml_translate,'NULL')
-    WHERE t.componentname IS NULL;
-   
+	FROM stg.stg_component_metadata_table s;
     
     GET DIAGNOSTICS inscnt = ROW_COUNT;
 	select 0 into updcnt; 
@@ -66,7 +66,6 @@ BEGIN
 	IF p_rawstorageflag = 1
 	THEN
 
-    
     INSERT INTO raw.raw_component_metadata_table
 	(
 		 componentname, paramcategory, paramtype, paramcode, optionvalue, sequenceno, paramdesc, 
@@ -93,4 +92,6 @@ BEGIN
        select 0 into inscnt;
        select 0 into updcnt;  
 END;
-$$;
+$BODY$;
+ALTER PROCEDURE dwh.usp_d_opscomponentlookup(character varying, character varying, character varying, character varying)
+    OWNER TO proconnect;
