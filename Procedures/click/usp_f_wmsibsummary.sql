@@ -48,10 +48,7 @@ BEGIN
 		fa.asn_hr_key,		fa.asn_no,			fa.asn_prefdoc_no,	fa.asn_sup_asn_no,(COALESCE(fa.asn_modified_date,fa.asn_created_date))::DATE,	
 		fa.asn_loc_key,		fa.asn_location,	fa.asn_type,fa.asn_prefdoc_type,fg.gr_exec_status,fp.pway_exec_status,
 		COALESCE(COUNT(DISTINCT fa.asn_lineno),0) receivedline,
-		CASE 
-        WHEN MIN(itm_volume_uom) ='CUCM' THEN COALESCE(SUM((fa.asn_rec_qty*itm_volume_calc)/(1000000)),0)
-        WHEN MIN(itm_volume_uom) ='CUFT' THEN COALESCE(SUM((fa.asn_rec_qty*itm_volume_calc)*(0.0283168)),0)
-        ELSE COALESCE(SUM(fa.asn_rec_qty*itm_volume_calc),0) END CUMreceivedvolume,
+		COALESCE(SUM((fa.asn_rec_qty*itm_volume_calc)/(1000000)),0) as CUMreceivedvolume,
 		COALESCE(SUM(fa.asn_rec_qty),0) receivedunit,
 		COALESCE(CASE WHEN MIN(fg.gr_gen_from) = 'WMS_MOB' THEN 1 ELSE 0 END,0) AS grn_hht,
 		COALESCE(CASE WHEN MIN(fp.pway_gen_from) = 'WMS_MOB' THEN 1 ELSE 0 END,0) AS Pway_hht
