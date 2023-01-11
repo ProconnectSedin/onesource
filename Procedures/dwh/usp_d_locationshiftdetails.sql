@@ -1,6 +1,19 @@
-CREATE OR REPLACE PROCEDURE dwh.usp_d_locationshiftdetails(IN p_sourceid character varying, IN p_dataflowflag character varying, IN p_targetobject character varying, OUT srccnt integer, OUT inscnt integer, OUT updcnt integer, OUT dltcount integer, INOUT flag1 character varying, OUT flag2 character varying)
-    LANGUAGE plpgsql
-    AS $$
+-- PROCEDURE: dwh.usp_d_locationshiftdetails(character varying, character varying, character varying, character varying)
+
+-- DROP PROCEDURE IF EXISTS dwh.usp_d_locationshiftdetails(character varying, character varying, character varying, character varying);
+
+CREATE OR REPLACE PROCEDURE dwh.usp_d_locationshiftdetails(
+	IN p_sourceid character varying,
+	IN p_dataflowflag character varying,
+	IN p_targetobject character varying,
+	OUT srccnt integer,
+	OUT inscnt integer,
+	OUT updcnt integer,
+	OUT dltcount integer,
+	INOUT flag1 character varying,
+	OUT flag2 character varying)
+LANGUAGE 'plpgsql'
+AS $BODY$
 DECLARE 
 	p_etljobname VARCHAR(100);
 	p_envsourcecd VARCHAR(50);
@@ -31,6 +44,7 @@ BEGIN
 
 	UPDATE dwh.d_locationshiftdetails t
     SET 
+		location_key			= COALESCE(d.loc_key, -1),
         loc_shft_shift          = s.wms_loc_shft_shift,
         loc_shft_fr_time        = s.wms_loc_shft_fr_time,
         loc_shft_to_time        = s.wms_loc_shft_to_time,
@@ -40,6 +54,9 @@ BEGIN
 		datasourcecd 			= p_datasourcecd ,
 		etlupdatedatetime 		= NOW()	
     FROM stg.stg_wms_loc_location_shift_dtl s
+	LEFT JOIN dwh.d_location d
+	ON s.wms_loc_code  	        = d.loc_code
+	AND s.wms_loc_ou 		    = d.loc_ou
     WHERE t.loc_code  		    = s.wms_loc_code
 	AND t.loc_shft_lineno 		= s.wms_loc_shft_lineno
 	AND t.loc_ou 			    = s.wms_loc_ou;
@@ -48,15 +65,20 @@ BEGIN
     GET DIAGNOSTICS updcnt = ROW_COUNT;
 
 	INSERT INTO dwh.d_locationshiftdetails
-	(
+	(	
+		location_key,
 		loc_ou,             loc_code,                   loc_shft_lineno,    loc_shft_shift,     loc_shft_fr_time,   
         loc_shft_to_time,	etlactiveind,etljobname,    envsourcecd, 	    datasourcecd, 	    etlcreatedatetime
 	)
 	
     SELECT 
+		COALESCE(d.loc_key, -1),
 		s.wms_loc_ou,               s.wms_loc_code,           s.wms_loc_shft_lineno,       s.wms_loc_shft_shift,
         s.wms_loc_shft_fr_time,  s.wms_loc_shft_to_time ,   1,     p_etljobname,		p_envsourcecd,	p_datasourcecd, NOW()
 	FROM stg.stg_wms_loc_location_shift_dtl s
+	LEFT JOIN dwh.d_location d
+	ON s.wms_loc_code  		 	   = d.loc_code
+	AND s.wms_loc_ou 			    = d.loc_ou
     LEFT JOIN dwh.d_locationshiftdetails t
     ON 	t.loc_code  		    = s.wms_loc_code
 	AND t.loc_shft_lineno 		= s.wms_loc_shft_lineno
@@ -96,4 +118,6 @@ BEGIN
        select 0 into inscnt;
        select 0 into updcnt;  
 END;
-$$;
+$BODY$;
+ALTER PROCEDURE dwh.usp_d_locationshiftdetails(character varying, character varying, character varying, character varying)
+    OWNER TO proconnect;
