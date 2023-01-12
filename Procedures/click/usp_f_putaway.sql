@@ -146,7 +146,7 @@ BEGIN
 		COALESCE(gr.grn_key,-1)						, COALESCE(pd.pway_pln_dtl_loc_key,-1)		, COALESCE(pd.pway_pln_dtl_date_key,-1), 
 		COALESCE(pd.pway_pln_dtl_stg_mas_key,-1)	, COALESCE(pd.pway_pln_dtl_emp_hdr_key,-1)	, COALESCE(rd.pway_pln_itm_dtl_itm_hdr_key,-1)	, COALESCE(rd.pway_pln_itm_dtl_zone_key,-1), 
 		pd.pway_loc_code							, pd.pway_pln_no							, pd.pway_pln_ou								, pd.pway_pln_date, 
-		pd.pway_pln_status							, pd.pway_stag_id							, pd.pway_mhe_id								, pd.pway_employee_id, 
+		pd.pway_pln_status							, pd.pway_stag_id							, pd.pway_mhe_id								, ped.pway_employee_id, 
 		rd.pway_lineno								, rd.pway_po_no								, rd.pway_item									, rd.pway_zone, 
 		rd.pway_allocated_qty						, rd.pway_allocated_bin						, rd.pway_gr_no									, rd.pway_su_type, 
 		rd.pway_su									, rd.pway_from_staging_id					, rd.pway_cross_dock							, rd.pway_stock_status, 
@@ -199,7 +199,7 @@ BEGIN
 		,pway_pln_status 						= pd.pway_pln_status
 		,pway_stag_id 							= pd.pway_stag_id
 		,pway_mhe_id 							= pd.pway_mhe_id
-		,pway_employee_id 						= pd.pway_employee_id
+		,pway_employee_id 						= ped.pway_employee_id
 		,pway_lineno							= rd.pway_lineno
 		,pway_po_no 							= rd.pway_po_no
 		,pway_item 								= rd.pway_item
@@ -282,7 +282,7 @@ BEGIN
 		COALESCE(gr.grn_key,-1)						, COALESCE(pd.pway_pln_dtl_loc_key,-1)		, COALESCE(pd.pway_pln_dtl_date_key,-1), 
 		COALESCE(pd.pway_pln_dtl_stg_mas_key,-1)	, COALESCE(pd.pway_pln_dtl_emp_hdr_key,-1)	, COALESCE(rd.pway_pln_itm_dtl_itm_hdr_key,-1)	, COALESCE(rd.pway_pln_itm_dtl_zone_key,-1), 
 		pd.pway_loc_code							, pd.pway_pln_no							, pd.pway_pln_ou								, pd.pway_pln_date, 
-		pd.pway_pln_status							, pd.pway_stag_id							, pd.pway_mhe_id								, pd.pway_employee_id, 
+		pd.pway_pln_status							, pd.pway_stag_id							, pd.pway_mhe_id								, ped.pway_employee_id, 
 		rd.pway_lineno								, rd.pway_po_no								, rd.pway_item									, rd.pway_zone, 
 		rd.pway_allocated_qty						, rd.pway_allocated_bin						, rd.pway_gr_no									, rd.pway_su_type, 
 		rd.pway_su									, rd.pway_from_staging_id					, rd.pway_cross_dock							, rd.pway_stock_status, 
@@ -312,7 +312,17 @@ BEGIN
 		ON  ped.pway_exe_dtl_key 				= pid.pway_exe_dtl_key
 		AND rd.pway_gr_no						= pid.pway_gr_no
 		AND rd.pway_lineno						= pid.pway_exec_lineno
-	WHERE COALESCE(pd.etlupdatedatetime,pd.etlcreatedatetime) >= v_maxdate;
+	LEFT JOIN click.f_putaway pw
+		ON  pw.pway_loc_code					= pd.pway_loc_code
+		AND pw.pway_pln_no						= pd.pway_pln_no
+		AND pw.pway_pln_ou						= pd.pway_pln_ou
+		AND COALESCE(pw.pway_lineno,0)			= COALESCE(rd.pway_lineno,'0')
+		AND COALESCE(pw.pway_po_no,'NULL')		= COALESCE(gr.gr_po_no,'NULL')
+		AND COALESCE(pw.pway_item,'NULL')		= COALESCE(rd.pway_item,'NULL')
+		AND COALESCE(pw.pway_gr_no,'NULL')		= COALESCE(rd.pway_gr_no,'NULL')
+		AND COALESCE(pw.pway_exec_no,'NULL')	= COALESCE(pid.pway_exec_no,'NULL')
+	WHERE COALESCE(pd.etlupdatedatetime,pd.etlcreatedatetime) >= v_maxdate
+	AND pw.pway_pln_no IS NULL;
 	END IF;
 	
     ELSE	

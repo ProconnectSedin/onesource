@@ -1,6 +1,19 @@
-CREATE OR REPLACE PROCEDURE dwh.usp_d_locationoperationsdetail(IN p_sourceid character varying, IN p_dataflowflag character varying, IN p_targetobject character varying, OUT srccnt integer, OUT inscnt integer, OUT updcnt integer, OUT dltcount integer, INOUT flag1 character varying, OUT flag2 character varying)
-    LANGUAGE plpgsql
-    AS $$
+-- PROCEDURE: dwh.usp_d_locationoperationsdetail(character varying, character varying, character varying, character varying)
+
+-- DROP PROCEDURE IF EXISTS dwh.usp_d_locationoperationsdetail(character varying, character varying, character varying, character varying);
+
+CREATE OR REPLACE PROCEDURE dwh.usp_d_locationoperationsdetail(
+	IN p_sourceid character varying,
+	IN p_dataflowflag character varying,
+	IN p_targetobject character varying,
+	OUT srccnt integer,
+	OUT inscnt integer,
+	OUT updcnt integer,
+	OUT dltcount integer,
+	INOUT flag1 character varying,
+	OUT flag2 character varying)
+LANGUAGE 'plpgsql'
+AS $BODY$
 DECLARE 
 	p_etljobname VARCHAR(100);
 	p_envsourcecd VARCHAR(50);
@@ -32,7 +45,7 @@ BEGIN
 
 	UPDATE dwh.d_locationoperationsdetail t
     SET 
-        
+		location_key			= COALESCE(d.loc_key, -1),
 		loc_opr_shift_code      = s.wms_loc_opr_shift_code,
 		loc_opr_sun_day         = s.wms_loc_opr_sun_day,
 		loc_opr_mon_day         = s.wms_loc_opr_mon_day,
@@ -47,6 +60,9 @@ BEGIN
 		datasourcecd 			= p_datasourcecd ,
 		etlupdatedatetime 		= NOW()	
     FROM stg.stg_wms_loc_operation_dtl s
+	LEFT JOIN dwh.d_location d
+	ON s.wms_loc_opr_loc_code  	    = d.loc_code
+	AND s.wms_loc_opr_ou 		    = d.loc_ou
     WHERE t.loc_opr_loc_code  		= s.wms_loc_opr_loc_code
 	AND t.loc_opr_lineno 			= s.wms_loc_opr_lineno
 	AND t.loc_opr_ou 			    = s.wms_loc_opr_ou;
@@ -56,6 +72,7 @@ BEGIN
 
 	INSERT INTO dwh.d_locationoperationsdetail
 	(
+		location_key,
 		loc_opr_loc_code,       loc_opr_ou,         loc_opr_shift_code,         loc_opr_lineno,
         loc_opr_sun_day,        loc_opr_mon_day,    loc_opr_tue_day,            loc_opr_wed_day,
         loc_opr_thu_day,        loc_opr_fri_day,    loc_opr_sat_day,	        etlactiveind,
@@ -63,11 +80,15 @@ BEGIN
 	)
 	
     SELECT 
+		COALESCE(d.loc_key, -1),
 		s.wms_loc_opr_loc_code,     s.wms_loc_opr_ou,           s.wms_loc_opr_shift_code,       s.wms_loc_opr_lineno,
         s.wms_loc_opr_sun_day,      s.wms_loc_opr_mon_day,      s.wms_loc_opr_tue_day,          s.wms_loc_opr_wed_day,
         s.wms_loc_opr_thu_day,      s.wms_loc_opr_fri_day,      s.wms_loc_opr_sat_day,			1,
 		p_etljobname,		        p_envsourcecd,		        p_datasourcecd,			        NOW()
 	FROM stg.stg_wms_loc_operation_dtl s
+	LEFT JOIN dwh.d_location d
+	ON s.wms_loc_opr_loc_code  	    = d.loc_code
+	AND s.wms_loc_opr_ou 		    = d.loc_ou
     LEFT JOIN dwh.d_locationoperationsdetail t
     ON 	t.loc_opr_loc_code  		= s.wms_loc_opr_loc_code
 	AND t.loc_opr_lineno 			= s.wms_loc_opr_lineno
@@ -109,4 +130,6 @@ BEGIN
        select 0 into inscnt;
        select 0 into updcnt;  
 END;
-$$;
+$BODY$;
+ALTER PROCEDURE dwh.usp_d_locationoperationsdetail(character varying, character varying, character varying, character varying)
+    OWNER TO proconnect;

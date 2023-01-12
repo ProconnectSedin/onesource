@@ -18,7 +18,7 @@ BEGIN
 		INTO v_maxdate
 		from click.f_clientservicelog;
 		
-		
+		--select * from click.f_clientservicelog limit 10;
 		IF  v_maxdate = '1900-01-01'
 		
 		THEN
@@ -41,11 +41,15 @@ BEGIN
 			left join dwh.d_customerlocation a
 			on a.loc_code=s.key_Search1
 			and a.loc_cust_code=s.key_Search2
-			where service_type='Tracking' 
+			where s.service_type='Tracking' 
 			 AND  1=1;
+			--select * from dwh.d_customerlocation where loc_cust_code='0027'
 			
 			
-
+			---loc_code='WB013P0027'limit 10;  --WB013P0027
+			--select * from dwh.d_customer  where customer_id='0027'
+			
+			--select * from dwh.d_divloclist limit 10;
 		ELSE
 		
 			UPDATE click.f_clientservicelog t
@@ -75,7 +79,7 @@ BEGIN
 				on a.loc_code=s.key_Search1
 				and a.loc_cust_code=s.key_Search2
 				where s.cust_id=t.cust_id
-				and service_type='Tracking'
+				and s.service_type='Tracking'
 				and  COALESCE(s.etlupdatedatetime,s.etlcreatedatetime) >= v_maxdate;
 				
 				
@@ -98,12 +102,13 @@ BEGIN
 				and a.loc_cust_code=s.key_Search2
 				left join click.f_clientservicelog t
 				on t.cust_id=s.cust_id
-				where service_type='Tracking'
+				where s.service_type='Tracking'
 				and  COALESCE(s.etlupdatedatetime,s.etlcreatedatetime) >= v_maxdate
 				and t.cust_id is null;
 				
 			END IF;	
 			
+			--select * from dwh.d_customerlocation limit 10;
 			
 			EXCEPTION WHEN others THEN       
        

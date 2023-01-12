@@ -14,7 +14,7 @@ DECLARE
 BEGIN
 
 --TRUNCATE ONLY click.f_shipment_details RESTART IDENTITY;
-DELETE FROM click.f_shipment_details 
+DELETE FROM click.f_shipment_details
 WHERE trip_plan_createddate::DATE >= (CURRENT_DATE - INTERVAL '90 DAYS')::DATE;
 
 INSERT INTO click.f_shipment_details
@@ -294,18 +294,18 @@ AND trip_plan_createddate::DATE >= (CURRENT_DATE - INTERVAL '90 DAYS')::DATE;
 	
 --UPDATING Expected_DatetoDeliver CLOSED
 
---ON_TIME_DELIVERY_FLAG UPDATE OPEN;
+--ON_TIME_DELIVERY_FLAG UPDATE OPEN
 
 	UPDATE	click.f_shipment_details
 	SET		OnTimeDelvry_count	= CASE WHEN
-										( leg_behaviour = 'Dvry' AND Expected_DatetoDeliver >= Actual_TripEnd )
+										( leg_behaviour = 'Dvry' AND Expected_DatetoDeliver >= Actual_Departed )
 										THEN 1
 										ELSE 0
 										END
 	--WHERE EXTRACT(YEAR FROM trip_plan_createddate::DATE) = 2019									
 	WHERE	trip_plan_createddate::DATE >= (CURRENT_DATE - INTERVAL '90 DAYS')::DATE;
 	
---ON_TIME_DELIVERY_FLAG UPDATE ENDS;
+--ON_TIME_DELIVERY_FLAG UPDATE CLOSED
 
 	
 	EXCEPTION WHEN others THEN       

@@ -65,7 +65,7 @@ SELECT 	depsource
 				END)ExpClosureDateTime,
 				MAX(COALESCE(fa.asn_modified_date,fa.asn_created_date,'1900-01-01'))::TIME,
 				MAX(tat.cutofftime),MAX(tat.openingtime),	MAX(fp.pway_exec_end_date)::timestamp,	MAX(COALESCE(fg.gr_end_date,fg.gr_modified_date))::timestamp,
-			CASE WHEN pway_mhe_id IS NOT NULL THEN 1 ELSE 0 END, MAX(fa.activeindicator*fg.activeindicator*fp.activeindicator)
+			CASE WHEN MAX(pway_mhe_id) IS NOT NULL THEN 1 ELSE 0 END, MAX(fa.activeindicator*fg.activeindicator*fp.activeindicator)
 		FROM click.f_asn fa
 		INNER JOIN click.d_date d
 		ON dateactual = (COALESCE(fa.asn_modified_date,fa.asn_created_date))::DATE
@@ -83,7 +83,7 @@ SELECT 	depsource
 		GROUP BY
 			fa.asn_ou,		fa.asn_cust_key,	fa.asn_cust_code,	d.datekey,      
 			fa.asn_loc_key, fa.asn_location,	fa.asn_prefdoc_type,fa.asn_type,
-			fa.asn_prefdoc_no, fa.asn_sup_asn_no,pway_mhe_id;
+			fa.asn_prefdoc_no, fa.asn_sup_asn_no;
 		
 
 		UPDATE click.f_inboundsladetail
@@ -109,7 +109,6 @@ SELECT 	depsource
 			SELECT fa.asn_ou,		fa.asn_cust_key,	fa.asn_cust_code,	d.datekey,	MAX(COALESCE(fa.asn_modified_date,fa.asn_created_date,'1900-01-01')),      
 				fa.asn_loc_key, fa.asn_location,	fa.asn_prefdoc_type,fa.asn_type,
 				fa.asn_prefdoc_no, fa.asn_sup_asn_no,
-				CASE WHEN pway_mhe_id IS NOT NULL THEN 1 ELSE 0 END as Equipmentflag,
 					ABS(CASE WHEN MIN(fa.asn_gate_no) IS NOT NULL 
 					THEN (EXTRACT(epoch from( MAX(COALESCE(fa.asn_modified_date,fa.asn_created_date))::timestamp - MAX(fa.gate_actual_date)::timestamp))/60) 
 					ELSE (EXTRACT(epoch from( MAX(COALESCE(fa.asn_modified_date,fa.asn_created_date))::timestamp - MAX(COALESCE(fa.asn_modified_date,fa.asn_created_date))::timestamp))/60) END) AS asntime,
@@ -135,7 +134,7 @@ SELECT 	depsource
 		GROUP BY
 			fa.asn_ou,		fa.asn_cust_key,	fa.asn_cust_code,	d.datekey,      
 			fa.asn_loc_key, fa.asn_location,	fa.asn_prefdoc_type,fa.asn_type,
-			fa.asn_prefdoc_no, fa.asn_sup_asn_no,pway_mhe_id
+			fa.asn_prefdoc_no, fa.asn_sup_asn_no
 		)td
 		WHERE sla_ouid 		= 	asn_ou
 		AND sla_customerkey = 	asn_cust_key
