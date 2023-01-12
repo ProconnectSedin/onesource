@@ -25,13 +25,12 @@ DECLARE
     p_errorid integer;
     p_errordesc character varying;
     p_errorline integer;
-	p_depsource VARCHAR(100);
 
     p_rawstorageflag integer;
 
 BEGIN
-    SELECT d.jobname, h.envsourcecode, h.datasourcecode, d.latestbatchid, d.targetprocedurename, h.rawstorageflag,h.depsource
-    INTO p_etljobname, p_envsourcecd, p_datasourcecd, p_batchid, p_taskname, p_rawstorageflag,p_depsource
+    SELECT d.jobname, h.envsourcecode, h.datasourcecode, d.latestbatchid, d.targetprocedurename, h.rawstorageflag
+    INTO p_etljobname, p_envsourcecd, p_datasourcecd, p_batchid, p_taskname, p_rawstorageflag
     FROM ods.controldetail d
     INNER JOIN ods.controlheader h
         ON d.sourceid = h.sourceid
@@ -139,7 +138,7 @@ BEGIN
 		Handler_1_cost, Handler_2_cost, tarcd_Agreed_Rate, tarcd_Agreed_cost, tarcd_charagable_quantity, tarcd_exchange_rate, etlcreateddatetime
     FROM stg.stg_tms_tarcd_tariff_rev_cost_dtl;
     END IF;
-
+    
 ELSE	
 		 p_errorid   := 0;
 		 select 0 into inscnt;
