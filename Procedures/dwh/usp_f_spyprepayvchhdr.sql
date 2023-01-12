@@ -1,6 +1,19 @@
-CREATE OR REPLACE PROCEDURE dwh.usp_f_spyprepayvchhdr(IN p_sourceid character varying, IN p_dataflowflag character varying, IN p_targetobject character varying, OUT srccnt integer, OUT inscnt integer, OUT updcnt integer, OUT dltcount integer, INOUT flag1 character varying, OUT flag2 character varying)
-    LANGUAGE plpgsql
-    AS $$
+-- PROCEDURE: dwh.usp_f_spyprepayvchhdr(character varying, character varying, character varying, character varying)
+
+-- DROP PROCEDURE IF EXISTS dwh.usp_f_spyprepayvchhdr(character varying, character varying, character varying, character varying);
+
+CREATE OR REPLACE PROCEDURE dwh.usp_f_spyprepayvchhdr(
+	IN p_sourceid character varying,
+	IN p_dataflowflag character varying,
+	IN p_targetobject character varying,
+	OUT srccnt integer,
+	OUT inscnt integer,
+	OUT updcnt integer,
+	OUT dltcount integer,
+	INOUT flag1 character varying,
+	OUT flag2 character varying)
+LANGUAGE 'plpgsql'
+AS $BODY$
 
 DECLARE
     p_etljobname VARCHAR(100);
@@ -72,6 +85,8 @@ BEGIN
         tr_flag                   = s.tr_flag,
         surnotype_no              = s.surnotype_no,
         bank_amount               = s.bank_amount,
+    	ptimestamp				  = s.ptimestamp,
+    	lgt_invoice_flag		  = s.lgt_invoice_flag,
         etlactiveind              = 1,
         etljobname                = p_etljobname,
         envsourcecd               = p_envsourcecd,
@@ -85,9 +100,7 @@ BEGIN
 		AND s.ou_id			  	  = v.vendor_ou	
     WHERE t.ou_id = s.ou_id
     AND t.voucher_no = s.voucher_no
-    AND t.tran_type = s.tran_type
-    AND t.ptimestamp = s.ptimestamp
-    AND t.lgt_invoice_flag = s.lgt_invoice_flag;
+    AND t.tran_type = s.tran_type;
 
     GET DIAGNOSTICS updcnt = ROW_COUNT;
 
@@ -108,8 +121,6 @@ BEGIN
     ON s.ou_id = t.ou_id
     AND s.voucher_no = t.voucher_no
     AND s.tran_type = t.tran_type
-    AND s.ptimestamp = t.ptimestamp
-    AND s.lgt_invoice_flag = t.lgt_invoice_flag
     WHERE t.ou_id IS NULL;
 
     GET DIAGNOSTICS inscnt = ROW_COUNT;
@@ -134,4 +145,6 @@ BEGIN
        select 0 into inscnt;
        select 0 into updcnt;
 END;
-$$;
+$BODY$;
+ALTER PROCEDURE dwh.usp_f_spyprepayvchhdr(character varying, character varying, character varying, character varying)
+    OWNER TO proconnect;
