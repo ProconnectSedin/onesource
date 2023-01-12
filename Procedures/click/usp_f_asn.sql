@@ -193,7 +193,9 @@ ELSE
 		, asn_master_uom_qty 		= ad. asn_master_uom_qty
 		, asn_modified_date			= ah.asn_modified_date
 		, asn_created_date			= ah.asn_created_date
-		, etlupdatedatetime 		= NOW()		
+		, etlcreatedatetime			= ad.etlcreatedatetime
+		, etlupdatedatetime			= ad.etlupdatedatetime
+		, updatedatetime 		= NOW()		
 	FROM dwh.f_asnheader ah
 	INNER JOIN dwh.f_asndetails ad
 		ON  ah.asn_hr_key = ad.asn_hr_key
@@ -248,8 +250,45 @@ ELSE
 		ON  gd.gate_loc_code 	= ah.asn_location 
 		AND gd.gate_exec_no 	= ah.asn_gate_no 
 		AND gd.gate_exec_ou 	= ah.asn_ou
-	WHERE 	COALESCE(ad.etlupdatedatetime,ad.etlcreatedatetime) >= v_maxdate;
+	LEFT JOIN click.f_asn ct
+	ON ah.asn_no 					= ct.asn_no 
+	AND ah.asn_ou 					= ct.asn_ou 
+	AND ah.asn_location 			= ct.asn_location
+	AND ad.asn_lineno				= ct.asn_lineno
+	WHERE 	COALESCE(ad.etlupdatedatetime,ad.etlcreatedatetime) >= v_maxdate
+	AND ct.asn_no IS NULL;
 	
+-- 	UPDATE CLICK.F_ASN A
+-- 	SET asn_qualifieddate=CASE WHEN COALESCE(A.ASN_MODIFIED_DATE,A.ASN_CREATED_DATE)::TIME>=B.CUTOFFTIME
+-- 							   THEN((coalesce(A.ASN_MODIFIED_DATE,A.ASN_CREATED_DATE)) + INTERVAL '1 DAY')
+-- 							else COALESCE(A.ASN_MODIFIED_DATE,A.ASN_CREATED_DATE) end,
+-- 		asn_cutofftime   =B.CUTOFFTIME					
+-- 	FROM click.d_inboundtat B
+-- 	WHERE B.OU=A.ASN_OU
+-- 	AND B.LOCATIONCODE=A.ASN_LOCATION
+-- 	AND B.ORDERTYPE=A.ASN_PREFDOC_TYPE
+-- 	AND B.SERVICETYPE=A.ASN_TYPE
+-- 	AND COALESCE(A.updatedatetime, A.createdatetime)>=v_maxdate;
+
+	UPDATE CLICK.F_ASN A
+	SET asn_qualifieddate=CASE WHEN COALESCE(A.ASN_MODIFIED_DATE,A.ASN_CREATED_DATE)::TIME>=B.CUTOFFTIME
+							   THEN((coalesce(A.ASN_MODIFIED_DATE,A.ASN_CREATED_DATE)) + INTERVAL '1 DAY')
+							else COALESCE(A.ASN_MODIFIED_DATE,A.ASN_CREATED_DATE) end,
+		asn_cutofftime   =B.CUTOFFTIME					
+	FROM CLICK.F_ASN A1 
+	LEFT JOIN click.d_inboundtat B
+	ON B.OU=A1.ASN_OU
+	AND B.LOCATIONCODE=A1.ASN_LOCATION
+	AND B.ORDERTYPE=A1.ASN_PREFDOC_TYPE
+	AND B.SERVICETYPE=A1.ASN_TYPE
+	WHERE A.asn_key=A1.asn_key
+	AND COALESCE(A.updatedatetime, A.createdatetime)>=v_maxdate;
+	
+		UPDATE CLICK.F_ASN A
+		SET asn_qualifieddatekey = d.datekey
+		FROM click.d_date d	
+		WHERE dateactual = asn_qualifieddate::DATE
+		AND COALESCE(A.updatedatetime, A.createdatetime)>=v_maxdate;
 END IF;
 		
 	EXCEPTION WHEN others THEN       

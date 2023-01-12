@@ -1,5 +1,10 @@
-CREATE TABLE click.f_asn (
-    asn_key bigint NOT NULL,
+-- Table: click.f_asn
+
+-- DROP TABLE IF EXISTS click.f_asn;
+
+CREATE TABLE IF NOT EXISTS click.f_asn
+(
+    asn_key bigint NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 9223372036854775807 CACHE 1 ),
     asn_hr_key bigint NOT NULL,
     asn_dtl_key bigint NOT NULL,
     gate_exec_dtl_key bigint NOT NULL,
@@ -56,30 +61,49 @@ CREATE TABLE click.f_asn (
     etlupdatedatetime timestamp without time zone,
     createdatetime timestamp without time zone,
     updatedatetime timestamp without time zone,
-    asn_itm_itemgroup character varying(80),
-    asn_itm_class character varying(80),
-    activeindicator integer
-);
+    asn_itm_itemgroup character varying(80) COLLATE pg_catalog."default",
+    asn_itm_class character varying(80) COLLATE pg_catalog."default",
+    activeindicator integer,
+    asn_cutofftime time without time zone,
+    asn_qualifieddate timestamp without time zone,
+    asn_qualifieddatekey bigint,
+    CONSTRAINT f_asn_pkey PRIMARY KEY (asn_key),
+    CONSTRAINT f_asn_ukey UNIQUE (asn_ou, asn_location, asn_no, asn_lineno)
+)
 
-ALTER TABLE click.f_asn ALTER COLUMN asn_key ADD GENERATED ALWAYS AS IDENTITY (
-    SEQUENCE NAME click.f_asn_asn_key_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1
-);
+TABLESPACE pg_default;
 
-ALTER TABLE ONLY click.f_asn
-    ADD CONSTRAINT f_asn_pkey PRIMARY KEY (asn_key);
+ALTER TABLE IF EXISTS click.f_asn
+    OWNER to proconnect;
+-- Index: f_asn_date_idx
 
-ALTER TABLE ONLY click.f_asn
-    ADD CONSTRAINT f_asn_ukey UNIQUE (asn_ou, asn_location, asn_no, asn_lineno);
+-- DROP INDEX IF EXISTS click.f_asn_date_idx;
 
-CREATE INDEX f_asn_date_idx ON click.f_asn USING btree (asn_created_date, asn_modified_date);
+CREATE INDEX IF NOT EXISTS f_asn_date_idx
+    ON click.f_asn USING btree
+    (asn_created_date ASC NULLS LAST, asn_modified_date ASC NULLS LAST)
+    TABLESPACE pg_default;
+-- Index: f_asn_inb_idx
 
-CREATE INDEX f_asn_inb_idx ON click.f_asn USING btree (asn_ib_order, asn_loc_key);
+-- DROP INDEX IF EXISTS click.f_asn_inb_idx;
 
-CREATE INDEX f_asn_join_idx ON click.f_asn USING btree (asn_no, asn_ou, asn_location, asn_gate_no, asn_lineno, asn_prefdoc_type, asn_type, asn_status, asn_sup_asn_no);
+CREATE INDEX IF NOT EXISTS f_asn_inb_idx
+    ON click.f_asn USING btree
+    (asn_ib_order COLLATE public.nocase ASC NULLS LAST, asn_loc_key ASC NULLS LAST)
+    TABLESPACE pg_default;
+-- Index: f_asn_join_idx
 
-CREATE INDEX f_asn_key_idx ON click.f_asn USING btree (asn_hr_key, asn_dtl_key, gate_exec_dtl_key, asn_loc_key, asn_date_key, asn_cust_key, asn_dtl_itm_hdr_key, gate_exec_dtl_veh_key);
+-- DROP INDEX IF EXISTS click.f_asn_join_idx;
+
+CREATE INDEX IF NOT EXISTS f_asn_join_idx
+    ON click.f_asn USING btree
+    (asn_no COLLATE public.nocase ASC NULLS LAST, asn_ou ASC NULLS LAST, asn_location COLLATE public.nocase ASC NULLS LAST, asn_gate_no COLLATE public.nocase ASC NULLS LAST, asn_lineno ASC NULLS LAST, asn_prefdoc_type COLLATE public.nocase ASC NULLS LAST, asn_type COLLATE public.nocase ASC NULLS LAST, asn_status COLLATE public.nocase ASC NULLS LAST, asn_sup_asn_no COLLATE public.nocase ASC NULLS LAST)
+    TABLESPACE pg_default;
+-- Index: f_asn_key_idx
+
+-- DROP INDEX IF EXISTS click.f_asn_key_idx;
+
+CREATE INDEX IF NOT EXISTS f_asn_key_idx
+    ON click.f_asn USING btree
+    (asn_hr_key ASC NULLS LAST, asn_dtl_key ASC NULLS LAST, gate_exec_dtl_key ASC NULLS LAST, asn_loc_key ASC NULLS LAST, asn_date_key ASC NULLS LAST, asn_cust_key ASC NULLS LAST, asn_dtl_itm_hdr_key ASC NULLS LAST, gate_exec_dtl_veh_key ASC NULLS LAST)
+    TABLESPACE pg_default;
