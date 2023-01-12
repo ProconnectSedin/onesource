@@ -38,9 +38,9 @@ BEGIN
         AND d.dataflowflag = p_dataflowflag
         AND d.targetobject = p_targetobject;
 
--- 	IF EXISTS(SELECT 1  FROM ods.controlheader WHERE sourceid = p_depsource AND status = 'Completed' 
--- 					AND CAST(COALESCE(lastupdateddate,createddate) AS DATE) >= NOW()::DATE)
--- 	THEN
+	IF EXISTS(SELECT 1  FROM ods.controlheader WHERE sourceid = p_depsource AND status = 'Completed' 
+					AND CAST(COALESCE(lastupdateddate,createddate) AS DATE) >= NOW()::DATE)
+	THEN
 
     SELECT COUNT(1) INTO srccnt
     FROM stg.stg_tms_tarcd_tariff_rev_cost_dtl;
@@ -138,21 +138,21 @@ BEGIN
 		Handler_1_cost, Handler_2_cost, tarcd_Agreed_Rate, tarcd_Agreed_cost, tarcd_charagable_quantity, tarcd_exchange_rate, etlcreateddatetime
     FROM stg.stg_tms_tarcd_tariff_rev_cost_dtl;
     END IF;
-
--- ELSE	
--- 		 p_errorid   := 0;
--- 		 select 0 into inscnt;
---        	 select 0 into updcnt;
--- 		 select 0 into srccnt;	
+    
+ELSE	
+		 p_errorid   := 0;
+		 select 0 into inscnt;
+       	 select 0 into updcnt;
+		 select 0 into srccnt;	
 		 
--- 		 IF p_depsource IS NULL
--- 		 THEN 
--- 		 p_errordesc := 'The Dependent source cannot be NULL.';
--- 		 ELSE
--- 		 p_errordesc := 'The Dependent source '|| p_depsource || ' is not successfully executed. Please execute the source '|| p_depsource || ' then re-run the source '|| p_sourceid||'.';
--- 		 END IF;
--- 		 CALL ods.usp_etlerrorinsert(p_sourceid,p_targetobject,p_dataflowflag,p_batchid,p_taskname,'sp_ExceptionHandling',p_errorid,p_errordesc,NULL);
--- 	END IF;	
+		 IF p_depsource IS NULL
+		 THEN 
+		 p_errordesc := 'The Dependent source cannot be NULL.';
+		 ELSE
+		 p_errordesc := 'The Dependent source '|| p_depsource || ' is not successfully executed. Please execute the source '|| p_depsource || ' then re-run the source '|| p_sourceid||'.';
+		 END IF;
+		 CALL ods.usp_etlerrorinsert(p_sourceid,p_targetobject,p_dataflowflag,p_batchid,p_taskname,'sp_ExceptionHandling',p_errorid,p_errordesc,NULL);
+	END IF;	
 	
 	EXCEPTION WHEN others THEN
         get stacked diagnostics
