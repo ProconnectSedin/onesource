@@ -25,13 +25,12 @@ DECLARE
     p_errorid integer;
     p_errordesc character varying;
     p_errorline integer;
-	p_depsource VARCHAR(100);
 
     p_rawstorageflag integer;
 
 BEGIN
-    SELECT d.jobname, h.envsourcecode, h.datasourcecode, d.latestbatchid, d.targetprocedurename, h.rawstorageflag,h.depsource
-    INTO p_etljobname, p_envsourcecd, p_datasourcecd, p_batchid, p_taskname, p_rawstorageflag,p_depsource
+    SELECT d.jobname, h.envsourcecode, h.datasourcecode, d.latestbatchid, d.targetprocedurename, h.rawstorageflag
+    INTO p_etljobname, p_envsourcecd, p_datasourcecd, p_batchid, p_taskname, p_rawstorageflag
     FROM ods.controldetail d
     INNER JOIN ods.controlheader h
         ON d.sourceid = h.sourceid
@@ -39,9 +38,9 @@ BEGIN
         AND d.dataflowflag = p_dataflowflag
         AND d.targetobject = p_targetobject;
 
-	IF EXISTS(SELECT 1  FROM ods.controlheader WHERE sourceid = p_depsource AND status = 'Completed' 
-					AND CAST(COALESCE(lastupdateddate,createddate) AS DATE) >= NOW()::DATE)
-	THEN
+-- 	IF EXISTS(SELECT 1  FROM ods.controlheader WHERE sourceid = p_depsource AND status = 'Completed' 
+-- 					AND CAST(COALESCE(lastupdateddate,createddate) AS DATE) >= NOW()::DATE)
+-- 	THEN
 
     SELECT COUNT(1) INTO srccnt
     FROM stg.stg_tms_tarcd_tariff_rev_cost_dtl;
@@ -140,20 +139,20 @@ BEGIN
     FROM stg.stg_tms_tarcd_tariff_rev_cost_dtl;
     END IF;
 
-ELSE	
-		 p_errorid   := 0;
-		 select 0 into inscnt;
-       	 select 0 into updcnt;
-		 select 0 into srccnt;	
+-- ELSE	
+-- 		 p_errorid   := 0;
+-- 		 select 0 into inscnt;
+--        	 select 0 into updcnt;
+-- 		 select 0 into srccnt;	
 		 
-		 IF p_depsource IS NULL
-		 THEN 
-		 p_errordesc := 'The Dependent source cannot be NULL.';
-		 ELSE
-		 p_errordesc := 'The Dependent source '|| p_depsource || ' is not successfully executed. Please execute the source '|| p_depsource || ' then re-run the source '|| p_sourceid||'.';
-		 END IF;
-		 CALL ods.usp_etlerrorinsert(p_sourceid,p_targetobject,p_dataflowflag,p_batchid,p_taskname,'sp_ExceptionHandling',p_errorid,p_errordesc,NULL);
-	END IF;	
+-- 		 IF p_depsource IS NULL
+-- 		 THEN 
+-- 		 p_errordesc := 'The Dependent source cannot be NULL.';
+-- 		 ELSE
+-- 		 p_errordesc := 'The Dependent source '|| p_depsource || ' is not successfully executed. Please execute the source '|| p_depsource || ' then re-run the source '|| p_sourceid||'.';
+-- 		 END IF;
+-- 		 CALL ods.usp_etlerrorinsert(p_sourceid,p_targetobject,p_dataflowflag,p_batchid,p_taskname,'sp_ExceptionHandling',p_errorid,p_errordesc,NULL);
+-- 	END IF;	
 	
 	EXCEPTION WHEN others THEN
         get stacked diagnostics
