@@ -1,6 +1,6 @@
 -- Table: click.d_tarifftransport
 
--- DROP TABLE IF EXISTS click.d_tarifftransport;
+DROP TABLE IF EXISTS click.d_tarifftransport;
 
 CREATE TABLE IF NOT EXISTS click.d_tarifftransport
 (
