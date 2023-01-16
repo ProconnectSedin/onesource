@@ -25,12 +25,13 @@ DECLARE
     p_errorid integer;
     p_errordesc character varying;
     p_errorline integer;
+	p_depsource VARCHAR(100);
 
     p_rawstorageflag integer;
 
 BEGIN
-    SELECT d.jobname, h.envsourcecode, h.datasourcecode, d.latestbatchid, d.targetprocedurename, h.rawstorageflag
-    INTO p_etljobname, p_envsourcecd, p_datasourcecd, p_batchid, p_taskname, p_rawstorageflag
+    SELECT d.jobname, h.envsourcecode, h.datasourcecode, d.latestbatchid, d.targetprocedurename, h.rawstorageflag, h.depsource
+    INTO p_etljobname, p_envsourcecd, p_datasourcecd, p_batchid, p_taskname, p_rawstorageflag, p_depsource
     FROM ods.controldetail d
     INNER JOIN ods.controlheader h
         ON d.sourceid = h.sourceid
@@ -45,7 +46,7 @@ BEGIN
     SELECT COUNT(1) INTO srccnt
     FROM stg.stg_tms_tarcd_tariff_rev_cost_dtl;
 
-    UPDATE dwh.F_TariffRevCostDetail t
+UPDATE dwh.F_TariffRevCostDetail t
     SET
 	    tarcd_trip_hdr_key               = COALESCE(fh.plpth_hdr_key,-1),
         tarcd_leg_id                     = s.tarcd_leg_id,
