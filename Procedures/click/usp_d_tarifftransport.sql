@@ -12,9 +12,10 @@ Declare
         v_maxdate date;
 BEGIN
 
-    SELECT (CASE WHEN max(COALESCE(etlupdatedatetime,etlcreatedatetime):: DATE) <> NULL 
-					THEN max(COALESCE(etlupdatedatetime,etlcreatedatetime):: DATE)
-				ELSE '1900-01-01' END)::DATE
+				
+	 SELECT (CASE WHEN max(COALESCE(etlupdatedatetime,etlcreatedatetime):: DATE) <> NULL 
+			THEN max(COALESCE(etlupdatedatetime,etlcreatedatetime):: DATE)
+			ELSE COALESCE(MAX(COALESCE(etlupdatedatetime,etlcreatedatetime)),'1900-01-01') END)::DATE
 	INTO v_maxdate
 	FROM click.d_tarifftransport;
 	
