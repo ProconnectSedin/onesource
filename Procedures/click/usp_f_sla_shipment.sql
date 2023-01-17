@@ -32,7 +32,8 @@ SELECT 	depsource
     create temp table f_sla_shipment_pick_tmp
     as select ouinstance,trip_plan_id,br_customer_id,br_request_id,br_customer_ref_no,actual_departed,activeindicator
     from click.f_shipment_details
-    where leg_behaviour = 'pick'
+    where trip_plan_createddate::DATE >= (CURRENT_DATE - INTERVAL '90 DAYS')::DATE
+    and leg_behaviour = 'pick'
     and actual_departed is not null;
      
     TRUNCATE TABLE tmp.f_sla_shipment_trackingstatus_tmp;
