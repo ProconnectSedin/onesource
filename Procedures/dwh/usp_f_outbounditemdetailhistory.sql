@@ -47,7 +47,7 @@ BEGIN
 
     UPDATE dwh.F_OutboundItemDetailHistory t
     SET
-        obh_hr_his_key                =sb.obh_hr_his_key,
+        obh_hr_his_key                =sb.obh_hr_key,
         obd_itm_key                   = COALESCE(l.itm_hdr_key,-1),
         obd_loc_key                   = COALESCE(c.loc_key,-1), 
         oub_item_code                 = s.wms_oub_item_code,
@@ -76,12 +76,12 @@ BEGIN
         etlupdatedatetime             = NOW()
     FROM stg.stg_wms_outbound_item_detail_h s
      
-        INNER JOIN dwh.F_OutboundHeaderHistory sb
+        INNER JOIN dwh.F_OutboundHeader sb
     
        ON s.wms_oub_itm_loc_code = sb.oub_loc_code 
     and s.wms_oub_outbound_ord =sb.oub_outbound_ord
     and s.wms_oub_itm_ou = sb.oub_ou
-    and s.wms_oub_itm_amendno=sb.oub_amendno
+--     and s.wms_oub_itm_amendno=sb.oub_amendno
 
     LEFT JOIN dwh.d_itemheader L        
         ON s.wms_oub_item_code       = L.itm_code 
@@ -114,15 +114,15 @@ BEGIN
     )
 
     SELECT
-        sb.obh_hr_his_key, COALESCE(l.itm_hdr_key,-1),COALESCE(c.loc_key,-1),s.wms_oub_itm_loc_code, s.wms_oub_itm_ou, s.wms_oub_outbound_ord, s.wms_oub_itm_amendno, s.wms_oub_itm_lineno, s.wms_oub_item_code, s.wms_oub_itm_order_qty, s.wms_oub_itm_sch_type, s.wms_oub_itm_balqty, s.wms_oub_itm_issueqty, s.wms_oub_itm_processqty, s.wms_oub_itm_masteruom, s.wms_oub_itm_deliverydate, s.wms_oub_itm_serfrom, s.wms_oub_itm_serto, s.wms_oub_itm_plan_gd_iss_dt, s.wms_oub_itm_plan_dt_iss, s.wms_oub_itm_sub_rules, s.wms_oub_itm_pack_remarks, s.wms_oub_itm_su, s.wms_oub_itm_uid_serial_no, s.wms_oub_itm_cancel, s.wms_oub_itm_cancel_code, s.wms_oub_itm_wave_no, 1, p_etljobname, p_envsourcecd, p_datasourcecd, NOW()
+        sb.obh_hr_key, COALESCE(l.itm_hdr_key,-1),COALESCE(c.loc_key,-1),s.wms_oub_itm_loc_code, s.wms_oub_itm_ou, s.wms_oub_outbound_ord, s.wms_oub_itm_amendno, s.wms_oub_itm_lineno, s.wms_oub_item_code, s.wms_oub_itm_order_qty, s.wms_oub_itm_sch_type, s.wms_oub_itm_balqty, s.wms_oub_itm_issueqty, s.wms_oub_itm_processqty, s.wms_oub_itm_masteruom, s.wms_oub_itm_deliverydate, s.wms_oub_itm_serfrom, s.wms_oub_itm_serto, s.wms_oub_itm_plan_gd_iss_dt, s.wms_oub_itm_plan_dt_iss, s.wms_oub_itm_sub_rules, s.wms_oub_itm_pack_remarks, s.wms_oub_itm_su, s.wms_oub_itm_uid_serial_no, s.wms_oub_itm_cancel, s.wms_oub_itm_cancel_code, s.wms_oub_itm_wave_no, 1, p_etljobname, p_envsourcecd, p_datasourcecd, NOW()
     FROM stg.stg_wms_outbound_item_detail_h s
     
-     INNER JOIN dwh.F_OutboundHeaderHistory sb
+     INNER JOIN dwh.F_OutboundHeader sb
     
        ON s.wms_oub_itm_loc_code = sb.oub_loc_code 
     and s.wms_oub_outbound_ord =sb.oub_outbound_ord
     and s.wms_oub_itm_ou = sb.oub_ou
-    and s.wms_oub_itm_amendno=sb.oub_amendno
+--     and s.wms_oub_itm_amendno=sb.oub_amendno
 
     LEFT JOIN dwh.d_itemheader L        
         ON s.wms_oub_item_code       = L.itm_code 
@@ -142,15 +142,6 @@ BEGIN
 
     GET DIAGNOSTICS inscnt = ROW_COUNT;
 	
-	UPDATE dwh.F_OutboundItemDetailHistory od 
-	SET obh_hr_his_key = oh.obh_hr_his_key,
-		etlupdatedatetime             = NOW()
-	FROM dwh.F_OutboundHeaderHistory oh 
-	WHERE od.oub_itm_ou = oh.oub_ou 
-	and od.oub_itm_loc_code = oh.oub_loc_code 
-	and od.oub_outbound_ord =oh.oub_outbound_ord 
-	and od.oub_itm_amendno=oh.oub_amendno
-	AND COALESCE(oh.oub_modified_date,oh.oub_created_date)::DATE >= (CURRENT_DATE - INTERVAL '90 days')::DATE;
 	
 
     IF p_rawstorageflag = 1
