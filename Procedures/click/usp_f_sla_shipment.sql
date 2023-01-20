@@ -32,9 +32,24 @@ SELECT 	depsource
     create temp table f_sla_shipment_pick_tmp
     as select ouinstance,trip_plan_id,br_customer_id,br_request_id,br_customer_ref_no,actual_departed,activeindicator
     from click.f_shipment_details
-    where leg_behaviour = 'pick'
+    where trip_plan_createddate::DATE >= (CURRENT_DATE - INTERVAL '90 DAYS')::DATE
+    and leg_behaviour = 'pick'
     and actual_departed is not null;
      
+    TRUNCATE TABLE tmp.f_sla_shipment_trackingstatus_tmp;
+    
+    with sas as 
+    (
+    select ord_sono, max(cust_id) sa
+    from  click.f_clientservicelog a
+    group by ord_sono
+    )   
+    insert into tmp.f_sla_shipment_trackingstatus_tmp(ord_sono,cust_id,trackingstatus)
+    select a.ord_sono, a.cust_id, a.trackingstatus
+    from   sas
+    inner join click.f_clientservicelog a
+    on         a.ord_sono = sas.ord_sono
+    and        a.cust_id = sas.sa;
 
 	insert into click.f_sla_shipment
 	(
@@ -44,7 +59,7 @@ SELECT 	depsource
 		sla_service_type,               sla_sub_service_type,           sla_location,                   agent_id,                                          
 		agent_name,						opening_time,                   cutofftime,                     order_confirmed_date_time,
         dispatch_tat,                   actual_dispatched_date_time,    actual_delivered_date_time,     dispatch_exptd_date_time,       
-        delivery_exptd_date_time,		trip_plan_createddate,          createddate
+        delivery_exptd_date_time,		trip_plan_createddate,          tracking_status,                createddate
 	)
 	select 
 		coalesce(a.shipment_dtl_key,-1),coalesce(a.ship_customer_key,-1),coalesce(a.br_key,-1),			coalesce(a.ship_loc_key,-1),
@@ -61,7 +76,7 @@ SELECT 	depsource
 		((max(coalesce(b.oub_modified_date,b.oub_created_date))+ interval '1 day')::date ||' '||(max(d.openingtime)))::timestamp + (max(c.disptat) || ' minutes')::interval 
 		end 
 		),
-		a.expected_datetodeliver,       a.trip_plan_createddate,
+		a.expected_datetodeliver,       a.trip_plan_createddate,        tmp1.trackingstatus,
         now()::timestamp
 	from click.f_shipment_details a
     join f_sla_shipment_pick_tmp tmp
@@ -82,6 +97,8 @@ SELECT 	depsource
 	and c.locationcode  = d.locationcode
 	and c.ordertype     = d.ordertype 
 	and c.servicetype   = d.servicetype
+    left join tmp.f_sla_shipment_trackingstatus_tmp tmp1
+    on a.br_customer_ref_no = tmp1.ord_sono
 	left join dwh.d_vendor e
 	on  a.ouinstance	= e.vendor_ou
 	and a.agent_id		= e.vendor_id
@@ -90,7 +107,7 @@ SELECT 	depsource
 	group by 	coalesce(a.shipment_dtl_key,-1),    coalesce(a.ship_customer_key,-1),   coalesce(a.br_key,-1),	coalesce(a.ship_loc_key,-1),    coalesce(e.vendor_key,-1),
                 a.ouinstance,				        a.br_customer_id,		            a.br_request_id,		a.br_customer_ref_no,		    a.service_type,
 				a.sub_service_type,			        a.loc,					            a.agent_id,				e.vendor_name,				    a.leg_behaviour,			
-				tmp.actual_departed,                a.actual_departed,			        a.expected_datetodeliver,a.trip_plan_createddate;
+				tmp.actual_departed,                a.actual_departed,			        a.expected_datetodeliver,a.trip_plan_createddate,       tmp1.trackingstatus;
 
 -----------------------------------------------------------------------------------------------------------------------------
 	
@@ -136,7 +153,17 @@ SELECT 	depsource
 	where sla_category is null
 	and trip_plan_createddate::DATE >= (CURRENT_DATE - INTERVAL '90 DAYS')::DATE;
 	--where sla.sla_orderdate >= (now() - interval '3 months')::date;
-	
+    
+	ELSE	
+	p_errorid   := 0;
+		IF p_depsource IS NULL
+			THEN 
+			 	p_errordesc := 'The Dependent source cannot be NULL.';
+			ELSE
+				p_errordesc := 'The Dependent source '|| p_depsource || ' is not successfully executed. Please execute the source '|| p_depsource || ' then re-run the source.';
+			END IF;
+		call ods.usp_etlerrorinsert('click','f_sla_shipment','click',null,'de-normalized','sp_exceptionhandling',p_errorid,p_errordesc,null);
+
     END IF;
     
     exception when others then       
