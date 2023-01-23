@@ -157,7 +157,7 @@ BEGIN
 			left_early_by,	break_out_early_by,	break_in_late_by,	attendance_status,	work_hours,		work_location_name,	last_updated_ts,	shift_name,	
 			normal_ot,		night_ot,			weekoff_ot,			holiday_ot,			approved_ot,	custom_menu,		account_no,			inserted_ts,	
 			dept_code,		job_code,			job_eeo_class,		job_grade_set_code,	job_grade_code,	budgeted_count,		budgeted_ctc,		rqd_count_day,
-			shift_1,		shift_2,			shift_3,			general,			createdatetime,	etlcreateddatetime
+			shift_1,		shift_2,			shift_3,			general,			createdatetime
 		
 		)
 		SELECT 
@@ -166,7 +166,7 @@ BEGIN
 			left_early_by,	break_out_early_by,	break_in_late_by,	attendance_status,	work_hours,		work_location_name,	last_updated_ts,	shift_name,	
 			normal_ot,		night_ot,			weekoff_ot,			holiday_ot,			approved_ot,	custom_menu,		account_no,			inserted_ts,	
 			dept_code,		job_code,			job_eeo_class,		job_grade_set_code,	job_grade_code,	budgeted_count,		budgeted_ctc,		rqd_count_day,
-			shift_1,		shift_2,			shift_3,			general,			createdatetime,	etlcreateddatetime
+			shift_1,		shift_2,			shift_3,			general,			createdatetime
 		
 		FROM stg.stg_dailyattendance;
 

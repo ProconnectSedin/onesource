@@ -47,7 +47,7 @@ BEGIN
 
     UPDATE dwh.F_OutboundLotSrlDetailHistory t
     SET
-        obh_hr_his_key             =sb.obh_hr_his_key,
+        obh_hr_his_key             =sb.obh_hr_key,
         oub_loc_key                = COALESCE(l.loc_key,-1),
         oub_itm_key                = COALESCE(c.itm_hdr_key,-1),
         oub_item_code              = s.wms_oub_item_code,
@@ -68,12 +68,11 @@ BEGIN
         etlupdatedatetime          = NOW()
     FROM stg.stg_wms_outbound_lot_ser_dtl_h s
 
-    INNER JOIN dwh.F_OutboundHeaderHistory sb
+    INNER JOIN dwh.F_OutboundHeader sb
     
        ON s.wms_oub_lotsl_loc_code = sb.oub_loc_code 
     and s.wms_oub_outbound_ord =sb.oub_outbound_ord
     and s.wms_oub_lotsl_ou = sb.oub_ou
-    and s.wms_oub_lotsl_amendno=sb.oub_amendno
 
     LEFT JOIN dwh.d_location L      
         ON s.wms_oub_lotsl_loc_code     = L.loc_code 
@@ -90,15 +89,7 @@ BEGIN
     AND t.oub_lotsl_amendno = s.wms_oub_lotsl_amendno;
 
     GET DIAGNOSTICS updcnt = ROW_COUNT;
-
--- 	DELETE FROM dwh.f_outboundlotsrldetailhistory t
--- 	USING stg.stg_wms_outbound_lot_ser_dtl_h s
--- 		WHERE t.oub_lotsl_loc_code = s.wms_oub_lotsl_loc_code
---     AND t.oub_lotsl_ou = s.wms_oub_lotsl_ou
---     AND t.oub_outbound_ord = s.wms_oub_outbound_ord
---     AND t.oub_lotsl_lineno = s.wms_oub_lotsl_lineno
---     AND t.oub_lotsl_amendno = s.wms_oub_lotsl_amendno;
--- -- 	AND 	COALESCE(fh.oub_modified_date,fh.oub_created_date)::DATE >= (CURRENT_DATE - INTERVAL '90 days')::DATE;	
+	
 
     INSERT INTO dwh.F_OutboundLotSrlDetailHistory
     (
@@ -106,14 +97,13 @@ BEGIN
     )
 
     SELECT
-       sb.obh_hr_his_key, COALESCE(l.loc_key,-1),COALESCE(c.itm_hdr_key,-1),s.wms_oub_lotsl_loc_code, s.wms_oub_lotsl_ou, s.wms_oub_outbound_ord, s.wms_oub_lotsl_lineno, s.wms_oub_lotsl_amendno, s.wms_oub_item_code, s.wms_oub_item_lineno, s.wms_oub_lotsl_order_qty, s.wms_oub_lotsl_batchno, s.wms_oub_lotsl_serialno, s.wms_oub_lotsl_masteruom, s.wms_oub_refdocno1, s.wms_oub_refdocno2, s.wms_oub_thu_id, s.wms_oub_thu_srno, s.wms_oub_cus_srno, 1, p_etljobname, p_envsourcecd, p_datasourcecd, NOW()
+       sb.obh_hr_key, COALESCE(l.loc_key,-1),COALESCE(c.itm_hdr_key,-1),s.wms_oub_lotsl_loc_code, s.wms_oub_lotsl_ou, s.wms_oub_outbound_ord, s.wms_oub_lotsl_lineno, s.wms_oub_lotsl_amendno, s.wms_oub_item_code, s.wms_oub_item_lineno, s.wms_oub_lotsl_order_qty, s.wms_oub_lotsl_batchno, s.wms_oub_lotsl_serialno, s.wms_oub_lotsl_masteruom, s.wms_oub_refdocno1, s.wms_oub_refdocno2, s.wms_oub_thu_id, s.wms_oub_thu_srno, s.wms_oub_cus_srno, 1, p_etljobname, p_envsourcecd, p_datasourcecd, NOW()
     FROM stg.stg_wms_outbound_lot_ser_dtl_h s
-    INNER JOIN dwh.F_OutboundHeaderHistory sb
+    INNER JOIN dwh.F_OutboundHeader sb
     
        ON s.wms_oub_lotsl_loc_code = sb.oub_loc_code 
     and s.wms_oub_outbound_ord =sb.oub_outbound_ord
     and s.wms_oub_lotsl_ou = sb.oub_ou
-    and s.wms_oub_lotsl_amendno=sb.oub_amendno
 
     LEFT JOIN dwh.d_location L      
         ON s.wms_oub_lotsl_loc_code     = L.loc_code 
@@ -133,16 +123,6 @@ BEGIN
 
     GET DIAGNOSTICS inscnt = ROW_COUNT;
 
--- 	update dwh.F_OutboundLotSrlDetailHistory a
--- 	set obh_hr_his_key		=	b.obh_hr_his_key,
--- 	 	etlupdatedatetime	=	now()
--- 	from dwh.F_OutboundHeaderHistory b
--- 	where b.oub_ou			=	a.oub_lotsl_ou
--- 	and b.oub_loc_code		=	a.oub_lotsl_loc_code
--- 	and b.oub_outbound_ord	=	a.oub_outbound_ord
--- 	and b.oub_amendno		=	a.oub_lotsl_amendno
--- 	and COALESCE(b.oub_modified_date,b.oub_created_date)::DATE >= (CURRENT_DATE - INTERVAL '90 days')::DATE;
-	
     IF p_rawstorageflag = 1
     THEN
 

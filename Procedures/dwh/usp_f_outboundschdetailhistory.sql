@@ -48,7 +48,7 @@ BEGIN
     UPDATE dwh.F_OutboundSchDetailHistory t
     SET
  
-        obh_hr_his_key                  =sb.obh_hr_his_key,
+        obh_hr_his_key                  =sb.obh_hr_key,
         oub_loc_key                     = COALESCE(l.loc_key,-1),
         oub_itm_key                     = COALESCE(c.itm_hdr_key,-1),
         oub_sch_item_code               = s.wms_oub_sch_item_code,
@@ -69,12 +69,12 @@ BEGIN
         etlupdatedatetime               = NOW()
     FROM stg.stg_wms_outbound_sch_dtl_h s
 
-    INNER JOIN dwh.F_OutboundHeaderHistory sb
+    INNER JOIN dwh.F_OutboundHeader sb
     
        ON s.wms_oub_sch_loc_code = sb.oub_loc_code 
     and s.wms_oub_outbound_ord =sb.oub_outbound_ord
     and s.wms_oub_sch_ou = sb.oub_ou
-	and s.wms_oub_sch_amendno=sb.oub_amendno
+	--and s.wms_oub_sch_amendno=sb.oub_amendno
 
     LEFT JOIN dwh.d_location L      
         ON s.wms_oub_sch_loc_code   = L.loc_code 
@@ -92,16 +92,7 @@ BEGIN
     AND t.oub_item_lineno = s.wms_oub_item_lineno;
 
       GET DIAGNOSTICS updcnt = ROW_COUNT;
-	
--- DELETE from dwh.F_OutboundSchDetailHistory t
--- 	USING stg.stg_wms_outbound_sch_dtl_h s
--- 		where t.oub_sch_loc_code = s.wms_oub_sch_loc_code
---     AND t.oub_sch_ou = s.wms_oub_sch_ou
---     AND t.oub_outbound_ord = s.wms_oub_outbound_ord
---     AND t.oub_sch_amendno = s.wms_oub_sch_amendno
---     AND t.oub_sch_lineno = s.wms_oub_sch_lineno
---     AND t.oub_item_lineno = s.wms_oub_item_lineno;
--- -- 	and COALESCE(fh.oub_modified_date,fh.oub_created_date)::DATE >= (CURRENT_DATE - INTERVAL '90 days')::DATE;
+--select * from dwh.F_OutboundHeader limit 10;
  
     INSERT INTO dwh.F_OutboundSchDetailHistory
     (
@@ -109,15 +100,14 @@ BEGIN
     )
 
     SELECT
-       sb.obh_hr_his_key,COALESCE(l.loc_key,-1),COALESCE(c.itm_hdr_key,-1), s.wms_oub_sch_loc_code, s.wms_oub_sch_ou, s.wms_oub_outbound_ord, s.wms_oub_sch_amendno, s.wms_oub_sch_lineno, s.wms_oub_sch_item_code, s.wms_oub_item_lineno, s.wms_oub_sch_order_qty, s.wms_oub_sch_masteruom, s.wms_oub_sch_deliverydate, s.wms_oub_sch_serfrom, s.wms_oub_sch_serto, s.wms_oub_sch_plan_gd_iss_dt, s.wms_oub_sch_plan_gd_iss_time, s.wms_oub_sch_operation_status, s.wms_oub_sch_picked_qty, s.wms_oub_sch_packed_qty, 1, p_etljobname, p_envsourcecd, p_datasourcecd, NOW()
+       sb.obh_hr_key,COALESCE(l.loc_key,-1),COALESCE(c.itm_hdr_key,-1), s.wms_oub_sch_loc_code, s.wms_oub_sch_ou, s.wms_oub_outbound_ord, s.wms_oub_sch_amendno, s.wms_oub_sch_lineno, s.wms_oub_sch_item_code, s.wms_oub_item_lineno, s.wms_oub_sch_order_qty, s.wms_oub_sch_masteruom, s.wms_oub_sch_deliverydate, s.wms_oub_sch_serfrom, s.wms_oub_sch_serto, s.wms_oub_sch_plan_gd_iss_dt, s.wms_oub_sch_plan_gd_iss_time, s.wms_oub_sch_operation_status, s.wms_oub_sch_picked_qty, s.wms_oub_sch_packed_qty, 1, p_etljobname, p_envsourcecd, p_datasourcecd, NOW()
     FROM stg.stg_wms_outbound_sch_dtl_h s
 
-    INNER JOIN dwh.F_OutboundHeaderHistory sb
+    INNER JOIN dwh.F_OutboundHeader sb
     
        ON s.wms_oub_sch_loc_code = sb.oub_loc_code 
     and s.wms_oub_outbound_ord =sb.oub_outbound_ord
     and s.wms_oub_sch_ou = sb.oub_ou
-	and s.wms_oub_sch_amendno=sb.oub_amendno
 
     LEFT JOIN dwh.d_location L      
         ON s.wms_oub_sch_loc_code   = L.loc_code 
@@ -138,15 +128,6 @@ BEGIN
 
     GET DIAGNOSTICS inscnt = ROW_COUNT;
 
--- 		update dwh.F_OutboundSchDetailHistory a
--- 		SET 	obh_hr_his_key 		=	b.obh_hr_his_key,
--- 		 		etlupdatedatetime	=	now()
--- 		FROM dwh.F_OutboundHeaderHistory b
--- 		where b.oub_ou			=	a.oub_sch_ou
--- 		AND b.oub_loc_code		=	a.oub_sch_loc_code
--- 		and b.oub_outbound_ord	=	a.oub_outbound_ord
--- 		and b.oub_amendno		=	a.oub_sch_amendno
--- 		and COALESCE(b.oub_modified_date,b.oub_created_date)::DATE>=(CURRENT_DATE - INTERVAL '90 days')::DATE;
 		
     IF p_rawstorageflag = 1
     THEN
@@ -175,13 +156,13 @@ BEGIN
          END IF;
          CALL ods.usp_etlerrorinsert(p_sourceid,p_targetobject,p_dataflowflag,p_batchid,p_taskname,'sp_ExceptionHandling',p_errorid,p_errordesc,NULL);
     END IF;
-    EXCEPTION WHEN others THEN
-        get stacked diagnostics
-            p_errorid   = returned_sqlstate,
-            p_errordesc = message_text;
-    CALL ods.usp_etlerrorinsert(p_sourceid, p_targetobject, p_dataflowflag, p_batchid,p_taskname, 'sp_ExceptionHandling', p_errorid, p_errordesc, null);
-       select 0 into inscnt;
-       select 0 into updcnt;
+--     EXCEPTION WHEN others THEN
+--         get stacked diagnostics
+--             p_errorid   = returned_sqlstate,
+--             p_errordesc = message_text;
+--     CALL ods.usp_etlerrorinsert(p_sourceid, p_targetobject, p_dataflowflag, p_batchid,p_taskname, 'sp_ExceptionHandling', p_errorid, p_errordesc, null);
+--        select 0 into inscnt;
+--        select 0 into updcnt;
 END;
 $BODY$;
 ALTER PROCEDURE dwh.usp_f_outboundschdetailhistory(character varying, character varying, character varying, character varying)

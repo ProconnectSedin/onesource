@@ -141,27 +141,26 @@ BEGIN
 		(
 			ou, 	attendance_month, 	vendor_code, 	location_code, 	employee_type2, 	
 			vendor_name, 	warehouse_code, 	warehouse_name, 	employee_code, 	job_code, 	job_title, 	emp_count, 
-				addition, 	seperation, 	inserted_ts, 	createddatetime,	etlcreateddatetime
+				addition, 	seperation, 	inserted_ts, 	createddatetime
 		
 		)
 		SELECT 
 				ou, 	attendance_month, 	vendor_code, 	location_code, 	employee_type2, 	
 			vendor_name, 	warehouse_code, 	warehouse_name, 	employee_code, 	job_code, 	job_title, 	emp_count, 
-				addition, 	seperation, 	inserted_ts, 	createddatetime,	etlcreateddatetime
+				addition, 	seperation, 	inserted_ts, 	createddatetime
 		
 		FROM stg.stg_factattrition;
 
-
     END IF;
 		
--- 	EXCEPTION WHEN others THEN       
+	EXCEPTION WHEN others THEN       
 		   
--- 	GET stacked DIAGNOSTICS p_errorid   = returned_sqlstate,p_errordesc = message_text;
+	GET stacked DIAGNOSTICS p_errorid   = returned_sqlstate,p_errordesc = message_text;
 			
--- 	CALL ods.usp_etlerrorinsert(p_sourceid,p_targetobject,p_dataflowflag,p_batchid,p_taskname,'sp_ExceptionHandling',p_errorid,p_errordesc,NULL);
+	CALL ods.usp_etlerrorinsert(p_sourceid,p_targetobject,p_dataflowflag,p_batchid,p_taskname,'sp_ExceptionHandling',p_errorid,p_errordesc,NULL);
 			
--- 	SELECT 0 INTO inscnt;
--- 	SELECT 0 INTO updcnt;	
+	SELECT 0 INTO inscnt;
+	SELECT 0 INTO updcnt;	
 END;
 $BODY$;
 ALTER PROCEDURE dwh.usp_f_attrition(character varying, character varying, character varying, character varying)
