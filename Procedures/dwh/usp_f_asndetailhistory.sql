@@ -48,7 +48,7 @@ BEGIN
 
     UPDATE dwh.F_ASNDetailHistory t
     SET
-		asn_hdr_hst_key    			 = fh.asn_hdr_hst_key,
+		asn_hdr_hst_key    			 = fh.asn_hr_key,
         asn_dtl_hst_loc_key 		 = COALESCE(l.loc_key,-1),
 		asn_dtl_hst_itm_hdr_key 	 = COALESCE(i.itm_hdr_key,-1),
 		asn_dtl_hst_thu_key 		 = COALESCE(th.thu_key,-1),
@@ -73,11 +73,11 @@ BEGIN
         datasourcecd                 = p_datasourcecd,
         etlupdatedatetime            = NOW()
     FROM stg.stg_wms_asn_detail_h s
-	INNER JOIN 	dwh.f_asnheaderhistory fh 
+	inner JOIN 	dwh.f_asnheader fh 
 			ON  s.wms_asn_ou 		= fh.asn_ou 
 			AND s.wms_asn_location 	= fh.asn_location 
 			AND s.wms_asn_no 		= fh.asn_no
-			AND s.wms_asn_amendno 	= fh.asn_amendno
+			
 	LEFT JOIN dwh.d_location l 		
 		ON  s.wms_asn_location   = l.loc_code 
         AND s.wms_asn_ou         = l.loc_ou
@@ -94,18 +94,7 @@ BEGIN
     AND 	t.asn_lineno 	= s.wms_asn_lineno;
     
     GET DIAGNOSTICS updcnt = ROW_COUNT;
-/*
-    SELECT 0 INTO updcnt ;
 
-    Delete from dwh.F_ASNDetailHistory t
-	USING stg.stg_wms_asn_detail_h s
-	where   t.asn_ou 		= s.wms_asn_ou
-    AND 	t.asn_location  = s.wms_asn_location
-    AND 	t.asn_no 		= s.wms_asn_no
-    AND 	t.asn_amendno 	= s.wms_asn_amendno
-    AND 	t.asn_lineno 	= s.wms_asn_lineno;
-	--and COALESCE(h.asn_modified_date,h.asn_created_date)::DATE >= (CURRENT_DATE - INTERVAL '90 days')::DATE;
-*/
     INSERT INTO dwh.F_ASNDetailHistory
     (
 		asn_hdr_hst_key,	  	asn_dtl_hst_loc_key,		asn_dtl_hst_itm_hdr_key,asn_dtl_hst_thu_key,
@@ -117,18 +106,17 @@ BEGIN
     )
 
     SELECT
-		fh.asn_hdr_hst_key,		COALESCE(l.loc_key,-1),	COALESCE(i.itm_hdr_key,-1),	COALESCE(th.thu_key,-1),
+		fh.asn_hr_key,		COALESCE(l.loc_key,-1),	COALESCE(i.itm_hdr_key,-1),	COALESCE(th.thu_key,-1),
         s.wms_asn_ou, 			s.wms_asn_location, 	s.wms_asn_no, 			s.wms_asn_amendno, 			 s.wms_asn_lineno, 
 		s.wms_asn_itm_code, 	s.wms_asn_qty, 			s.wms_asn_batch_no, 	s.wms_asn_srl_no, 			 s.wms_asn_exp_date, 
 		s.wms_asn_thu_id, 		s.wms_asn_thu_desc, 	s.wms_asn_thu_qty, 		s.wms_po_lineno, 			 s.wms_asn_rem, 
 		s.wms_asn_itm_height, 	s.wms_asn_itm_volume, 	s.wms_asn_itm_weight,   s.wms_asn_outboundorder_qty, s.wms_asn_bestbeforedate, 
 		1, 						p_etljobname, 			p_envsourcecd, 			p_datasourcecd, 			 NOW()
     FROM stg.stg_wms_asn_detail_h s
-	INNER JOIN 	dwh.f_asnheaderhistory fh 
+	inner JOIN 	dwh.f_asnheader fh 
 			ON  s.wms_asn_ou 		= fh.asn_ou 
 			AND s.wms_asn_location 	= fh.asn_location 
 			AND s.wms_asn_no 		= fh.asn_no
-			AND s.wms_asn_amendno 	= fh.asn_amendno
 	LEFT JOIN dwh.d_location l 		
 		ON  s.wms_asn_location   = l.loc_code 
         AND s.wms_asn_ou         = l.loc_ou
@@ -147,19 +135,7 @@ BEGIN
     WHERE t.asn_ou IS NULL;
 
     GET DIAGNOSTICS inscnt = ROW_COUNT;
-/*	
-	
-	UPDATE	dwh.F_ASNDetailHistory s
-    SET		asn_hdr_hst_key		= fh.asn_hdr_hst_key,
-	 		etlupdatedatetime	= NOW()
-    FROM	dwh.f_asnheaderhistory fh  
-    WHERE	s.asn_ou 			= fh.asn_ou 
-	AND		s.asn_location 		= fh.asn_location 
-	AND		s.asn_no 			= fh.asn_no
-	AND		s.asn_amendno 		= fh.asn_amendno
-    AND		COALESCE(fh.asn_modified_date,fh.asn_created_date)::DATE >= (CURRENT_DATE - INTERVAL '90 days')::DATE;
-	
-*/	
+
 
     IF p_rawstorageflag = 1
     THEN
