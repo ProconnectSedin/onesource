@@ -95,6 +95,12 @@ BEGIN
     WHERE t.dds_ouinstance IS NULL;
 
     GET DIAGNOSTICS inscnt = ROW_COUNT;
+    
+    update  ods.controldetail 
+    set  etllastrundate = (CURRENT_DATE - INTERVAL '7 days')::DATE
+    where sourceid = 'tms_dds_dispatch_document_signature'
+    and dataflowflag = 'SRCtoStg';
+    
     IF p_rawstorageflag = 1
     THEN
 
