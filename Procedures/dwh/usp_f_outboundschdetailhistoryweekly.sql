@@ -15,28 +15,6 @@ CREATE OR REPLACE PROCEDURE dwh.usp_f_outboundschdetailhistoryweekly(
 LANGUAGE 'plpgsql'
 AS $BODY$
 
-/*****************************************************************************************************************/
-/* PROCEDURE		:	dwh.usp_f_outboundschdetailhistoryweekly														 				 */
-/* DESCRIPTION		:	This sp is used to load f_outboundschdetailhistoryweekly table from stg_wms_outbound_sch_dtl_h        			 			 */
-/*						Load Strategy: Insert/Update 															 */
-/*						Sources: wms_outbound_sch_dtl_h_w				 		 									 */
-/*****************************************************************************************************************/
-/* DEVELOPMENT HISTORY																							 */
-/*****************************************************************************************************************/
-/* AUTHOR    		:	AKASH V																						 */
-/* DATE				:	26-DEC-2022																				 */
-/*****************************************************************************************************************/
-/* MODIFICATION HISTORY																							 */
-/*****************************************************************************************************************/
-/* MODIFIED BY		:																							 */
-/* DATE				:														 									 */
-/* DESCRIPTION		:													  										 */
-/*****************************************************************************************************************/
-/* EXECUTION SAMPLE :CALL dwh.usp_f_outboundschdetailhistoryweekly('wms_outbound_sch_dtl_h_w','StgtoDW','f_outboundschdetailhistory',0,0,0,0,NULL,NULL);*/
-/*****************************************************************************************************************/
-
-
-
 DECLARE
     p_etljobname VARCHAR(100);
     p_envsourcecd VARCHAR(50);
@@ -70,7 +48,7 @@ BEGIN
 
     UPDATE dwh.F_OutboundSchDetailHistory t
     SET 
-        obh_hr_his_key                  = sb.obh_hr_his_key,
+        obh_hr_his_key                  = sb.obh_hr_key,
         oub_loc_key                     = COALESCE(l.loc_key,-1),
         oub_itm_key                     = COALESCE(c.itm_hdr_key,-1),
         oub_sch_item_code               = s.wms_oub_sch_item_code,
@@ -90,11 +68,11 @@ BEGIN
         datasourcecd                    = p_datasourcecd,
         etlupdatedatetime               = NOW()
     FROM stg.stg_wms_outbound_sch_dtl_h s
-    INNER JOIN dwh.F_OutboundHeaderHistory sb
-        ON s.wms_oub_sch_loc_code = sb.oub_loc_code 
-		and s.wms_oub_outbound_ord =sb.oub_outbound_ord
-		and s.wms_oub_sch_ou = sb.oub_ou
-		and s.wms_oub_sch_amendno=sb.oub_amendno
+   INNER JOIN dwh.F_OutboundHeader sb
+    
+       ON s.wms_oub_sch_loc_code = sb.oub_loc_code 
+    and s.wms_oub_outbound_ord =sb.oub_outbound_ord
+    and s.wms_oub_sch_ou = sb.oub_ou
     LEFT JOIN dwh.d_location L      
         ON s.wms_oub_sch_loc_code   = L.loc_code 
         AND s.wms_oub_sch_ou        = L.loc_ou
@@ -126,14 +104,14 @@ BEGIN
     )
 
     SELECT
-       sb.obh_hr_his_key,COALESCE(l.loc_key,-1),COALESCE(c.itm_hdr_key,-1), s.wms_oub_sch_loc_code, s.wms_oub_sch_ou, s.wms_oub_outbound_ord, s.wms_oub_sch_amendno, s.wms_oub_sch_lineno, s.wms_oub_sch_item_code, s.wms_oub_item_lineno, s.wms_oub_sch_order_qty, s.wms_oub_sch_masteruom, s.wms_oub_sch_deliverydate, s.wms_oub_sch_serfrom, s.wms_oub_sch_serto, s.wms_oub_sch_plan_gd_iss_dt, s.wms_oub_sch_plan_gd_iss_time, s.wms_oub_sch_operation_status, s.wms_oub_sch_picked_qty, s.wms_oub_sch_packed_qty, 1, p_etljobname, p_envsourcecd, p_datasourcecd, NOW()
+       sb.obh_hr_key,COALESCE(l.loc_key,-1),COALESCE(c.itm_hdr_key,-1), s.wms_oub_sch_loc_code, s.wms_oub_sch_ou, s.wms_oub_outbound_ord, s.wms_oub_sch_amendno, s.wms_oub_sch_lineno, s.wms_oub_sch_item_code, s.wms_oub_item_lineno, s.wms_oub_sch_order_qty, s.wms_oub_sch_masteruom, s.wms_oub_sch_deliverydate, s.wms_oub_sch_serfrom, s.wms_oub_sch_serto, s.wms_oub_sch_plan_gd_iss_dt, s.wms_oub_sch_plan_gd_iss_time, s.wms_oub_sch_operation_status, s.wms_oub_sch_picked_qty, s.wms_oub_sch_packed_qty, 1, p_etljobname, p_envsourcecd, p_datasourcecd, NOW()
     FROM stg.stg_wms_outbound_sch_dtl_h s
 
-    INNER JOIN dwh.F_OutboundHeaderHistory sb
+    INNER JOIN dwh.F_OutboundHeader sb
+    
     ON s.wms_oub_sch_loc_code = sb.oub_loc_code 
     and s.wms_oub_outbound_ord =sb.oub_outbound_ord
     and s.wms_oub_sch_ou = sb.oub_ou
-	and s.wms_oub_sch_amendno=sb.oub_amendno
     LEFT JOIN dwh.d_location L      
         ON s.wms_oub_sch_loc_code   = L.loc_code 
         AND s.wms_oub_sch_ou        = L.loc_ou
