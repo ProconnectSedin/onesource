@@ -48,7 +48,7 @@ BEGIN
 
     UPDATE dwh.F_ContractDetailHistory t
     SET
-        cont_hdr_hst_key			   = fh.cont_hdr_hst_key,
+        cont_hdr_hst_key			   = fh.cont_hdr_key,
         cont_tariff_id                 = s.wms_cont_tariff_id,
         cont_tariff_ser_id             = s.wms_cont_tariff_ser_id,
         cont_rate                      = s.wms_cont_rate,
@@ -72,16 +72,16 @@ BEGIN
         datasourcecd                   = p_datasourcecd,
         etlupdatedatetime              = NOW()
     FROM stg.stg_wms_contract_dtl_h s
-	INNER JOIN 	dwh.F_ContractHeaderHistory fh 
+	INNER JOIN 	dwh.F_ContractHeader fh 
 			ON  s.wms_cont_id 		= fh.cont_id 
 			AND s.wms_cont_ou 		= fh.cont_ou
-			AND s.wms_cont_amendno 	= fh.cont_amendno
+			--AND s.wms_cont_amendno 	= fh.cont_amendno
     WHERE t.cont_id                        = s.wms_cont_id
 	and	  t.cont_lineno                    = s.wms_cont_lineno
     and      t.cont_ou                        = s.wms_cont_ou
     and      t.cont_amendno                   = s.wms_cont_amendno;
 
-    GET DIAGNOSTICS updcnt = ROW_COUNT;	
+     GET DIAGNOSTICS updcnt = ROW_COUNT;	
 
 /*
 	Delete from dwh.F_ContractDetailHistory t
@@ -112,7 +112,7 @@ BEGIN
     )
 
     SELECT
-		fh.cont_hdr_hst_key,
+		fh.cont_hdr_key,
         s.wms_cont_id, 				s.wms_cont_lineno, 			s.wms_cont_ou, 					s.wms_cont_amendno, 			s.wms_cont_tariff_id, 
 		s.wms_cont_tariff_ser_id, 	s.wms_cont_rate, 			s.wms_cont_min_change, 			s.wms_cont_min_change_added, 	s.wms_cont_cost, 
 		s.wms_cont_margin_per, 		s.wms_cont_max_charge, 		s.wms_cont_rate_valid_from, 	s.wms_cont_rate_valid_to, 		s.wms_cont_basic_charge, 
@@ -120,17 +120,16 @@ BEGIN
 		s.wms_cont_draft_bill_grp, 	1, 							p_etljobname, 					p_envsourcecd, 					p_datasourcecd, 
 		NOW()
     FROM stg.stg_wms_contract_dtl_h s
-	INNER JOIN 	dwh.F_ContractHeaderHistory fh 
+	INNER JOIN 	dwh.F_ContractHeader fh 
 			ON  s.wms_cont_id 		= fh.cont_id 
 			AND s.wms_cont_ou 		= fh.cont_ou
-			AND s.wms_cont_amendno 	= fh.cont_amendno
+		--	AND s.wms_cont_amendno 	= fh.cont_amendno
     LEFT JOIN dwh.F_ContractDetailHistory t
     ON    t.cont_id                        = s.wms_cont_id
 	AND	  t.cont_lineno                    = s.wms_cont_lineno
     AND   t.cont_ou                        = s.wms_cont_ou
     AND   t.cont_amendno                   = s.wms_cont_amendno
     WHERE t.cont_id IS NULL;
-
     GET DIAGNOSTICS inscnt = ROW_COUNT;
 --	select 0 into updcnt;
 /*	
