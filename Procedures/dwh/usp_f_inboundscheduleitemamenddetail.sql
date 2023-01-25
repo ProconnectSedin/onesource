@@ -65,11 +65,11 @@ BEGIN
         datasourcecd            = p_datasourcecd,
         etlupdatedatetime       = NOW()
     FROM stg.stg_wms_inbound_sch_item_detail_h s
-	INNER JOIN dwh.f_inboundamendheader oh
+	INNER JOIN dwh.f_inboundheader oh
    ON   s.wms_inb_loc_code = oh.inb_loc_code 
 	and s.wms_inb_orderno =oh.inb_orderno 
 	and s.wms_inb_ou = oh.inb_ou 
-	and s.wms_inb_amendno =oh.inb_amendno
+	--and s.wms_inb_amendno =oh.inb_amendno
 
     LEFT JOIN dwh.d_location L      
         ON s.wms_inb_loc_code   = L.loc_code 
@@ -87,7 +87,7 @@ BEGIN
 
     GET DIAGNOSTICS updcnt = ROW_COUNT;
 
-    INSERT INTO dwh.F_InboundScheduleItemAmendDetail
+INSERT INTO dwh.F_InboundScheduleItemAmendDetail
     (
         inb_loc_key  ,  inb_itm_key,inb_loc_code, inb_orderno, inb_lineno, inb_ou, inb_amendno, inb_item_lineno, inb_item_code, inb_schedule_qty, inb_receipt_date, inb_item_inst, etlactiveind, etljobname, envsourcecd, datasourcecd, etlcreatedatetime
     )
@@ -96,11 +96,11 @@ BEGIN
         COALESCE(l.loc_key,-1),COALESCE(c.itm_hdr_key,-1),s.wms_inb_loc_code, s.wms_inb_orderno, s.wms_inb_lineno, s.wms_inb_ou, s.wms_inb_amendno, s.wms_inb_item_lineno, s.wms_inb_item_code, s.wms_inb_schedule_qty, s.wms_inb_receipt_date, s.wms_inb_item_inst, 1, p_etljobname, p_envsourcecd, p_datasourcecd, NOW()
     FROM stg.stg_wms_inbound_sch_item_detail_h s
 	
-	INNER JOIN dwh.f_inboundamendheader oh
+	INNER JOIN dwh.f_inboundheader oh
    ON   s.wms_inb_loc_code = oh.inb_loc_code 
 	and s.wms_inb_orderno =oh.inb_orderno 
 	and s.wms_inb_ou = oh.inb_ou 
-	and s.wms_inb_amendno =oh.inb_amendno
+	--and s.wms_inb_amendno =oh.inb_amendno
 
    LEFT JOIN dwh.d_location L      
         ON s.wms_inb_loc_code   = L.loc_code 

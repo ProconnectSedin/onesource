@@ -88,6 +88,10 @@ BEGIN
         datasourcecd              = p_datasourcecd,
         etlupdatedatetime         = NOW()
     FROM stg.stg_wms_asn_header_h s
+	INNER JOIN 	dwh.f_asnheader fh 
+	ON  s.wms_asn_ou 				= fh.asn_ou 
+	AND s.wms_asn_location 			= fh.asn_location 
+	AND s.wms_asn_no 				= fh.asn_no
 	LEFT JOIN dwh.d_location l 		
 		ON  s.wms_asn_location   = l.loc_code 
         AND s.wms_asn_ou         = l.loc_ou
@@ -140,7 +144,11 @@ BEGIN
 		s.wms_asn_modified_date, s.wms_asn_release_number, 	s.wms_asn_block_stage, 	s.wms_asn_cust_code, 	s.wms_dock_no, 
 		s.wms_asn_reason_code, 	 1, 						p_etljobname, 			p_envsourcecd, 			p_datasourcecd, 
 		NOW()
-    FROM stg.stg_wms_asn_header_h s
+  FROM stg.stg_wms_asn_header_h s
+	INNER JOIN 	dwh.f_asnheader fh 
+	ON  s.wms_asn_ou 				= fh.asn_ou 
+	AND s.wms_asn_location 			= fh.asn_location 
+	AND s.wms_asn_no 				= fh.asn_no
 	LEFT JOIN dwh.d_location l 		
 		ON  s.wms_asn_location   = l.loc_code 
         AND s.wms_asn_ou         = l.loc_ou
