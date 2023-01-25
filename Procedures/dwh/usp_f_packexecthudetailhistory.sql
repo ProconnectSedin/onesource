@@ -135,6 +135,7 @@ BEGIN
 		AND 	t.pack_thu_ser_no		 	 = s.wms_pack_thu_ser_no
 	WHERE 	t.pack_exec_ou IS NULL;
 
+
     GET DIAGNOSTICS inscnt = ROW_COUNT;
 /*
     UPDATE	dwh.F_PackExecTHUDetailHistory s
