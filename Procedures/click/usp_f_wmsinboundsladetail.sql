@@ -34,39 +34,40 @@ SELECT 	depsource
 				sla_lockey, 		sla_loccode, 		sla_preftype, 		sla_asntype,						
 				sla_prefdocno,		sla_supasnno,
 				sla_grexpclstime,	sla_pwayexpclstime,	sla_prexpclstime,	sla_ordtime,
-				sla_cutofftime,sla_openingtime,		sla_Putawayexecdate,sla_grexecdate,		sla_Equipmentflag,	activeindicator
+				sla_cutofftime,sla_openingtime,		sla_Putawayexecdate,sla_grexecdate,		sla_Equipmentflag,	activeindicator,
+				sla_orderaccountdate,sla_orderaccountdatekey,sla_grtat,sla_pwaytat,sla_processtat	
 			)
 		SELECT
 				fa.asn_ou,		fa.asn_cust_key,	fa.asn_cust_code,	d.datekey,	MAX(COALESCE(fa.asn_modified_date,fa.asn_created_date,'1900-01-01')),      
 				fa.asn_loc_key, fa.asn_location,	fa.asn_prefdoc_type,fa.asn_type,
 				fa.asn_prefdoc_no, fa.asn_sup_asn_no,
-			(CASE WHEN MAX(COALESCE(fa.asn_modified_date,fa.asn_created_date,'1900-01-01'))::TIME < MAX(cutofftime)
+			/*(CASE WHEN MAX(COALESCE(fa.asn_modified_date,fa.asn_created_date,'1900-01-01'))::TIME < MAX(cutofftime)
 			THEN 
 			MAX(COALESCE(fa.asn_modified_date,fa.asn_created_date))::timestamp + (MAX(grtat) || ' Minutes')::INTERVAL
 			ELSE 
 			((MAX(COALESCE(fa.asn_modified_date,fa.asn_date))+ INTERVAL '1 DAY')::DATE ||' '||(MAX(openingtime)))::TIMESTAMP + (MAX(grtat) || ' Minutes')::INTERVAL 
 			END )
-			GRExpectedClosureTime,
-			(CASE WHEN MAX(COALESCE(fa.asn_modified_date,fa.asn_created_date,'1900-01-01'))::TIME < MAX(cutofftime)
+			*/
+			MAX(asn_qualifieddate)::TIMESTAMP + (MAX(grtat) || ' Minutes')::INTERVAL  as GRExpectedClosureTime,
+			/*(CASE WHEN MAX(COALESCE(fa.asn_modified_date,fa.asn_created_date,'1900-01-01'))::TIME < MAX(cutofftime)
 			THEN 
 			MAX(COALESCE(fa.asn_modified_date,fa.asn_created_date))::timestamp + (MAX(putawaytat) || ' Minutes')::INTERVAL
 			ELSE 
 			((MAX(COALESCE(fa.asn_modified_date,fa.asn_created_date))+ INTERVAL '1 DAY')::DATE ||' '||(MAX(openingtime)))::TIMESTAMP + (MAX(putawaytat) || ' Minutes')::INTERVAL 
 			END )
-			PAExpectedClosureTime ,
-			(CASE WHEN MAX(COALESCE(fa.asn_modified_date,fa.asn_created_date))::TIME < MAX(cutofftime) AND MAX(processtat)::INT = 0 
-				THEN (MAX(COALESCE(fa.asn_modified_date,fa.asn_created_date))::DATE || (' 23:59:00.000'))::TIMESTAMP
-				WHEN  MAX(COALESCE(fa.asn_modified_date,fa.asn_created_date))::TIME >= MAX(cutofftime) AND MAX(processtat)::INT = 0 
-				THEN ((MAX(COALESCE(fa.asn_modified_date,fa.asn_created_date))+ INTERVAL '1 DAY')::DATE + MAX(cutofftime))::TIMESTAMP 
-			 	WHEN  MAX(processtat)::INT <> 0 AND MAX(COALESCE(fa.asn_modified_date,fa.asn_created_date))::TIME < MAX(cutofftime) 
-			 THEN MAX(COALESCE(fa.asn_modified_date,fa.asn_created_date))::TIMESTAMP + (MAX(processtat) || ' Minutes')::INTERVAL 
-				WHEN  MAX(processtat)::INT <> 0 AND MAX(COALESCE(fa.asn_modified_date,fa.asn_created_date))::TIME >= MAX(cutofftime) 
-			 THEN 
-			 ((MAX(COALESCE(fa.asn_modified_date,fa.asn_created_date))+ INTERVAL '1 DAY')::DATE ||' '||(MAX(openingtime)))::TIMESTAMP + (MAX(processtat) || ' Minutes')::INTERVAL 
+			*/
+			MAX(asn_qualifieddate)::TIMESTAMP + (MAX(putawaytat) || ' Minutes')::INTERVAL  as PAExpectedClosureTime ,
+			(CASE WHEN MAX(COALESCE(fa.asn_modified_date,fa.asn_created_date,'1900-01-01'))::TIME < MAX(cutofftime) AND MAX(processtat)::INT = 0 
+				THEN (MAX(asn_qualifieddate)::DATE || (' 23:59:00.000'))::TIMESTAMP
+				WHEN  MAX(COALESCE(fa.asn_modified_date,fa.asn_created_date,'1900-01-01'))::TIME >= MAX(cutofftime) AND MAX(processtat)::INT = 0 
+				THEN ((MAX(asn_qualifieddate))::DATE + MAX(cutofftime))::TIMESTAMP 
+			 	WHEN  MAX(processtat)::INT <> 0 
+				THEN MAX(asn_qualifieddate)::TIMESTAMP + (MAX(processtat) || ' Minutes')::INTERVAL
 				END)ExpClosureDateTime,
 				MAX(COALESCE(fa.asn_modified_date,fa.asn_created_date,'1900-01-01'))::TIME,
 				MAX(tat.cutofftime),MAX(tat.openingtime),	MAX(fp.pway_exec_end_date)::timestamp,	MAX(COALESCE(fg.gr_end_date,fg.gr_modified_date))::timestamp,
-			CASE WHEN MAX(pway_mhe_id) IS NOT NULL THEN 1 ELSE 0 END, MAX(fa.activeindicator*fg.activeindicator*fp.activeindicator)
+			CASE WHEN MAX(pway_mhe_id) IS NOT NULL THEN 1 ELSE 0 END, MAX(fa.activeindicator*fg.activeindicator*fp.activeindicator),
+			MAX(asn_qualifieddate),MAX(asn_qualifieddatekey),MAX(grtat),MAX(putawaytat),MAX(processtat)
 		FROM click.f_asn fa
 		INNER JOIN click.d_date d
 		ON dateactual = (COALESCE(fa.asn_modified_date,fa.asn_created_date))::DATE
@@ -86,7 +87,7 @@ SELECT 	depsource
 			fa.asn_ou,		fa.asn_cust_key,	fa.asn_cust_code,	d.datekey,      
 			fa.asn_loc_key, fa.asn_location,	fa.asn_prefdoc_type,fa.asn_type,
 			fa.asn_prefdoc_no, fa.asn_sup_asn_no;
-		
+		/*
 		UPDATE click.f_inboundsladetail
 		SET sla_orderaccountdate = 	(CASE WHEN sla_ordtime <= sla_cutofftime THEN sla_dateactual
 										  WHEN sla_ordtime > sla_cutofftime  AND sla_Putawayexecdate::DATE = sla_dateactual
@@ -97,9 +98,9 @@ SELECT 	depsource
 		
 		UPDATE click.f_inboundsladetail
 		SET sla_orderaccountdatekey = d.datekey
-		FROM click.d_date d
+		FROM click.d_date d	
 		WHERE dateactual = sla_orderaccountdate::DATE;
-		
+		*/
 			
 		UPDATE click.f_inboundsladetail wis
 		SET asn_timediff_inmin	= 	asntime,

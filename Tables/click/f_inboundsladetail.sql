@@ -51,3 +51,10 @@ CREATE INDEX IF NOT EXISTS f_inboundsladetail_ndx
     ON click.f_inboundsladetail USING btree
     (sla_ouid ASC NULLS LAST, sla_customerkey ASC NULLS LAST, sla_datekey ASC NULLS LAST, sla_lockey ASC NULLS LAST, sla_prefdocno COLLATE public.nocase ASC NULLS LAST)
     TABLESPACE pg_default;
+	
+alter table IF EXISTS click.f_inboundsladetail
+ADD column  IF NOT EXISTS sla_grtat character varying(10);
+alter table IF EXISTS click.f_inboundsladetail
+ADD column  IF NOT EXISTS sla_pwaytat character varying(10);
+alter table IF EXISTS click.f_inboundsladetail
+ADD column  IF NOT EXISTS sla_processtat character varying(10);	
