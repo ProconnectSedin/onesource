@@ -42,3 +42,22 @@ CREATE INDEX IF NOT EXISTS f_wmsinboundsummary_key_idx1
     ON click.f_wmsinboundsummary USING btree
     (customer_key ASC NULLS LAST, datekey ASC NULLS LAST, loc_key ASC NULLS LAST, ou_id ASC NULLS LAST, asn_type COLLATE public.nocase ASC NULLS LAST, inb_type COLLATE public.nocase ASC NULLS LAST)
     TABLESPACE pg_default;
+	
+ALTER TABLE IF EXISTS click.f_wmsinboundsummary
+ADD column  IF NOT EXISTS asnphysicalwgt	numeric(20,2),		
+ADD column  IF NOT EXISTS asnvolumetricwgt numeric(20,2),	
+ADD column  IF NOT EXISTS grnlinecount	integer,		
+ADD column  IF NOT EXISTS grnCUMvolume	numeric(20,2),	
+ADD column  IF NOT EXISTS grnunit		numeric(20,2),
+ADD column  IF NOT EXISTS grnphysicalwgt numeric(20,2),		
+ADD column  IF NOT EXISTS grnvolumetricwgt numeric(20,2),	
+ADD column  IF NOT EXISTS pwaylinecount	integer,		
+ADD column  IF NOT EXISTS pwayCUMvolume	numeric(20,2),	
+ADD column  IF NOT EXISTS pwayunit	numeric(20,2),
+ADD column  IF NOT EXISTS pwayphysicalwgt numeric(20,2),	
+ADD column  IF NOT EXISTS pwayvolumetricwgt numeric(20,2),	
+ADD column  IF NOT EXISTS asnqualifieddatekey bigint,
+ADD column  IF NOT EXISTS grempcount bigint,	
+ADD column  IF NOT EXISTS pwayempcount bigint,
+ADD column  IF NOT EXISTS Totalshftworkhrs TIME,
+ADD column  IF NOT EXISTS asn_status character varying(10);
