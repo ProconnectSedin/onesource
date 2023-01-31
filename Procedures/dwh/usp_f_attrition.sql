@@ -38,100 +38,102 @@ BEGIN
 		AND d.targetobject 	= p_targetobject;
 
 		SELECT COUNT(1) INTO srccnt FROM stg.stg_factattrition;
-
+/*
 		UPDATE dwh.f_attrition t
 		SET 
-			loc_key = COALESCE(l.loc_key,-1), 
-			emp_key = COALESCE(e.emp_hdr_key,-1),
-			supp_key =  COALESCE(v.vendor_key,-1),
-			wh_key  =  COALESCE(w.wh_key,-1),
-			ou = s.ou,
-			attendance_month = s.attendance_month,
-			vendor_code = s.vendor_code,
-			location_code = s.location_code,
-			employee_type2 = s.employee_type2,
-			vendor_name = s.vendor_name,
-			warehouse_code = s.warehouse_code,
-			warehouse_name = s.warehouse_name,
-			employee_code = s.employee_code,
-			job_code = s.job_code,
-			job_title = s.job_title,
-			emp_count = s.emp_count,
-			addition = s.addition,
-			seperation = s.seperation,
-			inserted_ts = s.inserted_ts,
-			createddatetime = s.createddatetime,
-			etlactiveind = 1, 
-			etljobname = p_etljobname, 
-			envsourcecd = p_envsourcecd, 
-			datasourcecd = p_datasourcecd, 
-			etlupdatedatetime = NOW()
-
+			loc_key 			= COALESCE(l.loc_key,-1), 
+			emp_key 			= COALESCE(e.emp_hdr_key,-1),
+			supp_key 			= COALESCE(v.vendor_key,-1),
+			wh_key	 			= COALESCE(w.wh_key,-1),
+			ou 					= s.ou,
+			attendance_month 	= s.attendance_month,
+			vendor_code 		= s.vendor_code,
+			location_code 		= s.location_code,
+			employee_type2 		= s.employee_type2,
+			vendor_name 		= s.vendor_name,
+			warehouse_code 		= s.warehouse_code,
+			warehouse_name 		= s.warehouse_name,
+			employee_code 		= s.employee_code,
+			job_code 			= s.job_code,
+			job_title 			= s.job_title,
+			emp_count 			= s.emp_count,
+			addition 			= s.addition,
+			seperation 			= s.seperation,
+			inserted_ts 		= s.inserted_ts,
+			createddatetime 	= s.createddatetime,
+			etlactiveind 		= 1, 
+			etljobname 			= p_etljobname, 
+			envsourcecd 		= p_envsourcecd, 
+			datasourcecd 		= p_datasourcecd, 
+			etlupdatedatetime 	= NOW()
+			
 		FROM stg.stg_factattrition s
 		LEFT JOIN dwh.d_location L 		
 			ON s.location_code 			= L.loc_code 
 			AND s.ou        		= L.loc_ou
 		LEFT JOIN dwh.d_employeeheader e		
 			ON  s.employee_code  		= e.emp_employee_code 
-        AND s.ou        	= e.emp_ou	
+        	AND s.ou        	= e.emp_ou	
         LEFT JOIN dwh.d_warehouse w 		
-		ON  s.warehouse_code 				= w.wh_code 
-		AND s.ou				= w.wh_ou 
+			ON  s.warehouse_code 				= w.wh_code 
+			AND s.ou				= w.wh_ou 
 		LEFT JOIN dwh.d_vendor V 		
-		ON s.vendor_code  = V.vendor_id 
-        AND s.ou        = V.vendor_ou
-	
-		
-		WHERE 	
-			t.ou =s.ou
-		AND t.attendance_month =s.attendance_month
-		AND t.vendor_code =s.vendor_code
-		AND t.location_code =s.location_code
-		AND t.warehouse_code =s.warehouse_code
-		AND t.employee_code =s.employee_code;
+			ON s.vendor_code  = V.vendor_id 
+        	AND s.ou        = V.vendor_ou
+		WHERE 	t.ou 			= s.ou
+		AND t.attendance_month 	= s.attendance_month
+		AND t.vendor_code 		= s.vendor_code
+		AND t.location_code 	= s.location_code
+		AND t.warehouse_code 	= s.warehouse_code
+		AND t.employee_code 	= s.employee_code
+		AND t.addition 			= s.addition
+		AND t.seperation 		= s.seperation;
 			
 		
 		GET DIAGNOSTICS updcnt = ROW_COUNT;
+*/
 
+		Truncate table dwh.f_attrition 
+		restart identity;
+	
 		INSERT INTO dwh.f_attrition
 		(
-			loc_key, 	emp_key, 	supp_key, 	wh_key, 	ou, 	attendance_month, 	vendor_code, 	location_code, 	employee_type2, 	
-			vendor_name, 	warehouse_code, 	warehouse_name, 	employee_code, 	job_code, 	job_title, 	emp_count, 
-				addition, 	seperation, 	inserted_ts, 	createddatetime	,
-			etlactiveind,		etljobname,			envsourcecd,	datasourcecd,	etlupdatedatetime	)
+			loc_key			, emp_key			, supp_key			, wh_key			, ou		,
+			attendance_month, vendor_code		, location_code		, employee_type2	, 	
+			vendor_name		, warehouse_code	, warehouse_name	, employee_code		, job_code	, 	job_title, 	emp_count, 
+			addition		, seperation		, inserted_ts		, createddatetime	,
+			etlactiveind	, etljobname		, envsourcecd		, datasourcecd		, etlcreatedatetime	)
 		
 		SELECT distinct
-			COALESCE(l.loc_key,-1),COALESCE(e.emp_hdr_key,-1),COALESCE(v.vendor_key,-1),COALESCE(w.wh_key,-1),
-			s.ou,	s.attendance_month,	s.vendor_code,	s.location_code,	s.employee_type2,
-		s.vendor_name,	s.warehouse_code,	s.warehouse_name,	s.employee_code,
-		s.job_code,	s.job_title,	s.emp_count,	s.addition,	s.seperation,	
-		s.inserted_ts::date,	s.createddatetime,
-			1,	p_etljobname,	p_envsourcecd,	p_datasourcecd,	NOW()
+			COALESCE(l.loc_key,-1)	, COALESCE(e.emp_hdr_key,-1),COALESCE(v.vendor_key,-1),COALESCE(w.wh_key,-1), s.ou					,
+			s.attendance_month		, s.vendor_code		, s.location_code,	s.employee_type2,
+			s.vendor_name			, s.warehouse_code	, s.warehouse_name,	s.employee_code,s.job_code	,	s.job_title,	s.emp_count,
+			s.addition				, s.seperation		, s.inserted_ts::date		,	s.createddatetime,
+					1				, p_etljobname		, p_envsourcecd,	p_datasourcecd,	NOW()
 		FROM stg.stg_factattrition s
-
-	LEFT JOIN dwh.d_location L 		
-			ON s.location_code 			= L.loc_code 
-			AND s.ou        		= L.loc_ou
+		LEFT JOIN dwh.d_location L 		
+		ON s.location_code 		= L.loc_code 
+		AND s.ou        		= L.loc_ou
 		LEFT JOIN dwh.d_employeeheader e		
-			ON  s.employee_code  		= e.emp_employee_code 
-        	AND s.ou        	= e.emp_ou	
+		ON  s.employee_code  	= e.emp_employee_code 
+        AND s.ou        		= e.emp_ou	
         LEFT JOIN dwh.d_warehouse w 		
-		ON  s.warehouse_code 				= w.wh_code 
+		ON  s.warehouse_code 	= w.wh_code 
 		AND s.ou				= w.wh_ou 
 		LEFT JOIN dwh.d_vendor V 		
 		ON s.vendor_code  = V.vendor_id 
         AND s.ou        = V.vendor_ou
-		
 		LEFT JOIN dwh.f_attrition fd  	
-			ON s.ou =fd.ou
-		AND s.attendance_month =fd.attendance_month
-		AND s.vendor_code =fd.vendor_code
-		AND s.location_code =fd.location_code
-		AND s.warehouse_code =fd.warehouse_code
-		AND s.employee_code =fd.employee_code
+		ON s.ou =fd.ou
+		AND s.attendance_month 	= fd.attendance_month
+		AND s.vendor_code 		= fd.vendor_code
+		AND s.location_code 	= fd.location_code
+		AND s.warehouse_code 	= fd.warehouse_code
+		AND s.employee_code 	= fd.employee_code
+		AND s.addition			= fd.addition
+		AND s.seperation		= fd.seperation
 		WHERE fd.employee_code IS NULL;
-		
-		
+
 		GET DIAGNOSTICS inscnt = ROW_COUNT;
 	
     IF p_rawstorageflag = 1
