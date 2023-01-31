@@ -36,7 +36,7 @@ SELECT 	depsource
 				sla_prefdocno,		sla_supasnno,
 				sla_grexpclstime,	sla_pwayexpclstime,	sla_prexpclstime,	sla_ordtime,
 				sla_cutofftime,sla_openingtime,		sla_Putawayexecdate,sla_grexecdate,		sla_Equipmentflag,	activeindicator,
-				sla_orderaccountdate,sla_orderqualifieddatekey,sla_grtat,sla_pwaytat,sla_processtat	
+				sla_orderqualifieddate,sla_orderqualifieddatekey,sla_grtat,sla_pwaytat,sla_processtat	
 			)
 		SELECT
 				fa.asn_ou,		fa.asn_cust_key,	fa.asn_cust_code,	d.datekey,	MAX(COALESCE(fa.asn_modified_date,fa.asn_created_date,'1900-01-01')),      
