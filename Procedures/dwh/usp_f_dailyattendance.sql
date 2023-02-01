@@ -38,7 +38,7 @@ BEGIN
 		AND d.targetobject 	= p_targetobject;
 
 		SELECT COUNT(1) INTO srccnt FROM stg.stg_dailyattendance;
-
+/*
 		UPDATE dwh.f_dailyattendance t
 		SET 
 			loc_key = COALESCE(l.loc_key,-1), 
@@ -110,39 +110,56 @@ BEGIN
 			AND		t.employee_code 	= s.employee_code;
 		
 		GET DIAGNOSTICS updcnt = ROW_COUNT;
+*/
 
+		TRUNCATE TABLE dwh.f_dailyattendance
+		RESTART IDENTITY;
+		
 		INSERT INTO dwh.f_dailyattendance
 		(
-			loc_key,			date_key,			emp_key,		ou,				attendance_date,		location_code,			location_name,		employee_code,
-			employee_name,		dpeartment_name,	job_title,		category_name,	shift_start_time,		shift_end_time,			punch_in_time,		punch_out_time,	
-			break_out_time,		break_in_time,		came_late_by,	left_early_by,	break_out_early_by,		break_in_late_by,		attendance_status,	work_hours,	
-			work_location_name,	last_updated_ts,	shift_name,		normal_ot,		night_ot,				weekoff_ot,				holiday_ot,			approved_ot,
-			custom_menu,		account_no,			inserted_ts,	dept_code,		job_code,				job_eeo_class,			job_grade_set_code,	job_grade_code,
-			budgeted_count,		budgeted_ctc,		rqd_count_day,	shift_1,		shift_2,				shift_3,				general,			createdatetime,	
-			etlactiveind,		etljobname,			envsourcecd,	datasourcecd,	etlupdatedatetime	)
+			loc_key,			date_key,			emp_key,		ou,				
+			attendance_date,		location_code,			location_name,		employee_code,
+			employee_name,		dpeartment_name,	job_title,		category_name,	
+			shift_start_time,		shift_end_time,			punch_in_time,		punch_out_time,	
+			break_out_time,		break_in_time,		came_late_by,	left_early_by,
+			break_out_early_by,		break_in_late_by,		attendance_status,	work_hours,	
+			work_location_name,	last_updated_ts,	shift_name,		normal_ot,
+			night_ot,				weekoff_ot,				holiday_ot,			approved_ot,
+			custom_menu,		account_no,			inserted_ts,	dept_code,
+			job_code,				job_eeo_class,			job_grade_set_code,	job_grade_code,
+			budgeted_count,		budgeted_ctc,		rqd_count_day,	shift_1,
+			shift_2,				shift_3,				general,			createdatetime,	
+			etlactiveind,		etljobname,			envsourcecd,	datasourcecd,
+			etlcreatedatetime	)
 		
 		SELECT 
-			COALESCE(l.loc_key,	-1),	COALESCE(d.datekey,	-1),	COALESCE(e.emp_hdr_key,	-1),	s.ou,					s.attendance_date,	s.location_code,	s.location_name,
-			s.employee_code,			s.employee_name,			s.dpeartment_name,				s.job_title,			s.category_name,	s.shift_start_time,	s.shift_end_time,
-			s.punch_in_time,			s.punch_out_time,			s.break_out_time,				s.break_in_time,		s.came_late_by,		s.left_early_by,	s.break_out_early_by,
-			s.break_in_late_by,			s.attendance_status,		s.work_hours,					s.work_location_name,	s.last_updated_ts,	s.shift_name,		s.normal_ot,				s.night_ot,	s.weekoff_ot,	s.holiday_ot,	s.approved_ot,	s.custom_menu,	s.account_no,	s.inserted_ts,	s.dept_code,	
-			s.job_code,	s.job_eeo_class,	s.job_grade_set_code,	s.job_grade_code,	s.budgeted_count,	s.budgeted_ctc,	s.rqd_count_day,
-			s.shift_1,	s.shift_2,	s.shift_3,	s.general,	s.createdatetime,	1,	p_etljobname,	p_envsourcecd,	p_datasourcecd,	NOW()
+			COALESCE(l.loc_key,-1)	, COALESCE(d.datekey,-1), COALESCE(e.emp_hdr_key,-1), s.ou,	
+			s.attendance_date		, s.location_code		, s.location_name			, s.employee_code,	
+			s.employee_name			, s.dpeartment_name		, s.job_title				, s.category_name,
+			s.shift_start_time		, s.shift_end_time		, s.punch_in_time			, s.punch_out_time,	
+			s.break_out_time		, s.break_in_time		, s.came_late_by			, s.left_early_by,
+			s.break_out_early_by	, s.break_in_late_by	, s.attendance_status		, s.work_hours,	
+			s.work_location_name	, s.last_updated_ts		, s.shift_name				, s.normal_ot,	
+			s.night_ot				, s.weekoff_ot			, s.holiday_ot				, s.approved_ot,
+			s.custom_menu			, s.account_no			, s.inserted_ts				, s.dept_code,	
+			s.job_code				, s.job_eeo_class		, s.job_grade_set_code		, s.job_grade_code,
+			s.budgeted_count		, s.budgeted_ctc		, s.rqd_count_day			, s.shift_1,
+			s.shift_2				, s.shift_3				, s.general					, s.createdatetime,
+					1				, p_etljobname			, p_envsourcecd				, p_datasourcecd,
+			NOW()
 		FROM stg.stg_dailyattendance s
-
-	LEFT JOIN dwh.d_location L 		
+		LEFT JOIN dwh.d_location L 		
 			ON s.location_code 		= L.loc_code 
 			AND s.ou        		= L.loc_ou
 		LEFT JOIN dwh.d_date D 			
-			ON  s.attendance_date::date 	= D.dateactual
+			ON  s.attendance_date::date = D.dateactual
 		LEFT JOIN dwh.d_employeeheader e		
 			ON  s.employee_code  	= e.emp_employee_code 
        		 AND s.ou        		= e.emp_ou	
-		
 		LEFT JOIN dwh.f_dailyattendance fd  	
-			ON  s.ou = fd.ou
-			AND s.attendance_date 				= fd.attendance_date 
-			AND s.employee_code 				= fd.employee_code
+			ON  s.ou 				= fd.ou
+			AND s.attendance_date 	= fd.attendance_date 
+			AND s.employee_code 	= fd.employee_code
 		WHERE fd.employee_code IS NULL;
 		
 		GET DIAGNOSTICS inscnt = ROW_COUNT;
