@@ -104,7 +104,7 @@ BEGIN
 			addition		, seperation		, inserted_ts		, createddatetime	,
 			etlactiveind	, etljobname		, envsourcecd		, datasourcecd		, etlcreatedatetime	)
 		
-		SELECT distinct
+		SELECT
 			COALESCE(l.loc_key,-1)	, COALESCE(e.emp_hdr_key,-1),COALESCE(v.vendor_key,-1),COALESCE(w.wh_key,-1), s.ou					,
 			s.attendance_month		, s.vendor_code		, s.location_code,	s.employee_type2,
 			s.vendor_name			, s.warehouse_code	, s.warehouse_name,	s.employee_code,s.job_code	,	s.job_title,	s.emp_count,
@@ -122,17 +122,17 @@ BEGIN
 		AND s.ou				= w.wh_ou 
 		LEFT JOIN dwh.d_vendor V 		
 		ON s.vendor_code  = V.vendor_id 
-        AND s.ou        = V.vendor_ou
-		LEFT JOIN dwh.f_attrition fd  	
-		ON s.ou =fd.ou
-		AND s.attendance_month 	= fd.attendance_month
-		AND s.vendor_code 		= fd.vendor_code
-		AND s.location_code 	= fd.location_code
-		AND s.warehouse_code 	= fd.warehouse_code
-		AND s.employee_code 	= fd.employee_code
-		AND s.addition			= fd.addition
-		AND s.seperation		= fd.seperation
-		WHERE fd.employee_code IS NULL;
+        AND s.ou        = V.vendor_ou;
+-- 		LEFT JOIN dwh.f_attrition fd  	
+-- 		ON s.ou =fd.ou
+-- 		AND s.attendance_month 	= fd.attendance_month
+-- 		AND s.vendor_code 		= fd.vendor_code
+-- 		AND s.location_code 	= fd.location_code
+-- 		AND s.warehouse_code 	= fd.warehouse_code
+-- 		AND s.employee_code 	= fd.employee_code
+-- 		AND s.addition			= fd.addition
+-- 		AND s.seperation		= fd.seperation
+-- 		WHERE fd.employee_code IS NULL;
 
 		GET DIAGNOSTICS inscnt = ROW_COUNT;
 	
