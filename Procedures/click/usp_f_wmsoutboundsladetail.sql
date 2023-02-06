@@ -12,7 +12,7 @@ AS $BODY$
 BEGIN
 
 DELETE FROM click.f_outboundsladetail 
-WHERE extract(year from sla_orderdate::Date) = 2022;
+WHERE sla_orderdate >= (NOW() - INTERVAL '3 MONTHS')::DATE;
 --sla_orderdate >= (NOW() - INTERVAL '3 MONTHS')::DATE;
 --extract(year from sla_orderdate::Date) = 2022;
 INSERT INTO click.f_outboundsladetail
@@ -27,11 +27,24 @@ INSERT INTO click.f_outboundsladetail
 	sla_orderdate,
 	sla_ordtime,
 	sla_cutofftime,
+	sla_picktat,
+	sla_packtat,
+	sla_processtat,
 	sla_pickexecdt,
 	sla_packexecdt,
 	sla_pickexpdt,
 	sla_packexpdt,
-	sla_processexpdt
+	sla_processexpdt,
+	activeindicator,
+	pick_timediff_inmin,
+	pack_timediff_inmin,
+	sla_orderqualifieddate,
+	sla_orderqualifieddatekey,
+	sla_consignorcity,
+	sla_consignee,
+	sla_consignor,
+	sla_customercode,
+	sla_customerkey
 )
 SELECT 
 			obh.oub_ou,
@@ -44,6 +57,9 @@ SELECT
 			MAX(COALESCE(obh.oub_modified_date,obh.oub_created_date) :: DATE),
 			MAX(COALESCE(obh.oub_modified_date,obh.oub_created_date)::TIME),
 			MAX(cutofftime),
+			MAX(picktat),
+			MAX(packtat),
+			MAX(processtat),
 			MAX(pick_exec_end_date),
 			MAX(pack_exec_end_date),
 			(CASE WHEN MAX(COALESCE(obh.oub_modified_date,obh.oub_created_date))::TIME < MAX(cutofftime)
@@ -68,21 +84,35 @@ SELECT
 				WHEN  MAX(processtat)::INT <> 0 AND MAX(COALESCE(obh.oub_modified_date,obh.oub_created_date))::TIME >= MAX(cutofftime) 
 			 THEN 
 			 ((MAX(COALESCE(obh.oub_modified_date,obh.oub_created_date))+ INTERVAL '1 DAY')::DATE ||' '||(MAX(openingtime)))::TIMESTAMP + (MAX(processtat) || ' Minutes')::INTERVAL 
-				END) ExpClosureDateTime
-		FROM dwh.F_OutboundHeader obh
-		INNER JOIN dwh.f_pickingdetail PickD
+				END) ExpClosureDateTime,
+			max(obh.etlactiveind*PickD.etlactiveind*PickH.etlactiveind*PackD.etlactiveind*PackH.etlactiveind),
+			ABS(CASE WHEN MAX(pick_exec_end_date) IS NOT NULL
+					THEN (EXTRACT(epoch from( MAX(pick_exec_end_date)::timestamp - MIN(COALESCE(obh.oub_modified_date,obh.oub_created_date))::timestamp))/60) 
+					ELSE 0 END) AS pick_timediff,
+					ABS(CASE WHEN MAX(pack_exec_end_date) IS NOT NULL 
+					THEN (EXTRACT(epoch from( MAX(pack_exec_end_date)::timestamp - MAX(pick_exec_end_date)::timestamp))/60) 
+					ELSE 0 END) AS pack_timediff,
+					oub_orderqualifieddate,
+					oub_orderqualifieddatekey,
+					oub_city,
+					oub_bill_det_post_code,
+					oub_shp_name,
+					obh.oub_cust_code,
+					obh.obh_cust_key
+		FROM click.F_OutboundHeader obh
+		INNER JOIN click.f_pickingdetail PickD
 		ON  obh.oub_ou =  PickD.pick_exec_ou
 		AND obh.obh_loc_key = PickD.pick_loc_key
 		AND obh.oub_prim_rf_dc_no = PickD.pick_so_no
-		INNER JOIN dwh.f_pickingheader PickH
+		INNER JOIN click.f_pickingheader PickH
 		ON PickH.pick_hdr_key = PickD.pick_hdr_key
-		INNER JOIN dwh.F_PackExecTHUDetail PackD
+		INNER JOIN click.F_PackExecTHUDetail PackD
 		ON  PackD.pack_exec_ou = PickD.pick_exec_ou
 		AND PackD.pack_exec_loc_key  = PickD.pick_loc_key
 		AND PackD.pack_so_no = pickD.pick_so_no
-		INNER JOIN dwh.F_PackExecHeader PackH
+		INNER JOIN click.F_PackExecHeader PackH
 		ON PackH.pack_exe_hdr_key = PackD.pack_exec_hdr_key
-		LEFT JOIN dwh.D_WMSOutboundTAT TAT
+		LEFT JOIN dwh.D_OutboundTAT TAT
 		ON TAT.ou = obh.oub_ou
 		AND TAT.locationcode = obh.oub_loc_code
 		AND TAT.ordertype = obh.oub_order_type 
@@ -102,7 +132,14 @@ SELECT
 			obh.oub_loc_code,
 			obh.oub_order_type,
 			obh.oub_shipment_type,
-			obh.oub_prim_rf_dc_no;
+			obh.oub_prim_rf_dc_no,
+			oub_orderqualifieddate,
+			oub_orderqualifieddatekey,
+			oub_city,
+			oub_bill_det_post_code,
+			oub_shp_name,
+			obh.oub_cust_code,
+			obh.obh_cust_key	;		
 			
 UPDATE click.f_outboundsladetail SLA
 SET 	sla_pickontimeflag = 	CASE WHEN sla_pickexecdt <= sla_pickexpdt THEN 1 
@@ -118,8 +155,7 @@ SET 	sla_pickontimeflag = 	CASE WHEN sla_pickexecdt <= sla_pickexpdt THEN 1
 WHERE SLA.sla_orderdate >= (NOW() - INTERVAL '3 MONTHS')::DATE;
 
 UPDATE click.f_outboundsladetail SLA
-SET SLA_Category 	= (CASE WHEN SLA_ProcONTimeFlag in (0,1) AND Remarks IS NOT NULL 
-					   THEN 'Remarks' END
+SET SLA_Category 	= (CASE WHEN SLA_ProcONTimeFlag in (0,1) THEN 'Remarks' END
 					   )
 FROM dwh.F_DeliveryDelayReason DEL
 --WHERE extract(year from sla_orderdate::Date)  = 2022
@@ -130,7 +166,8 @@ AND DEL.invoiceno = SLA.sla_sono;
 
 UPDATE click.f_outboundsladetail SLA
 SET SLA_Category 	= (	CASE WHEN (sla_procontimeflag = 1) AND sla_ordtime >= sla_cutofftime THEN 'Premium'
-							ELSE 'Achived'
+							WHEN (sla_procontimeflag = 1) AND sla_ordtime < sla_cutofftime THEN 'Achieved'
+					   ELSE NULL
 						END)
 WHERE SLA.sla_orderdate >= (NOW() - INTERVAL '3 MONTHS')::DATE
 AND SLA_Category IS NULL;
@@ -143,12 +180,13 @@ WHERE SLA.sla_orderdate >= (NOW() - INTERVAL '3 MONTHS')::DATE
 AND SLA_Category IS NULL;
 
 UPDATE click.f_outboundsladetail 
-SET SLA_Category 	= 'Achived'	
+SET SLA_Category 	= 'Achieved'	
 --WHERE extract(year from sla_orderdate::Date)  = 2022
 WHERE sla_orderdate >= (NOW() - INTERVAL '3 MONTHS')::DATE
 AND sla_procontimeflag IS NULL
 AND sla_processexpdt IS NULL
-AND sla_packexecdt IS NOT NULL;
+AND sla_packexecdt IS NOT NULL
+AND SLA_Category IS NULL;
 
 		EXCEPTION WHEN others THEN       
 
