@@ -66,7 +66,6 @@ BEGIN
 			envsourcecd 		= p_envsourcecd, 
 			datasourcecd 		= p_datasourcecd, 
 			etlupdatedatetime 	= NOW()
-			
 		FROM stg.stg_factattrition s
 		LEFT JOIN dwh.d_location L 		
 			ON s.location_code 			= L.loc_code 
@@ -92,6 +91,8 @@ BEGIN
 		
 		GET DIAGNOSTICS updcnt = ROW_COUNT;
 */
+
+		GET DIAGNOSTICS updcnt = ROW_COUNT;
 
 		Truncate table dwh.f_attrition 
 		restart identity;
