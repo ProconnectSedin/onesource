@@ -111,6 +111,7 @@ BEGIN
 		
 		GET DIAGNOSTICS updcnt = ROW_COUNT;
 */
+GET DIAGNOSTICS updcnt = ROW_COUNT;
 
 		TRUNCATE TABLE dwh.f_dailyattendance
 		RESTART IDENTITY;
