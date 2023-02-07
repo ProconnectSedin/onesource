@@ -286,8 +286,11 @@ UPDATE CLICK.F_ASN A
 	AND COALESCE(A.updatedatetime, A.createdatetime)>=v_maxdate;
 	
 	UPDATE CLICK.F_ASN A
-	SET asn_qualifieddate =	 CASE WHEN A1.asn_qualifieddate::date = holidaydate THEN nextworkingdate + (A1.asn_openingtime || ' Minutes')::INTERVAL 
-	ELSE A1.asn_qualifieddate END		
+	SET asn_qualifieddate = CASE WHEN A1.asn_qualifieddate::DATE = holidaydate AND A1.asn_openingtime IS NOT NULL
+							THEN nextworkingdate + (A1.asn_openingtime || ' MINUTES')::INTERVAL
+							WHEN A1.asn_qualifieddate::DATE = holidaydate AND A1.asn_openingtime IS NULL
+							THEN nextworkingdate + ('09:30:00' || ' MINUTES')::INTERVAL
+							ELSE A1.asn_qualifieddate END
 	FROM CLICK.F_ASN A1 
 	LEFT JOIN click.f_locationholiday
 	ON A1.ASN_LOCATION = locationcode
