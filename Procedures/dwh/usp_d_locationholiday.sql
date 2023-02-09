@@ -48,14 +48,20 @@ BEGIN
 
     INSERT INTO dwh.d_locationholiday
     (
-       locationcode,         holidaydate,       etlactiveind		, etljobname		
+      locationcode,         holidaydate,       etlactiveind		, etljobname		
        , envsourcecd		, datasourcecd		, etlcreatedatetime
     )
 
     SELECT
-     locationcode, holidaydate,
+     s.locationcode, s.holidaydate,
 				1			, p_etljobname					, p_envsourcecd			, p_datasourcecd		, NOW()
-    FROM stg.stg_pcsit_loc_holiday_mst;
+    FROM stg.stg_pcsit_loc_holiday_mst s;
+
+	update dwh.d_locationholiday
+	set holidaydatekey = datekey
+	from dwh.d_date
+	where dateactual = holidaydate;
+
 
     GET DIAGNOSTICS inscnt = ROW_COUNT;
 	IF p_rawstorageflag = 1
