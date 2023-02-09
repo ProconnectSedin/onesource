@@ -236,7 +236,8 @@ WHERE  d.ouinstance			=	a.tlad_ouinstance
 		AND   trip_plan_createddate::DATE >= (CURRENT_DATE - INTERVAL '90 DAYS')::DATE;
 
 UPDATE click.f_shipment_details d
-SET podflag = CASE WHEN tpad_attachment_file_name IS NOT NULL THEN 1 ELSE 0 END
+SET podflag = CASE WHEN tpad_attachment_file_name IS NOT NULL THEN 1 ELSE 0 END,
+podfilename = COALESCE (a.tpad_hdn_file_name,a.tpad_attachment_file_name)
 FROM dwh.f_trippodattachmentdetail a
 WHERE	d.ouinstance 			= a.tpad_ouinstance
 AND 	d.trip_plan_id 			= a.tpad_Trip_id
