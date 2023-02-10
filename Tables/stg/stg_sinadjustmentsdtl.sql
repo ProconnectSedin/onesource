@@ -1,0 +1,25 @@
+CREATE TABLE IF NOT EXISTS stg.stg_sinadjustmentsdtl
+(
+    tran_type character varying(20) COLLATE public.nocase,
+    tran_ou integer,
+    tran_no character varying(36) COLLATE public.nocase,
+    ref_doc_type character varying(20) COLLATE public.nocase,
+    ref_doc_no character varying(36) COLLATE public.nocase,
+    "timestamp" integer,
+    ref_doc_date timestamp without time zone,
+    ref_doc_fb_id character varying(40) COLLATE public.nocase,
+    ref_doc_amount numeric(20,2),
+    ref_doc_current_os numeric(20,2),
+    ref_doc_supp_ou numeric(20,2),
+    guid character varying(256) COLLATE public.nocase,
+    createdby character varying(120) COLLATE pg_catalog."default",
+    createddate timestamp without time zone,
+    modifiedby character varying(120) COLLATE pg_catalog."default",
+    modifieddate timestamp without time zone,
+    mode_flag character varying(4) COLLATE pg_catalog."default",
+    ref_doc_adjamt numeric(20,2),
+    supp_doc_no character varying(36) COLLATE public.nocase,
+    project_code character varying(36) COLLATE pg_catalog."default",
+    remarks character varying(510) COLLATE public.nocase,
+    etlcreatedatetime timestamp(3) without time zone
+)

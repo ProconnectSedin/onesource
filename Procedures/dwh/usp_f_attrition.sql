@@ -92,7 +92,7 @@ BEGIN
 		GET DIAGNOSTICS updcnt = ROW_COUNT;
 */
 
-		GET DIAGNOSTICS updcnt = ROW_COUNT;
+		SELECT 0 INTO updcnt;
 
 		Truncate table dwh.f_attrition 
 		restart identity;

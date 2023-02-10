@@ -1,32 +1,31 @@
-CREATE TABLE raw.raw_not_notes_dtl (
-    raw_id bigint NOT NULL,
-    tran_no character varying(512) NOT NULL COLLATE public.nocase,
-    tran_type character varying(512) NOT NULL COLLATE public.nocase,
-    tran_ou integer NOT NULL,
+-- Table: raw.raw_not_notes_dtl
+
+-- DROP TABLE IF EXISTS "raw".raw_not_notes_dtl;
+
+CREATE TABLE IF NOT EXISTS "raw".raw_not_notes_dtl
+(
+    raw_id bigint NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 9223372036854775807 CACHE 1 ),
+    tran_no character varying(260) COLLATE public.nocase,
+    tran_type character varying(260) COLLATE public.nocase,
+    tran_ou integer,
     amendment_no integer,
-    keyfield1 character varying(512) COLLATE public.nocase,
-    keyfield2 character varying(512) COLLATE public.nocase,
+    keyfield1 character varying(260) COLLATE public.nocase,
+    keyfield2 character varying(260) COLLATE public.nocase,
     keyfield3 integer,
     keyfield4 integer,
-    notes_compkey character varying(1020) NOT NULL COLLATE public.nocase,
-    line_no integer NOT NULL,
-    line_entity character varying(1000) NOT NULL COLLATE public.nocase,
-    line_notes character varying COLLATE public.nocase,
-    line_df character varying(1000) COLLATE public.nocase,
-    line_file character varying(1000) COLLATE public.nocase,
-    line_desc character varying(1020) COLLATE public.nocase,
-    line_df_desc character varying COLLATE public.nocase,
-    etlcreateddatetime timestamp(3) without time zone DEFAULT now()
-);
+    notes_compkey character varying(510) COLLATE public.nocase,
+    line_no integer,
+    line_entity character varying(500) COLLATE public.nocase,
+    line_notes character varying(2000) COLLATE public.nocase,
+    line_df character varying(500) COLLATE public.nocase,
+    line_file character varying(500) COLLATE public.nocase,
+    line_desc character varying(510) COLLATE public.nocase,
+    line_df_desc character varying(2000) COLLATE public.nocase,
+    etlcreatedatetime timestamp(3) without time zone,
+    CONSTRAINT raw_not_notes_dtl_pkey PRIMARY KEY (raw_id)
+)
 
-ALTER TABLE raw.raw_not_notes_dtl ALTER COLUMN raw_id ADD GENERATED ALWAYS AS IDENTITY (
-    SEQUENCE NAME raw.raw_not_notes_dtl_raw_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1
-);
+TABLESPACE pg_default;
 
-ALTER TABLE ONLY raw.raw_not_notes_dtl
-    ADD CONSTRAINT raw_not_notes_dtl_pkey PRIMARY KEY (raw_id);
+ALTER TABLE IF EXISTS "raw".raw_not_notes_dtl
+    OWNER to proconnect;
