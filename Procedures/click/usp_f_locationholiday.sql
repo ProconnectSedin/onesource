@@ -52,6 +52,11 @@ BEGIN
 	(locationcode,holidaydate,nextworkingdate,nextworkingday)
 	SELECT locationcode,holidaydate,nextworkingdate,nextworkingday
 	FROM f_locholidaylist;
+	
+	update click.f_locationholiday
+	set holidaydatekey = datekey
+	from dwh.d_date
+	where dateactual = holidaydate;
 			
 	EXCEPTION WHEN others THEN       
        
