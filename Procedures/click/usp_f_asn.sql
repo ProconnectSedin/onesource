@@ -270,11 +270,12 @@ ELSE
 -- 	AND B.SERVICETYPE=A.ASN_TYPE
 -- 	AND COALESCE(A.updatedatetime, A.createdatetime)>=v_maxdate;
 
-	UPDATE CLICK.F_ASN A
+UPDATE CLICK.F_ASN A
 	SET asn_qualifieddate=CASE WHEN COALESCE(A.ASN_MODIFIED_DATE,A.ASN_CREATED_DATE)::TIME>=B.CUTOFFTIME
-							   THEN((coalesce(A.ASN_MODIFIED_DATE,A.ASN_CREATED_DATE)) + INTERVAL '1 DAY')
+					THEN(((coalesce(A.ASN_MODIFIED_DATE,A.ASN_CREATED_DATE)) + INTERVAL '1 DAY')::DATE ||' '|| B.openingtime)::TIMESTAMP
 							else COALESCE(A.ASN_MODIFIED_DATE,A.ASN_CREATED_DATE) end,
-		asn_cutofftime   =B.CUTOFFTIME					
+		asn_cutofftime   =B.CUTOFFTIME,
+		asn_openingtime  =B.OPENINGTIME
 	FROM CLICK.F_ASN A1 
 	LEFT JOIN click.d_inboundtat B
 	ON B.OU=A1.ASN_OU
@@ -284,11 +285,24 @@ ELSE
 	WHERE A.asn_key=A1.asn_key
 	AND COALESCE(A.updatedatetime, A.createdatetime)>=v_maxdate;
 	
-		UPDATE CLICK.F_ASN A
-		SET asn_qualifieddatekey = d.datekey
-		FROM click.d_date d	
-		WHERE dateactual = asn_qualifieddate::DATE
-		AND COALESCE(A.updatedatetime, A.createdatetime)>=v_maxdate;
+	UPDATE CLICK.F_ASN A
+	SET asn_qualifieddate = CASE WHEN A1.asn_qualifieddate::DATE = holidaydate AND A1.asn_openingtime IS NOT NULL
+							THEN nextworkingdate + (A1.asn_openingtime || ' MINUTES')::INTERVAL
+							WHEN A1.asn_qualifieddate::DATE = holidaydate AND A1.asn_openingtime IS NULL
+							THEN nextworkingdate + ('09:30:00' || ' MINUTES')::INTERVAL
+							ELSE A1.asn_qualifieddate END
+	FROM CLICK.F_ASN A1 
+	LEFT JOIN click.f_locationholiday
+	ON A1.ASN_LOCATION = locationcode
+	AND A1.asn_qualifieddate::date = holidaydate
+	WHERE A.asn_key=A1.asn_key
+	AND COALESCE(A.updatedatetime, A.createdatetime)>=v_maxdate;
+	
+	UPDATE CLICK.F_ASN A
+	SET asn_qualifieddatekey = d.datekey
+	FROM click.d_date d	
+	WHERE dateactual = asn_qualifieddate::DATE
+	AND COALESCE(A.updatedatetime, A.createdatetime)>=v_maxdate;
 END IF;
 		
 	EXCEPTION WHEN others THEN       

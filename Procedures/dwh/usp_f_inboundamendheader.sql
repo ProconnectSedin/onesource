@@ -1,6 +1,19 @@
-CREATE OR REPLACE PROCEDURE dwh.usp_f_inboundamendheader(IN p_sourceid character varying, IN p_dataflowflag character varying, IN p_targetobject character varying, OUT srccnt integer, OUT inscnt integer, OUT updcnt integer, OUT dltcount integer, INOUT flag1 character varying, OUT flag2 character varying)
-    LANGUAGE plpgsql
-    AS $$
+-- PROCEDURE: dwh.usp_f_inboundamendheader(character varying, character varying, character varying, character varying)
+
+-- DROP PROCEDURE IF EXISTS dwh.usp_f_inboundamendheader(character varying, character varying, character varying, character varying);
+
+CREATE OR REPLACE PROCEDURE dwh.usp_f_inboundamendheader(
+	IN p_sourceid character varying,
+	IN p_dataflowflag character varying,
+	IN p_targetobject character varying,
+	OUT srccnt integer,
+	OUT inscnt integer,
+	OUT updcnt integer,
+	OUT dltcount integer,
+	INOUT flag1 character varying,
+	OUT flag2 character varying)
+LANGUAGE 'plpgsql'
+AS $BODY$
 
 DECLARE
     p_etljobname VARCHAR(100);
@@ -12,6 +25,7 @@ DECLARE
     p_errorid integer;
     p_errordesc character varying;
     p_errorline integer;
+
     p_rawstorageflag integer;
 
 BEGIN
@@ -67,7 +81,10 @@ BEGIN
         datasourcecd              = p_datasourcecd,
         etlupdatedatetime         = NOW()
     FROM stg.stg_wms_inbound_header_h s
-     
+    INNER JOIN dwh.f_inboundheader oh
+     ON  s.wms_inb_loc_code = oh.inb_loc_code  
+     and s.wms_inb_orderno =oh.inb_orderno 
+     and s.wms_inb_ou = oh.inb_ou 
      LEFT JOIN dwh.d_location L      
         ON s.wms_inb_loc_code   = L.loc_code 
         AND s.wms_inb_ou        = L.loc_ou
@@ -87,11 +104,13 @@ BEGIN
     SELECT
     COALESCE(l.loc_key,-1)  ,s.wms_inb_loc_code, s.wms_inb_orderno, s.wms_inb_ou, s.wms_inb_amendno, s.wms_inb_refdoctype, s.wms_inb_refdocno, s.wms_inb_refdocdate, s.wms_inb_orderdate, s.wms_inb_status, s.wms_inb_custcode, s.wms_inb_vendorcode, s.wms_inb_address1, s.wms_inb_address2, s.wms_inb_address3, s.wms_inb_postcode, s.wms_inb_country, s.wms_inb_state, s.wms_inb_city, s.wms_inb_phoneno, s.wms_inb_secrefdoctype1, s.wms_inb_secrefdoctype2, s.wms_inb_secrefdocno1, s.wms_inb_secrefdocno2, s.wms_inb_secrefdocdate1, s.wms_inb_secrefdocdate2, s.wms_inb_shipmode, s.wms_inb_instructions, s.wms_inb_created_by, s.wms_inb_created_date, s.wms_inb_modified_by, s.wms_inb_modified_date, s.wms_inb_timestamp, s.wms_inb_contract_id, s.wms_inb_custcode_h, s.wms_inb_type, 1, p_etljobname, p_envsourcecd, p_datasourcecd, NOW()
     FROM stg.stg_wms_inbound_header_h s
+	 INNER JOIN dwh.f_inboundheader oh
+     ON  s.wms_inb_loc_code = oh.inb_loc_code  
+     and s.wms_inb_orderno =oh.inb_orderno 
+     and s.wms_inb_ou = oh.inb_ou 
     LEFT JOIN dwh.d_location L      
         ON s.wms_inb_loc_code   = L.loc_code 
         AND s.wms_inb_ou        = L.loc_ou
-
-
 
     LEFT JOIN dwh.F_InboundAmendHeader t
     ON s.wms_inb_loc_code = t.inb_loc_code
@@ -122,4 +141,6 @@ BEGIN
        select 0 into inscnt;
        select 0 into updcnt; 
 END;
-$$;
+$BODY$;
+ALTER PROCEDURE dwh.usp_f_inboundamendheader(character varying, character varying, character varying, character varying)
+    OWNER TO proconnect;

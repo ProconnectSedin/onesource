@@ -1,0 +1,28 @@
+CREATE TABLE IF NOT EXISTS stg.stg_si_doc_balance_his
+(
+    tran_ou integer,
+    tran_type character varying(20) COLLATE public.nocase,
+    tran_no character varying(36) COLLATE public.nocase,
+    term_no character varying(40) COLLATE public.nocase,
+    tran_currency character varying(10) COLLATE public.nocase,
+    tran_date timestamp without time zone,
+    doc_status character varying(50) COLLATE public.nocase,
+    adjusted_amount numeric(20,2),
+    disc_availed numeric(20,2),
+    penalty_amount numeric(20,2),
+    supp_code character varying(32) COLLATE public.nocase,
+    fb_id character varying(40) COLLATE public.nocase,
+    account_type character varying(30) COLLATE public.nocase,
+    batch_id character varying(256) COLLATE public.nocase,
+    createdby character varying(60) COLLATE pg_catalog."default",
+    createddate timestamp without time zone,
+    modifiedby character varying(60) COLLATE pg_catalog."default",
+    modifieddate timestamp without time zone,
+    base_adjusted_amount numeric(20,2),
+    pbase_adjusted_amount numeric(20,2),
+    base_paid_amt numeric(20,2),
+    pbase_paid_amt numeric(20,2),
+    his_pdc_flag character varying(24) COLLATE pg_catalog."default",
+    adj_payment_no character varying(36) COLLATE public.nocase,
+    etlcreatedatetime timestamp(3) without time zone
+)

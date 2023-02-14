@@ -107,3 +107,6 @@ CREATE INDEX IF NOT EXISTS f_asn_key_idx
     ON click.f_asn USING btree
     (asn_hr_key ASC NULLS LAST, asn_dtl_key ASC NULLS LAST, gate_exec_dtl_key ASC NULLS LAST, asn_loc_key ASC NULLS LAST, asn_date_key ASC NULLS LAST, asn_cust_key ASC NULLS LAST, asn_dtl_itm_hdr_key ASC NULLS LAST, gate_exec_dtl_veh_key ASC NULLS LAST)
     TABLESPACE pg_default;
+	
+	alter table IF EXISTS click.f_asn
+ADD column  IF NOT EXISTS asn_openingtime TIME

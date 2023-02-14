@@ -99,6 +99,9 @@ BEGIN
         datasourcecd                     = p_datasourcecd,
         etlupdatedatetime                = NOW()
     FROM stg.stg_wms_contract_hdr_h s
+	INNER JOIN dwh.f_contractheader fh
+	on		fh.cont_id			= s.wms_cont_id
+	and		fh.cont_ou			= s.wms_cont_ou
 	LEFT JOIN dwh.d_location l 		
 		ON  s.wms_cont_location   = l.loc_code 
         AND s.wms_cont_ou         = l.loc_ou
@@ -155,6 +158,9 @@ BEGIN
 		s.wms_cont_reason_for_return, s.wms_min_weight, 			s.wms_volm_conversion, 			s.wms_cont_plan_DIFOT, 			 1, 
 		p_etljobname, 			 p_envsourcecd, 					p_datasourcecd, 				NOW()
     FROM stg.stg_wms_contract_hdr_h s
+	INNER JOIN dwh.f_contractheader fh
+	on		fh.cont_id			= s.wms_cont_id
+	and		fh.cont_ou			= s.wms_cont_ou
 	LEFT JOIN dwh.d_location l 		
 		ON  s.wms_cont_location   = l.loc_code 
         AND s.wms_cont_ou         = l.loc_ou

@@ -175,7 +175,8 @@ BEGIN
 	LEFT JOIN dwh.F_PutawayItemDetail pid	
 		ON  ped.pway_exe_dtl_key 				= pid.pway_exe_dtl_key
 		AND rd.pway_gr_no						= pid.pway_gr_no
-		AND rd.pway_lineno						= pid.pway_exec_lineno
+		--AND rd.pway_lineno						= pid.pway_exec_lineno
+		AND rd.pway_item						= pid.pway_item
 		--AND pd.pway_pln_ou 					= pid.pway_exec_ou
 	WHERE 1=1;
 	ELSE	
@@ -245,7 +246,8 @@ BEGIN
 		ON  pd.pway_loc_code 					= pid.pway_loc_code
 		AND rd.pway_gr_no						= pid.pway_gr_no
 		AND pd.pway_pln_ou 						= pid.pway_exec_ou
-		AND rd.pway_lineno						= pid.pway_exec_lineno		
+		--AND rd.pway_lineno						= pid.pway_exec_lineno	
+		AND rd.pway_item						= pid.pway_item
 	LEFT JOIN dwh.f_putawayexecdetail ped	
 		ON  pd.pway_pln_no 						= ped.pway_pln_no
 		AND pd.pway_loc_code 					= ped.pway_loc_code
@@ -311,7 +313,8 @@ BEGIN
 	LEFT JOIN dwh.F_PutawayItemDetail pid	
 		ON  ped.pway_exe_dtl_key 				= pid.pway_exe_dtl_key
 		AND rd.pway_gr_no						= pid.pway_gr_no
-		AND rd.pway_lineno						= pid.pway_exec_lineno
+		--AND rd.pway_lineno						= pid.pway_exec_lineno
+		AND rd.pway_item						= pid.pway_item
 	LEFT JOIN click.f_putaway pw
 		ON  pw.pway_loc_code					= pd.pway_loc_code
 		AND pw.pway_pln_no						= pd.pway_pln_no
