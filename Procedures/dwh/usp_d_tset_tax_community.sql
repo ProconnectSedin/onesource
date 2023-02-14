@@ -39,7 +39,7 @@ BEGIN
 
     SELECT COUNT(1) INTO srccnt
     FROM stg.stg_tset_tax_community;
-/*
+
     UPDATE dwh.d_tsettaxcommunity t
     SET
         TAX_TYPE                       = s.TAX_TYPE,
@@ -101,12 +101,9 @@ BEGIN
     AND t.TAX_COMMUNITY = s.TAX_COMMUNITY;
 
     GET DIAGNOSTICS updcnt = ROW_COUNT;
-*/
 
-	select 0 into updcnt;
-	
-	TRUNCATE TABLE dwh.d_tsettaxcommunity
-	RESTART IDENTITY;
+-- 	TRUNCATE TABLE dwh.d_tsettaxcommunity
+-- 	RESTART IDENTITY;
 	
     INSERT INTO dwh.d_tsettaxcommunity
     (
@@ -143,11 +140,11 @@ BEGIN
         s.dta_app					,
         			1				, p_etljobname			, p_envsourcecd				, p_datasourcecd,
         			now()
-    FROM stg.stg_tset_tax_community s;
---     LEFT JOIN dwh.d_tsettaxcommunity t
---     ON s.TAX_TYPE = t.TAX_TYPE
---     AND s.TAX_COMMUNITY = t.TAX_COMMUNITY
---     WHERE t.TAX_TYPE IS NULL;
+    FROM stg.stg_tset_tax_community s
+    LEFT JOIN dwh.d_tsettaxcommunity t
+    ON s.TAX_TYPE = t.TAX_TYPE
+    AND s.TAX_COMMUNITY = t.TAX_COMMUNITY
+    WHERE t.TAX_TYPE IS NULL;
 
     GET DIAGNOSTICS inscnt = ROW_COUNT;
 
