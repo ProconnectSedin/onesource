@@ -29,7 +29,7 @@ INSERT INTO click.f_shipment_details
 	    Actual_TripEnd,		     	br_invoice_value,		    OnTime_Pickup_Delivery,	        ShipmentDays,					   createddatetime,					
 	  	trip_plan_DateKey,		    trip_Exec_DateKey,			Trip_Volume,					Trip_Volume_uom,
 		trip_plan_createddate,		from_pincode,				to_pincode,
- 		activeindicator
+ 		activeindicator,            consignee_name
 )
  SELECT   
 		 br_key,					 br_loc_key,				br_customer_key,
@@ -44,7 +44,7 @@ INSERT INTO click.f_shipment_details
 		 NULL AS ShipmentDays,		 CURRENT_DATE AS CreatedDate,								trip_plan_DateKey,					COALESCE(TO_CHAR(Actual_TakenOver_HandedOver, 'YYYYMMDD')::INTEGER,-1) as trip_exec_DateKey,
 		 tltd_volume,				 tltd_volume_uom,			
 		 trip_plan_createddate,		 brsd_from_postal_code,		brsd_to_postal_code,
-		 activeindicator
+		 activeindicator,            ccd_consignee_name
 FROM(
 	SELECT 	 
 		 a.br_key,					 a.br_loc_key,				a.br_customer_key,
@@ -76,7 +76,7 @@ FROM(
 		tlog.tltd_volume,tlog.tltd_volume_uom,
 		COALESCE(plpth_last_modified_date,plpth_created_date) as trip_plan_createddate,
 		b.brsd_from_postal_code as brsd_from_postal_code	,	b.brsd_to_postal_code as brsd_to_postal_code,
-		(h.etlactiveind * D.etlactiveind * a.etlactiveind * b.etlactiveind * c.etlactiveind) as activeindicator
+		(h.etlactiveind * D.etlactiveind * a.etlactiveind * b.etlactiveind * c.etlactiveind) as activeindicator, bcc.ccd_consignee_name
 	FROM dwh.F_tripplanningheader H
 	INNER JOIN dwh.f_tripplanningdetail D
 	ON  D.plpth_hdr_key = H.plpth_hdr_key
@@ -88,6 +88,8 @@ FROM(
 	INNER JOIN dwh.f_dispatchdocheader c 
 	ON  D.plptd_ouinstance		=	c.ddh_ouinstance
 	AND D.plptd_bk_req_id		=	c.ddh_reference_doc_no
+    INNER JOIN dwh.f_brconsignmentconsigneedetail bcc
+    ON a.br_key = bcc.br_key
 	LEFT JOIN dwh.d_vehicle f 
 	ON  H.plpth_vehicle_key =  f.veh_key 			
 	LEFT JOIN tmp.f_triplogthudetail_tmp tlog
@@ -236,7 +238,8 @@ WHERE  d.ouinstance			=	a.tlad_ouinstance
 		AND   trip_plan_createddate::DATE >= (CURRENT_DATE - INTERVAL '90 DAYS')::DATE;
 
 UPDATE click.f_shipment_details d
-SET podflag = CASE WHEN tpad_attachment_file_name IS NOT NULL THEN 1 ELSE 0 END
+SET podflag = CASE WHEN tpad_attachment_file_name IS NOT NULL THEN 1 ELSE 0 END,
+podfilename = COALESCE (a.tpad_hdn_file_name,a.tpad_attachment_file_name)
 FROM dwh.f_trippodattachmentdetail a
 WHERE	d.ouinstance 			= a.tpad_ouinstance
 AND 	d.trip_plan_id 			= a.tpad_Trip_id
