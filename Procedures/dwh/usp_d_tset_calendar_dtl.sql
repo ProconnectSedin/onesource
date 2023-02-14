@@ -39,9 +39,10 @@ BEGIN
 
     SELECT COUNT(1) INTO srccnt
     FROM stg.stg_TSET_CALENDAR_DTL;
-/*
-    UPDATE dwh.d_tset_calendar_dtl t
+
+    UPDATE dwh.d_tsetcalendardtl t
     SET
+		company_key					   = cc.company_key,
         PAY_DUE_DATE                   = s.PAY_DUE_DATE,
         DECLARATION_PERIOD_DESC        = s.DECLARATION_PERIOD_DESC,
         START_DATE                     = s.START_DATE,
@@ -58,19 +59,20 @@ BEGIN
         datasourcecd                   = p_datasourcecd,
         etlupdatedatetime              = NOW()
     FROM stg.stg_TSET_CALENDAR_DTL s
+	LEFT JOIN dwh.d_company cc
+	ON s.company_code = cc.company_code
     WHERE t.COMPANY_CODE = s.COMPANY_CODE
     AND t.DECLARATION_YEAR = s.DECLARATION_YEAR
     AND t.DECLARATION_PERIOD = s.DECLARATION_PERIOD;
 
     GET DIAGNOSTICS updcnt = ROW_COUNT;
-*/
-	 select 0 into updcnt;
-	 
-	TRUNCATE TABLE dwh.D_TsetCalendarDtl
-	RESTART IDENTITY;
+
+-- 	TRUNCATE TABLE dwh.D_TsetCalendarDtl
+-- 	RESTART IDENTITY;
 
 	INSERT INTO dwh.d_tsetcalendardtl
     (
+		company_key				,
         company_code			, declaration_year	, declaration_period	, pay_due_date,
 		declaration_period_desc	, start_date		, status				, end_date,
 		created_at				, created_by		, created_date			, modified_by,
@@ -80,18 +82,21 @@ BEGIN
     )
 
     SELECT
+		cc.company_key				,
         s.company_code				, s.declaration_year	, s.declaration_period	, s.pay_due_date,
 		s.declaration_period_desc	, s.start_date			, s.status				, s.end_date,
 		s.created_at				, s.created_by			, s.created_date		, s.modified_by,
 		s.modified_date				,
 				1					, p_etljobname			, p_envsourcecd			, p_datasourcecd,
 				now()
-    FROM stg.stg_tset_calendar_dtl s;
---     LEFT JOIN dwh.d_tsetcalendardtl t
---     ON s.company_code = t.company_code
---     AND s.declaration_year = t.declaration_year
---     AND s.declaration_period = t.declaration_period
---     WHERE t.company_code is null;
+    FROM stg.stg_tset_calendar_dtl s
+	LEFT JOIN dwh.d_company cc
+	ON s.company_code = cc.company_code
+    LEFT JOIN dwh.d_tsetcalendardtl t
+    ON s.company_code = t.company_code
+    AND s.declaration_year = t.declaration_year
+    AND s.declaration_period = t.declaration_period
+    WHERE t.company_code is null;
 
     GET DIAGNOSTICS inscnt = ROW_COUNT;
 
