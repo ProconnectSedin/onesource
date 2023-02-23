@@ -49,4 +49,4 @@ CREATE TABLE IF NOT EXISTS click.f_wmpscoreboard
 TABLESPACE pg_default;
 
 ALTER TABLE IF EXISTS click.f_wmpscoreboard
-    OWNER to proconnect;
+    OWNER to proconnect ;

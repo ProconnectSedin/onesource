@@ -1,0 +1,70 @@
+-- Table: raw.raw_ci_posted_doc_log
+
+-- DROP TABLE IF EXISTS "raw".raw_ci_posted_doc_log;
+
+CREATE TABLE IF NOT EXISTS "raw".raw_ci_posted_doc_log
+(
+    raw_id bigint NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 9223372036854775807 CACHE 1 ),
+    tran_ou integer NOT NULL,
+    tran_type character varying(40) COLLATE public.nocase NOT NULL,
+    tran_no character varying(72) COLLATE public.nocase NOT NULL,
+    term_no character varying(80) COLLATE public.nocase NOT NULL,
+    amt_type character varying(40) COLLATE public.nocase NOT NULL,
+    ref_doc_ou integer NOT NULL,
+    ref_doc_type character varying(40) COLLATE public.nocase NOT NULL,
+    ref_doc_no character varying(72) COLLATE public.nocase NOT NULL,
+    ref_doc_term character varying(80) COLLATE public.nocase NOT NULL,
+    adjd_doc_ou integer NOT NULL,
+    adjd_doc_type character varying(40) COLLATE public.nocase NOT NULL,
+    adjd_doc_no character varying(72) COLLATE public.nocase NOT NULL,
+    adjd_doc_term character varying(80) COLLATE public.nocase NOT NULL,
+    createddate timestamp without time zone NOT NULL,
+    "timestamp" integer NOT NULL,
+    lo_id character varying(80) COLLATE public.nocase,
+    batch_id character varying(512) COLLATE public.nocase,
+    tran_date timestamp without time zone,
+    cust_code character varying(72) COLLATE public.nocase,
+    tran_currency character varying(20) COLLATE public.nocase,
+    tran_amount numeric,
+    basecur_erate numeric,
+    base_amount numeric,
+    par_exchange_rate numeric,
+    par_base_amount numeric,
+    ref_doc_date timestamp without time zone,
+    ref_doc_cur character varying(20) COLLATE public.nocase,
+    createdby character varying(120) COLLATE public.nocase,
+    posting_status character varying(4) COLLATE public.nocase,
+    posting_date timestamp without time zone,
+    crosscur_erate numeric,
+    adjust_amount_inv_cur numeric,
+    modifiedby character varying(120) COLLATE public.nocase,
+    modifieddate timestamp without time zone,
+    account_code character varying(128) COLLATE public.nocase,
+    account_type character varying(60) COLLATE public.nocase NOT NULL,
+    fb_id character varying(80) COLLATE public.nocase,
+    discount_amount numeric,
+    penalty_amount numeric,
+    writeoff_amount numeric,
+    received_amount numeric,
+    doc_status character varying(100) COLLATE public.nocase,
+    receipt_type character varying(100) COLLATE public.nocase,
+    tds_amount numeric,
+    base_adjust_amt numeric,
+    pbase_adjust_amt numeric,
+    base_received_amount numeric,
+    pbase_received_amount numeric,
+    base_writeoff_amount numeric,
+    pbase_writeoff_amount numeric,
+    provision_amt numeric,
+    bookingno character varying(280) COLLATE public.nocase,
+    masterbillofladingno character varying(280) COLLATE public.nocase,
+    billofladingno character varying(280) COLLATE public.nocase,
+    log_pdc_status character varying(100) COLLATE public.nocase,
+    etlcreateddatetime timestamp(3) without time zone DEFAULT now(),
+    CONSTRAINT raw_ci_posted_doc_log_pkey PRIMARY KEY (raw_id)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS "raw".raw_ci_posted_doc_log
+    OWNER to proconnect;

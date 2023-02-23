@@ -1,9 +1,10 @@
--- Table: stg.stg_bnkdef_code_mst
+-- Table: raw.raw_bnkdef_code_mst
 
--- DROP TABLE IF EXISTS stg.stg_bnkdef_code_mst;
+-- DROP TABLE IF EXISTS "raw".raw_bnkdef_code_mst;
 
-CREATE TABLE IF NOT EXISTS stg.stg_bnkdef_code_mst
+CREATE TABLE IF NOT EXISTS "raw".raw_bnkdef_code_mst
 (
+    raw_id bigint NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 9223372036854775807 CACHE 1 ),
     company_code character varying(40) COLLATE public.nocase NOT NULL,
     bank_ref_no character varying(80) COLLATE public.nocase NOT NULL,
     bank_acc_no character varying(80) COLLATE public.nocase NOT NULL,
@@ -37,18 +38,10 @@ CREATE TABLE IF NOT EXISTS stg.stg_bnkdef_code_mst
     statusml character varying(100) COLLATE public.nocase,
     wfflag character varying(4) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now(),
-    CONSTRAINT bnkdef_code_mst_pkey PRIMARY KEY (company_code, bank_ref_no, bank_acc_no, bank_code, serial_no)
+    CONSTRAINT raw_bnkdef_code_mst_pkey PRIMARY KEY (raw_id)
 )
 
 TABLESPACE pg_default;
 
-ALTER TABLE IF EXISTS stg.stg_bnkdef_code_mst
+ALTER TABLE IF EXISTS "raw".raw_bnkdef_code_mst
     OWNER to proconnect;
--- Index: stg_bnkdef_code_mst_key_idx2
-
--- DROP INDEX IF EXISTS stg.stg_bnkdef_code_mst_key_idx2;
-
-CREATE INDEX IF NOT EXISTS stg_bnkdef_code_mst_key_idx2
-    ON stg.stg_bnkdef_code_mst USING btree
-    (company_code COLLATE public.nocase ASC NULLS LAST, bank_ref_no COLLATE public.nocase ASC NULLS LAST, bank_acc_no COLLATE public.nocase ASC NULLS LAST, bank_code COLLATE public.nocase ASC NULLS LAST, serial_no ASC NULLS LAST)
-    TABLESPACE pg_default;
