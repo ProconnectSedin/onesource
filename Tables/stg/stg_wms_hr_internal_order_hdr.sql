@@ -1,6 +1,11 @@
-CREATE TABLE stg.stg_wms_hr_internal_order_hdr (
-    wms_in_ord_location character varying(40) NOT NULL COLLATE public.nocase,
-    wms_in_ord_no character varying(72) NOT NULL COLLATE public.nocase,
+-- Table: stg.stg_wms_hr_internal_order_hdr
+
+-- DROP TABLE IF EXISTS stg.stg_wms_hr_internal_order_hdr;
+
+CREATE TABLE IF NOT EXISTS stg.stg_wms_hr_internal_order_hdr
+(
+    wms_in_ord_location character varying(40) COLLATE public.nocase NOT NULL,
+    wms_in_ord_no character varying(72) COLLATE public.nocase NOT NULL,
     wms_in_ord_ou integer NOT NULL,
     wms_in_ord_contract_id character varying(72) COLLATE public.nocase,
     wms_in_ord_date timestamp without time zone,
@@ -28,8 +33,19 @@ CREATE TABLE stg.stg_wms_hr_internal_order_hdr (
     wms_in_ord_workflow_sts character varying(1020) COLLATE public.nocase,
     wms_in_ord_rerurn_for_reason character varying(1020) COLLATE public.nocase,
     wms_in_ord_cont_srv_type character varying(32) COLLATE public.nocase,
-    etlcreateddatetime timestamp(3) without time zone DEFAULT now()
-);
+    etlcreateddatetime timestamp(3) without time zone DEFAULT now(),
+    CONSTRAINT wms_hr_internal_order_hdr_pk PRIMARY KEY (wms_in_ord_location, wms_in_ord_no, wms_in_ord_ou)
+)
 
-ALTER TABLE ONLY stg.stg_wms_hr_internal_order_hdr
-    ADD CONSTRAINT wms_hr_internal_order_hdr_pk PRIMARY KEY (wms_in_ord_location, wms_in_ord_no, wms_in_ord_ou);
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS stg.stg_wms_hr_internal_order_hdr
+    OWNER to proconnect;
+-- Index: stg_wms_hr_internal_order_hdr_idx
+
+-- DROP INDEX IF EXISTS stg.stg_wms_hr_internal_order_hdr_idx;
+
+CREATE INDEX IF NOT EXISTS stg_wms_hr_internal_order_hdr_idx
+    ON stg.stg_wms_hr_internal_order_hdr USING btree
+    (wms_in_ord_ou ASC NULLS LAST, wms_in_ord_no COLLATE public.nocase ASC NULLS LAST, wms_in_ord_location COLLATE public.nocase ASC NULLS LAST)
+    TABLESPACE pg_default;
