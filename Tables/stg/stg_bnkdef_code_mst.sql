@@ -1,8 +1,13 @@
-CREATE TABLE stg.stg_bnkdef_code_mst (
-    company_code character varying(40) NOT NULL COLLATE public.nocase,
-    bank_ref_no character varying(80) NOT NULL COLLATE public.nocase,
-    bank_acc_no character varying(80) NOT NULL COLLATE public.nocase,
-    bank_code character varying(128) NOT NULL COLLATE public.nocase,
+-- Table: stg.stg_bnkdef_code_mst
+
+-- DROP TABLE IF EXISTS stg.stg_bnkdef_code_mst;
+
+CREATE TABLE IF NOT EXISTS stg.stg_bnkdef_code_mst
+(
+    company_code character varying(40) COLLATE public.nocase NOT NULL,
+    bank_ref_no character varying(80) COLLATE public.nocase NOT NULL,
+    bank_acc_no character varying(80) COLLATE public.nocase NOT NULL,
+    bank_code character varying(128) COLLATE public.nocase NOT NULL,
     serial_no integer NOT NULL,
     "timestamp" integer,
     flag character varying(4) COLLATE public.nocase,
@@ -31,8 +36,19 @@ CREATE TABLE stg.stg_bnkdef_code_mst (
     wfguid character varying(512) COLLATE public.nocase,
     statusml character varying(100) COLLATE public.nocase,
     wfflag character varying(4) COLLATE public.nocase,
-    etlcreateddatetime timestamp(3) without time zone DEFAULT now()
-);
+    etlcreateddatetime timestamp(3) without time zone DEFAULT now(),
+    CONSTRAINT bnkdef_code_mst_pkey PRIMARY KEY (company_code, bank_ref_no, bank_acc_no, bank_code, serial_no)
+)
 
-ALTER TABLE ONLY stg.stg_bnkdef_code_mst
-    ADD CONSTRAINT bnkdef_code_mst_pkey PRIMARY KEY (company_code, bank_ref_no, bank_acc_no, bank_code, serial_no);
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS stg.stg_bnkdef_code_mst
+    OWNER to proconnect;
+-- Index: stg_bnkdef_code_mst_key_idx2
+
+-- DROP INDEX IF EXISTS stg.stg_bnkdef_code_mst_key_idx2;
+
+CREATE INDEX IF NOT EXISTS stg_bnkdef_code_mst_key_idx2
+    ON stg.stg_bnkdef_code_mst USING btree
+    (company_code COLLATE public.nocase ASC NULLS LAST, bank_ref_no COLLATE public.nocase ASC NULLS LAST, bank_acc_no COLLATE public.nocase ASC NULLS LAST, bank_code COLLATE public.nocase ASC NULLS LAST, serial_no ASC NULLS LAST)
+    TABLESPACE pg_default;
