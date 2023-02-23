@@ -1,9 +1,10 @@
--- Table: stg.stg_ard_tax_addn_acct_mst
+-- Table: raw.raw_ard_tax_addn_acct_mst
 
--- DROP TABLE IF EXISTS stg.stg_ard_tax_addn_acct_mst;
+-- DROP TABLE IF EXISTS "raw".raw_ard_tax_addn_acct_mst;
 
-CREATE TABLE IF NOT EXISTS stg.stg_ard_tax_addn_acct_mst
+CREATE TABLE IF NOT EXISTS "raw".raw_ard_tax_addn_acct_mst
 (
+    raw_id bigint NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 9223372036854775807 CACHE 1 ),
     company_code character varying(40) COLLATE public.nocase NOT NULL,
     tax_type character varying(100) COLLATE public.nocase NOT NULL,
     tax_community character varying(100) COLLATE public.nocase NOT NULL,
@@ -18,10 +19,10 @@ CREATE TABLE IF NOT EXISTS stg.stg_ard_tax_addn_acct_mst
     analysis_code character varying(20) COLLATE public.nocase,
     subanalysis_code character varying(20) COLLATE public.nocase,
     etlcreateddatetime timestamp(3) without time zone DEFAULT now(),
-    CONSTRAINT ard_tax_addn_acct_mst_pk PRIMARY KEY (company_code, tax_type, tax_community, usage_id, effective_from, sequence_no)
+    CONSTRAINT raw_ard_tax_addn_acct_mst_pkey PRIMARY KEY (raw_id)
 )
 
 TABLESPACE pg_default;
 
-ALTER TABLE IF EXISTS stg.stg_ard_tax_addn_acct_mst
+ALTER TABLE IF EXISTS "raw".raw_ard_tax_addn_acct_mst
     OWNER to proconnect;
