@@ -4,7 +4,7 @@
 
 CREATE TABLE IF NOT EXISTS dwh.f_sadsuppcustadjhdr
 (
-    sadsuppcustadjhdr_key bigint mNOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 9223372036854775807 CACHE 1 ),
+    sadsuppcustadjhdr_key bigint NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 9223372036854775807 CACHE 1 ),
     curr_key bigint,
     vendor_key bigint,
     cust_key bigint,
