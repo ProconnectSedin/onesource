@@ -42,12 +42,19 @@ TABLESPACE pg_default;
 
 ALTER TABLE IF EXISTS stg.stg_aplan_acq_proposal_amend_hdr
     OWNER to proconnect;
+-- Index: stg_aplan_acq_proposal_amend_hdr_idx
+
+-- DROP INDEX IF EXISTS stg.stg_aplan_acq_proposal_amend_hdr_idx;
 
 CREATE INDEX IF NOT EXISTS stg_aplan_acq_proposal_amend_hdr_idx
     ON stg.stg_aplan_acq_proposal_amend_hdr USING btree
+    (ou_id ASC NULLS LAST, fb_id COLLATE public.nocase ASC NULLS LAST, financial_year COLLATE public.nocase ASC NULLS LAST, asset_class_code COLLATE public.nocase ASC NULLS LAST, currency_code COLLATE public.nocase ASC NULLS LAST, amendment_number COLLATE public.nocase ASC NULLS LAST, proposal_number COLLATE public.nocase ASC NULLS LAST)
+    TABLESPACE pg_default;
+-- Index: stg_aplan_acq_proposal_amend_hdr_idx1
 
-(ou_id, fb_id, financial_year, asset_class_code, currency_code, amendment_number, proposal_number)
+-- DROP INDEX IF EXISTS stg.stg_aplan_acq_proposal_amend_hdr_idx1;
 
 CREATE INDEX IF NOT EXISTS stg_aplan_acq_proposal_amend_hdr_idx1
     ON stg.stg_aplan_acq_proposal_amend_hdr USING btree
-(currency_code)
+    (currency_code COLLATE public.nocase ASC NULLS LAST)
+    TABLESPACE pg_default;

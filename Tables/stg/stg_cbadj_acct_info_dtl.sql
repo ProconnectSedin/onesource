@@ -50,27 +50,43 @@ TABLESPACE pg_default;
 
 ALTER TABLE IF EXISTS stg.stg_cbadj_acct_info_dtl
     OWNER to proconnect;
+-- Index: stg_cbadj_acct_info_dtl_idx
+
+-- DROP INDEX IF EXISTS stg.stg_cbadj_acct_info_dtl_idx;
 
 CREATE INDEX IF NOT EXISTS stg_cbadj_acct_info_dtl_idx
     ON stg.stg_cbadj_acct_info_dtl USING btree
-(ou_id, tran_no, tran_type, account_code, drcr_flag, line_no)
+    (ou_id ASC NULLS LAST, tran_no COLLATE public.nocase ASC NULLS LAST, tran_type COLLATE public.nocase ASC NULLS LAST, account_code COLLATE public.nocase ASC NULLS LAST, drcr_flag COLLATE public.nocase ASC NULLS LAST, line_no ASC NULLS LAST)
+    TABLESPACE pg_default;
+-- Index: stg_cbadj_acct_info_dtl_idx1
+
+-- DROP INDEX IF EXISTS stg.stg_cbadj_acct_info_dtl_idx1;
 
 CREATE INDEX IF NOT EXISTS stg_cbadj_acct_info_dtl_idx1
     ON stg.stg_cbadj_acct_info_dtl USING btree
-(cust_code, ou_id)
+    (cust_code COLLATE public.nocase ASC NULLS LAST, ou_id ASC NULLS LAST)
+    TABLESPACE pg_default;
+-- Index: stg_cbadj_acct_info_dtl_idx2
+
+-- DROP INDEX IF EXISTS stg.stg_cbadj_acct_info_dtl_idx2;
 
 CREATE INDEX IF NOT EXISTS stg_cbadj_acct_info_dtl_idx2
     ON stg.stg_cbadj_acct_info_dtl USING btree
-(currency_code
-)
+    (currency_code COLLATE public.nocase ASC NULLS LAST)
+    TABLESPACE pg_default;
+-- Index: stg_cbadj_acct_info_dtl_idx3
+
+-- DROP INDEX IF EXISTS stg.stg_cbadj_acct_info_dtl_idx3;
 
 CREATE INDEX IF NOT EXISTS stg_cbadj_acct_info_dtl_idx3
     ON stg.stg_cbadj_acct_info_dtl USING btree
-(account_code
-)
+    (account_code COLLATE public.nocase ASC NULLS LAST)
+    TABLESPACE pg_default;
+-- Index: stg_cbadj_acct_info_dtl_idx4
+
+-- DROP INDEX IF EXISTS stg.stg_cbadj_acct_info_dtl_idx4;
 
 CREATE INDEX IF NOT EXISTS stg_cbadj_acct_info_dtl_idx4
     ON stg.stg_cbadj_acct_info_dtl USING btree
-(company_code)
-
-
+    (company_code COLLATE public.nocase ASC NULLS LAST)
+    TABLESPACE pg_default;

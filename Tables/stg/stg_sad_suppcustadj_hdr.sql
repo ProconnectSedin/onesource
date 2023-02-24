@@ -53,16 +53,35 @@ TABLESPACE pg_default;
 
 ALTER TABLE IF EXISTS stg.stg_sad_suppcustadj_hdr
     OWNER to proconnect;
+-- Index: stg_sad_suppcustadj_hdr_idx
+
+-- DROP INDEX IF EXISTS stg.stg_sad_suppcustadj_hdr_idx;
 
 CREATE INDEX IF NOT EXISTS stg_sad_suppcustadj_hdr_idx
     ON stg.stg_sad_suppcustadj_hdr USING btree
-	(ou_id, adjustment_no, trantype);
+    (ou_id ASC NULLS LAST, adjustment_no COLLATE public.nocase ASC NULLS LAST, trantype COLLATE public.nocase ASC NULLS LAST)
+    TABLESPACE pg_default;
+-- Index: stg_sad_suppcustadj_hdr_idx1
+
+-- DROP INDEX IF EXISTS stg.stg_sad_suppcustadj_hdr_idx1;
+
 CREATE INDEX IF NOT EXISTS stg_sad_suppcustadj_hdr_idx1
     ON stg.stg_sad_suppcustadj_hdr USING btree
-	(supp_currcode);
+    (supp_currcode COLLATE public.nocase ASC NULLS LAST)
+    TABLESPACE pg_default;
+-- Index: stg_sad_suppcustadj_hdr_idx2
+
+-- DROP INDEX IF EXISTS stg.stg_sad_suppcustadj_hdr_idx2;
+
 CREATE INDEX IF NOT EXISTS stg_sad_suppcustadj_hdr_idx2
     ON stg.stg_sad_suppcustadj_hdr USING btree
-	(supp_code, ou_id);
+    (supp_code COLLATE public.nocase ASC NULLS LAST, ou_id ASC NULLS LAST)
+    TABLESPACE pg_default;
+-- Index: stg_sad_suppcustadj_hdr_idx3
+
+-- DROP INDEX IF EXISTS stg.stg_sad_suppcustadj_hdr_idx3;
+
 CREATE INDEX IF NOT EXISTS stg_sad_suppcustadj_hdr_idx3
     ON stg.stg_sad_suppcustadj_hdr USING btree
-	(cust_code, ou_id);
+    (cust_code COLLATE public.nocase ASC NULLS LAST, ou_id ASC NULLS LAST)
+    TABLESPACE pg_default;
