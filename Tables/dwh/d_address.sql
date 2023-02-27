@@ -1,4 +1,4 @@
-CREATE TABLE dwh.d_address (
+CREATE TABLE dwh.d_address  (
     address_key bigint NOT NULL,
     address_id character varying(100) COLLATE public.nocase,
     atimestamp integer,
