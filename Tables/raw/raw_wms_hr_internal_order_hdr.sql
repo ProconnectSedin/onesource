@@ -1,7 +1,12 @@
-CREATE TABLE raw.raw_wms_hr_internal_order_hdr (
-    raw_id bigint NOT NULL,
-    wms_in_ord_location character varying(40) NOT NULL COLLATE public.nocase,
-    wms_in_ord_no character varying(72) NOT NULL COLLATE public.nocase,
+-- Table: raw.raw_wms_hr_internal_order_hdr
+
+-- DROP TABLE IF EXISTS "raw".raw_wms_hr_internal_order_hdr;
+
+CREATE TABLE IF NOT EXISTS "raw".raw_wms_hr_internal_order_hdr
+(
+    raw_id bigint NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 9223372036854775807 CACHE 1 ),
+    wms_in_ord_location character varying(40) COLLATE public.nocase NOT NULL,
+    wms_in_ord_no character varying(72) COLLATE public.nocase NOT NULL,
     wms_in_ord_ou integer NOT NULL,
     wms_in_ord_contract_id character varying(72) COLLATE public.nocase,
     wms_in_ord_date timestamp without time zone,
@@ -29,17 +34,11 @@ CREATE TABLE raw.raw_wms_hr_internal_order_hdr (
     wms_in_ord_workflow_sts character varying(1020) COLLATE public.nocase,
     wms_in_ord_rerurn_for_reason character varying(1020) COLLATE public.nocase,
     wms_in_ord_cont_srv_type character varying(32) COLLATE public.nocase,
-    etlcreateddatetime timestamp(3) without time zone DEFAULT now()
-);
+    etlcreateddatetime timestamp(3) without time zone DEFAULT now(),
+    CONSTRAINT raw_wms_hr_internal_order_hdr_pkey PRIMARY KEY (raw_id)
+)
 
-ALTER TABLE raw.raw_wms_hr_internal_order_hdr ALTER COLUMN raw_id ADD GENERATED ALWAYS AS IDENTITY (
-    SEQUENCE NAME raw.raw_wms_hr_internal_order_hdr_raw_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1
-);
+TABLESPACE pg_default;
 
-ALTER TABLE ONLY raw.raw_wms_hr_internal_order_hdr
-    ADD CONSTRAINT raw_wms_hr_internal_order_hdr_pkey PRIMARY KEY (raw_id);
+ALTER TABLE IF EXISTS "raw".raw_wms_hr_internal_order_hdr
+    OWNER to proconnect;

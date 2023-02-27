@@ -1,6 +1,11 @@
-CREATE TABLE stg.stg_rpt_receipt_hdr (
+-- Table: stg.stg_rpt_receipt_hdr
+
+-- DROP TABLE IF EXISTS stg.stg_rpt_receipt_hdr;
+
+CREATE TABLE IF NOT EXISTS stg.stg_rpt_receipt_hdr
+(
     ou_id integer NOT NULL,
-    receipt_no character varying(72) NOT NULL COLLATE public.nocase,
+    receipt_no character varying(72) COLLATE public.nocase NOT NULL,
     "timestamp" integer NOT NULL,
     receipt_date timestamp without time zone,
     receipt_category character varying(60) COLLATE public.nocase,
@@ -77,7 +82,7 @@ CREATE TABLE stg.stg_rpt_receipt_hdr (
     project_code character varying(280) COLLATE public.nocase,
     workflow_error character varying(72) COLLATE public.nocase,
     stamp_duty numeric,
-    ict_flag character varying(48) DEFAULT 'N'::character varying NOT NULL COLLATE public.nocase,
+    ict_flag character varying(48) COLLATE public.nocase NOT NULL DEFAULT 'N'::character varying,
     mrpt_flag character varying(48) COLLATE public.nocase,
     comp_reference character varying(120) COLLATE public.nocase,
     tax_receipt_type character varying(72) COLLATE public.nocase,
@@ -92,9 +97,16 @@ CREATE TABLE stg.stg_rpt_receipt_hdr (
     trnsfr_inv_no character varying(72) COLLATE public.nocase,
     trnsfr_inv_date timestamp without time zone,
     trnsfr_inv_ou integer,
-    lgt_invoice_flag character varying(48) DEFAULT 'N'::character varying NOT NULL COLLATE public.nocase,
-    etlcreateddatetime timestamp(3) without time zone DEFAULT now()
-);
+    lgt_invoice_flag character varying(48) COLLATE public.nocase NOT NULL DEFAULT 'N'::character varying,
+    etlcreateddatetime timestamp(3) without time zone DEFAULT now(),
+    CONSTRAINT rpt_receipt_hdr_pkey PRIMARY KEY (ou_id, receipt_no)
+)
 
-ALTER TABLE ONLY stg.stg_rpt_receipt_hdr
-    ADD CONSTRAINT rpt_receipt_hdr_pkey PRIMARY KEY (ou_id, receipt_no);
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS stg.stg_rpt_receipt_hdr
+    OWNER to proconnect;
+	
+CREATE INDEX IF NOT EXISTS stg_rpt_receipt_hdr_idx
+    ON stg.stg_rpt_receipt_hdr USING btree
+    (ou_id, receipt_no)
