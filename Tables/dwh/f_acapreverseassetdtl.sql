@@ -49,3 +49,11 @@ TABLESPACE pg_default;
 
 ALTER TABLE IF EXISTS dwh.f_acapreverseassetdtl
     OWNER to proconnect;
+-- Index: f_acapreverseassetdtl_idx
+
+-- DROP INDEX IF EXISTS dwh.f_acapreverseassetdtl_idx;
+
+CREATE INDEX IF NOT EXISTS f_acapreverseassetdtl_idx
+    ON dwh.f_acapreverseassetdtl USING btree
+    (ou_id ASC NULLS LAST, document_number COLLATE public.nocase ASC NULLS LAST, tag_number ASC NULLS LAST)
+    TABLESPACE pg_default;
