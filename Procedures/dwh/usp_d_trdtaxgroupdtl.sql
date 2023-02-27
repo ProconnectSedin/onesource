@@ -42,7 +42,7 @@ BEGIN
 
     UPDATE dwh.D_trdtaxgroupdtl t
     SET
-		d_trdtaxgrouphdr_key       = bb.d_trdtaxgrouphdr_key,
+		d_trdtaxgrouphdr_key       = bb.trdtaxgrouphdr_key,
         company_code               = s.company_code,
         tax_group_code             = s.tax_group_code,
         item_code                  = s.item_code,
@@ -70,7 +70,7 @@ BEGIN
     AND t.item_code = s.item_code
     AND t.variant = s.variant
     AND t.type = s.type
-	AND  t.d_trdtaxgrouphdr_key = bb.d_trdtaxgrouphdr_key ;
+	AND  t.d_trdtaxgrouphdr_key = bb.trdtaxgrouphdr_key ;
 
     GET DIAGNOSTICS updcnt = ROW_COUNT;
 
@@ -80,7 +80,7 @@ BEGIN
     )
 
     SELECT
-       bb.d_trdtaxgrouphdr_key, s.company_code, s.tax_group_code, s.item_code, s.variant, s.effective_from_date, s.type, s.effective_to_date, s.created_at, s.assessable_rate, s.commoditycode, 1, p_etljobname, p_envsourcecd, p_datasourcecd, NOW()
+       bb.trdtaxgrouphdr_key, s.company_code, s.tax_group_code, s.item_code, s.variant, s.effective_from_date, s.type, s.effective_to_date, s.created_at, s.assessable_rate, s.commoditycode, 1, p_etljobname, p_envsourcecd, p_datasourcecd, NOW()
     FROM stg.stg_trd_tax_group_dtl s
 	
 		INNER JOIN dwh.d_trdtaxgrouphdr bb
@@ -93,7 +93,7 @@ BEGIN
     AND s.item_code = t.item_code
     AND s.variant = t.variant
     AND s.type = t.type
-	AND  t.d_trdtaxgrouphdr_key = bb.d_trdtaxgrouphdr_key
+	AND  t.d_trdtaxgrouphdr_key = bb.trdtaxgrouphdr_key
     WHERE t.company_code IS NULL;
 
     GET DIAGNOSTICS inscnt = ROW_COUNT;
