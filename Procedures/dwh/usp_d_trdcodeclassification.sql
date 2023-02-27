@@ -39,8 +39,33 @@ BEGIN
 
     SELECT COUNT(1) INTO srccnt
     FROM stg.stg_trd_code_classification;
+	UPDATE dwh.D_trdcodeclassification t
+    SET
+        tax_type                        = s.tax_type,
+        tax_community                   = s.tax_community,
+        Code_classification             = s.Code_classification,
+        code_type                       = s.code_type,
+        Code_classification_code        = s.Code_classification_code,
+        code_type_code                  = s.code_type_code,
+        language_id                     = s.language_id,
+        default_flag                    = s.default_flag,
+        cml_len                         = s.cml_len,
+        cml_translate                   = s.cml_translate,
+        Orderby                         = s.Orderby,
+        sub_code_type                   = s.sub_code_type,
+        sub_code_type_code              = s.sub_code_type_code,
+        etlactiveind                    = 1,
+        etljobname                      = p_etljobname,
+        envsourcecd                     = p_envsourcecd,
+        datasourcecd                    = p_datasourcecd,
+        etlupdatedatetime               = NOW()
+    FROM stg.stg_trd_code_classification s
+    WHERE t.tax_type = s.tax_type
+    AND t.tax_community = s.tax_community
+    AND t.Code_classification = s.Code_classification
+    AND t.code_type = s.code_type
+    AND t.Code_classification_code = s.Code_classification_code;
 	
- 	TRUNCATE ONLY dwh.D_trdcodeclassification  restart identity ;
     GET DIAGNOSTICS updcnt = ROW_COUNT;
 
     INSERT INTO dwh.D_trdcodeclassification
