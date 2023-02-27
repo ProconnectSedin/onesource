@@ -40,46 +40,46 @@ BEGIN
     SELECT COUNT(1) INTO srccnt
     FROM stg.Stg_cdi_payment_dtl;
 
-    --UPDATE dwh.F_cdipaymentdtl t
-    --SET
-    --    tran_type               = s.tran_type,
-    --    tran_ou                 = s.tran_ou,
-    --    tran_no                 = s.tran_no,
-    --    term_no                 = s.term_no,
-    --    due_date                = s.due_date,
-    --    due_amount_type         = s.due_amount_type,
-    --    due_percent             = s.due_percent,
-    --    due_amount              = s.due_amount,
-    --    disc_comp_amount        = s.disc_comp_amount,
-    --    disc_amount_type        = s.disc_amount_type,
-    --    disc_date               = s.disc_date,
-    --    disc_percent            = s.disc_percent,
-    --    disc_amount             = s.disc_amount,
-    --    penalty_percent         = s.penalty_percent,
-    --    esr_ref_no              = s.esr_ref_no,
-    --    base_due_amount         = s.base_due_amount,
-    --    base_disc_amount        = s.base_disc_amount,
-    --    etlactiveind            = 1,
-    --    etljobname              = p_etljobname,
-    --    envsourcecd             = p_envsourcecd,
-    --    datasourcecd            = p_datasourcecd,
-    --    etlupdatedatetime       = NOW()
-    --FROM stg.Stg_cdi_payment_dtl s
-    --WHERE t.tran_type = s.tran_type
-    --AND t.tran_ou = s.tran_ou
-    --AND t.tran_no = s.tran_no
-    --AND t.term_no = s.term_no;
+    UPDATE dwh.F_cdipaymentdtl t
+    SET
+       tran_type               = s.tran_type,
+       tran_ou                 = s.tran_ou,
+       tran_no                 = s.tran_no,
+       term_no                 = s.term_no,
+       due_date                = s.due_date,
+       due_amount_type         = s.due_amount_type,
+       due_percent             = s.due_percent,
+       due_amount              = s.due_amount,
+       disc_comp_amount        = s.disc_comp_amount,
+       disc_amount_type        = s.disc_amount_type,
+       disc_date               = s.disc_date,
+       disc_percent            = s.disc_percent,
+       disc_amount             = s.disc_amount,
+       penalty_percent         = s.penalty_percent,
+       esr_ref_no              = s.esr_ref_no,
+       base_due_amount         = s.base_due_amount,
+       base_disc_amount        = s.base_disc_amount,
+       etlactiveind            = 1,
+       etljobname              = p_etljobname,
+       envsourcecd             = p_envsourcecd,
+       datasourcecd            = p_datasourcecd,
+       etlupdatedatetime       = NOW()
+    FROM stg.Stg_cdi_payment_dtl s
+    WHERE t.tran_type = s.tran_type
+    AND t.tran_ou = s.tran_ou
+    AND t.tran_no = s.tran_no
+    AND t.term_no = s.term_no;
 
-    --GET DIAGNOSTICS updcnt = ROW_COUNT;
+    GET DIAGNOSTICS updcnt = ROW_COUNT;
 
-	select 0 into updcnt;
+	--select 0 into updcnt;
 
-	DELETE FROM dwh.F_cdipaymentdtl t
-	USING stg.Stg_cdi_payment_dtl s
-	where s.tran_type = t.tran_type
-    AND s.tran_ou = t.tran_ou
-    AND s.tran_no = t.tran_no
-    AND s.term_no = t.term_no;
+-- 	DELETE FROM dwh.F_cdipaymentdtl t
+-- 	USING stg.Stg_cdi_payment_dtl s
+-- 	where s.tran_type = t.tran_type
+--     AND s.tran_ou = t.tran_ou
+--     AND s.tran_no = t.tran_no
+--     AND s.term_no = t.term_no;
 --	WHERE disc_date::DATE >= (CURRENT_DATE - INTERVAL '90 days')::DATE;
 	
 	
