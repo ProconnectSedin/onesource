@@ -5,9 +5,9 @@
 CREATE TABLE IF NOT EXISTS dwh.d_ardcustomeraccountmst
 (
     ardcustomeraccountmst_key bigint NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START -1 MINVALUE -1 MAXVALUE 9223372036854775807 CACHE 1 ),
-    company_key bigint NOT NULL,
-    opcoa_key bigint NOT NULL,
-    curr_key bigint NOT NULL,
+    company_key bigint ,
+    opcoa_key bigint ,
+    curr_key bigint ,
     company_code character varying(20) COLLATE public.nocase,
     customer_group character varying(20) COLLATE public.nocase,
     fb_id character varying(40) COLLATE public.nocase,
