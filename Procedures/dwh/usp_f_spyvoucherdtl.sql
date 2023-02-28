@@ -72,7 +72,7 @@ BEGIN
     AND t.cr_doc_no = s.cr_doc_no
     AND t.term_no = s.term_no
     AND t.tran_type = s.tran_type
-    AND t.timestamp = s.timestamp
+    AND t.timestamp = s.vtimestamp
     AND t.cr_doc_type = s.cr_doc_type;
 
     GET DIAGNOSTICS updcnt = ROW_COUNT;
@@ -83,7 +83,7 @@ BEGIN
     )
 
     SELECT
-        s.ou_id, s.paybatch_no, s.voucher_no, s.cr_doc_ou, s.cr_doc_no, s.term_no, s.tran_type, s.timestamp, s.cr_doc_amount, s.cr_doc_type, s.pay_amount, s.discount, s.penalty, s.batch_id, s.createdby, s.createddate, s.cr_doc_line_no, 1, p_etljobname, p_envsourcecd, p_datasourcecd, NOW()
+        s.ou_id, s.paybatch_no, s.voucher_no, s.cr_doc_ou, s.cr_doc_no, s.term_no, s.tran_type, s.vtimestamp, s.cr_doc_amount, s.cr_doc_type, s.pay_amount, s.discount, s.penalty, s.batch_id, s.createdby, s.createddate, s.cr_doc_line_no, 1, p_etljobname, p_envsourcecd, p_datasourcecd, NOW()
     FROM stg.stg_spy_voucher_dtl s
     LEFT JOIN dwh.F_spyvoucherdtl t
     ON s.ou_id = t.ou_id
@@ -93,7 +93,7 @@ BEGIN
     AND s.cr_doc_no = t.cr_doc_no
     AND s.term_no = t.term_no
     AND s.tran_type = t.tran_type
-    AND s.timestamp = t.timestamp
+    AND s.vtimestamp = t.timestamp
     AND s.cr_doc_type = t.cr_doc_type
     WHERE t.ou_id IS NULL;
 
