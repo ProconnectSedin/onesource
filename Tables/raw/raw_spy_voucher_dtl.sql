@@ -1,15 +1,20 @@
-CREATE TABLE raw.raw_spy_voucher_dtl (
-    raw_id bigint NOT NULL,
+-- Table: raw.raw_spy_voucher_dtl
+
+-- DROP TABLE IF EXISTS "raw".raw_spy_voucher_dtl;
+
+CREATE TABLE IF NOT EXISTS "raw".raw_spy_voucher_dtl
+(
+    raw_id bigint NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 9223372036854775807 CACHE 1 ),
     ou_id integer NOT NULL,
-    paybatch_no character varying(72) NOT NULL COLLATE public.nocase,
-    voucher_no character varying(72) NOT NULL COLLATE public.nocase,
+    paybatch_no character varying(72) COLLATE public.nocase NOT NULL,
+    voucher_no character varying(72) COLLATE public.nocase NOT NULL,
     cr_doc_ou integer NOT NULL,
-    cr_doc_no character varying(72) NOT NULL COLLATE public.nocase,
-    term_no character varying(80) NOT NULL COLLATE public.nocase,
-    tran_type character varying(100) NOT NULL COLLATE public.nocase,
+    cr_doc_no character varying(72) COLLATE public.nocase NOT NULL,
+    term_no character varying(80) COLLATE public.nocase NOT NULL,
+    tran_type character varying(100) COLLATE public.nocase NOT NULL,
     "timestamp" integer NOT NULL,
     cr_doc_amount numeric,
-    cr_doc_type character varying(160) NOT NULL COLLATE public.nocase,
+    cr_doc_type character varying(160) COLLATE public.nocase NOT NULL,
     pay_amount numeric,
     discount numeric,
     penalty numeric,
@@ -34,17 +39,11 @@ CREATE TABLE raw.raw_spy_voucher_dtl (
     own_tax_region character varying(40) COLLATE public.nocase,
     party_tax_region character varying(40) COLLATE public.nocase,
     decl_tax_region character varying(40) COLLATE public.nocase,
-    etlcreateddatetime timestamp(3) without time zone DEFAULT now()
-);
+    etlcreateddatetime timestamp(3) without time zone DEFAULT now(),
+    CONSTRAINT raw_spy_voucher_dtl_pkey PRIMARY KEY (raw_id)
+)
 
-ALTER TABLE raw.raw_spy_voucher_dtl ALTER COLUMN raw_id ADD GENERATED ALWAYS AS IDENTITY (
-    SEQUENCE NAME raw.raw_spy_voucher_dtl_raw_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1
-);
+TABLESPACE pg_default;
 
-ALTER TABLE ONLY raw.raw_spy_voucher_dtl
-    ADD CONSTRAINT raw_spy_voucher_dtl_pkey PRIMARY KEY (raw_id);
+ALTER TABLE IF EXISTS "raw".raw_spy_voucher_dtl
+    OWNER to proconnect;
