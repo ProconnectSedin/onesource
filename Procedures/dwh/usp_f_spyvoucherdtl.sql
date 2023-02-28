@@ -107,7 +107,7 @@ BEGIN
         ou_id, paybatch_no, voucher_no, cr_doc_ou, cr_doc_no, term_no, tran_type, timestamp, cr_doc_amount, cr_doc_type, pay_amount, discount, penalty, batch_id, createdby, createddate, modifiedby, modifieddate, variance_amount, tcal_exclusive_amt, total_tcal_amount, tcal_status, cr_doc_line_no, project_ou, Project_code, afe_number, job_number, refcostcenter_hdr, tax_adj_jvno, prop_wht_amt, app_wht_amt, own_tax_region, party_tax_region, decl_tax_region, etlcreateddatetime
     )
     SELECT
-        ou_id, paybatch_no, voucher_no, cr_doc_ou, cr_doc_no, term_no, tran_type, timestamp, cr_doc_amount, cr_doc_type, pay_amount, discount, penalty, batch_id, createdby, createddate, modifiedby, modifieddate, variance_amount, tcal_exclusive_amt, total_tcal_amount, tcal_status, cr_doc_line_no, project_ou, Project_code, afe_number, job_number, refcostcenter_hdr, tax_adj_jvno, prop_wht_amt, app_wht_amt, own_tax_region, party_tax_region, decl_tax_region, etlcreateddatetime
+        ou_id, paybatch_no, voucher_no, cr_doc_ou, cr_doc_no, term_no, tran_type, vtimestamp, cr_doc_amount, cr_doc_type, pay_amount, discount, penalty, batch_id, createdby, createddate, modifiedby, modifieddate, variance_amount, tcal_exclusive_amt, total_tcal_amount, tcal_status, cr_doc_line_no, project_ou, Project_code, afe_number, job_number, refcostcenter_hdr, tax_adj_jvno, prop_wht_amt, app_wht_amt, own_tax_region, party_tax_region, decl_tax_region, etlcreateddatetime
     FROM stg.stg_spy_voucher_dtl;
     
     END IF;
