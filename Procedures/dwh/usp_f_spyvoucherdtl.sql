@@ -49,7 +49,7 @@ BEGIN
         cr_doc_no             = s.cr_doc_no,
         term_no               = s.term_no,
         tran_type             = s.tran_type,
-        timestamp             = s.timestamp,
+        timestamp             = s.vtimestamp,
         cr_doc_amount         = s.cr_doc_amount,
         cr_doc_type           = s.cr_doc_type,
         pay_amount            = s.pay_amount,
