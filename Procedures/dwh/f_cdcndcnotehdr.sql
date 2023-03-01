@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS dwh.f_cdcndcnotehdr
     tran_type character varying(20) COLLATE public.nocase,
     tran_ou integer,
     tran_no character varying(40) COLLATE public.nocase,
-    "timestamp" integer,
+    "timestamp" integer, 
     tran_status character varying(10) COLLATE public.nocase,
     note_type character varying(10) COLLATE public.nocase,
     note_cat character varying(10) COLLATE public.nocase,

@@ -39,7 +39,8 @@ where sourceid in
 	'wms_asn_detail'					, 'wms_wave_dtl'				,
 	'wms_inbound_item_detail_h'			, 'spy_paybatch_dtl'			,	
 	'sin_ap_postings_dtl'				, 'wms_put_plan_item_dtl'		,
-    'wms_outbound_header_h'             , 'ci_doc_hdr'  
+    'wms_outbound_header_h'             , 'ci_doc_hdr'                  ,
+    'ainq_cwip_accounting_info'
 ) 
  and dataflowflag = 'SRCtoStg';
  
@@ -55,9 +56,26 @@ update  ods.controldetail
 set  etllastrundate = (CURRENT_DATE - INTERVAL '365 days')::DATE
 where sourceid in 
 (
-	'cbadj_adjv_drdoc_dtl', 'wms_contract_hdr_h'
+ 'wms_contract_hdr_h'
 )
 and dataflowflag = 'SRCtoStg';
+ 
+ update  ods.controldetail 
+set  etllastrundate = (CURRENT_DATE - INTERVAL '180 days')::DATE
+where sourceid in 
+(
+	'cbadj_adjv_drdoc_dtl'
+)
+and dataflowflag = 'SRCtoStg';
+
+ update  ods.controldetail 
+set  etllastrundate = (CURRENT_DATE - INTERVAL '90 days')::DATE
+where sourceid in 
+(
+	'cdi_payment_dtl','sdin_payment_dtl'
+)
+and dataflowflag = 'SRCtoStg';
+ 
  
 END;
 $BODY$;

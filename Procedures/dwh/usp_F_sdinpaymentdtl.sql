@@ -1,17 +1,17 @@
--- PROCEDURE: dwh.usp_F_sdinpaymentdtl(character varying, character varying, character varying, character varying)
+-- PROCEDURE: dwh.usp_f_sdinpaymentdtl(character varying, character varying, character varying, character varying)
 
--- DROP PROCEDURE IF EXISTS dwh.usp_F_sdinpaymentdtl(character varying, character varying, character varying, character varying);
+-- DROP PROCEDURE IF EXISTS dwh.usp_f_sdinpaymentdtl(character varying, character varying, character varying, character varying);
 
-CREATE OR REPLACE PROCEDURE dwh.usp_F_sdinpaymentdtl(
-    IN p_sourceid character varying,
-    IN p_dataflowflag character varying,
-    IN p_targetobject character varying,
-    OUT srccnt integer,
-    OUT inscnt integer,
-    OUT updcnt integer,
-    OUT dltcount integer,
-    INOUT flag1 character varying,
-    OUT flag2 character varying)
+CREATE OR REPLACE PROCEDURE dwh.usp_f_sdinpaymentdtl(
+	IN p_sourceid character varying,
+	IN p_dataflowflag character varying,
+	IN p_targetobject character varying,
+	OUT srccnt integer,
+	OUT inscnt integer,
+	OUT updcnt integer,
+	OUT dltcount integer,
+	INOUT flag1 character varying,
+	OUT flag2 character varying)
 LANGUAGE 'plpgsql'
 AS $BODY$
 
@@ -39,7 +39,7 @@ BEGIN
 
     SELECT COUNT(1) INTO srccnt
     FROM stg.Stg_sdin_payment_dtl;
-/*
+
     UPDATE dwh.F_sdinpaymentdtl t
     SET
         due_date                = s.due_date,
@@ -67,8 +67,8 @@ BEGIN
     AND t.term_no = s.term_no;
 
     GET DIAGNOSTICS updcnt = ROW_COUNT;
-*/
 
+/*
 	SELECT 0 INTO updcnt;
 
 	DELETE FROM dwh.f_sdinpaymentdtl t
@@ -77,15 +77,15 @@ BEGIN
     AND t.tran_type = s.tran_type
     AND t.tran_no = s.tran_no
     AND t.term_no = s.term_no;
-	
+*/
 
     INSERT INTO dwh.F_sdinpaymentdtl
     (
-        tran_type		, tran_ou		, tran_no		, term_no			, due_date, 
-		due_amount_type	, due_percent	, due_amount	, disc_comp_amount	, disc_amount_type, 
-		disc_date		, disc_percent	, disc_amount	, penalty_percent	, base_due_amount, 
-		base_disc_amount, guid			,
-		etlactiveind	, etljobname	, envsourcecd	, datasourcecd		, etlcreatedatetime
+        tran_type			, tran_ou		, tran_no		, term_no			, due_date, 
+		due_amount_type		, due_percent	, due_amount	, disc_comp_amount	, disc_amount_type, 
+		disc_date			, disc_percent	, disc_amount	, penalty_percent	, base_due_amount, 
+		base_disc_amount	, guid			,
+		etlactiveind		, etljobname	, envsourcecd	, datasourcecd		, etlcreatedatetime
     )
 
     SELECT
@@ -125,6 +125,5 @@ BEGIN
        select 0 into updcnt;
 END;
 $BODY$;
-
-ALTER PROCEDURE dwh.usp_F_sdinpaymentdtl(character varying, character varying, character varying, character varying)
+ALTER PROCEDURE dwh.usp_f_sdinpaymentdtl(character varying, character varying, character varying, character varying)
     OWNER TO proconnect;
