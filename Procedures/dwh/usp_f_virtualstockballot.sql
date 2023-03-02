@@ -164,7 +164,7 @@ BEGIN
 		sbl_disposal_status	, sbl_quantity			, sbl_wh_bat_no			, sbl_supp_bat_no, 
 		sbl_ido_no			, sbl_gr_no				, sbl_created_date		, sbl_created_by, 
 		sbl_modified_date	, sbl_modified_by		, sbl_to_zone			, sbl_to_bin, 
-		sbl_reason_code		, etlcreatedatetime
+		sbl_reason_code		, etlcreateddatetime
 	from stg.stg_wms_virtual_stockbal_lot;
 
 	END IF;
