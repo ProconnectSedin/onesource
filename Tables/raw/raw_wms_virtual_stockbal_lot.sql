@@ -1,6 +1,11 @@
-CREATE TABLE raw.raw_wms_virtual_stockbal_lot (
-    raw_id bigint NOT NULL,
-    sbl_wh_code character varying(40) NOT NULL COLLATE public.nocase,
+-- Table: raw.raw_wms_virtual_stockbal_lot
+
+-- DROP TABLE IF EXISTS "raw".raw_wms_virtual_stockbal_lot;
+
+CREATE TABLE IF NOT EXISTS "raw".raw_wms_virtual_stockbal_lot
+(
+    raw_id bigint NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 9223372036854775807 CACHE 1 ),
+    sbl_wh_code character varying(40) COLLATE public.nocase NOT NULL,
     sbl_ouinstid integer NOT NULL,
     sbl_line_no integer NOT NULL,
     sbl_item_code character varying(128) COLLATE public.nocase,
@@ -30,17 +35,11 @@ CREATE TABLE raw.raw_wms_virtual_stockbal_lot (
     sbl_to_zone character varying(40) COLLATE public.nocase,
     sbl_to_bin character varying(40) COLLATE public.nocase,
     sbl_reason_code character varying(160) COLLATE public.nocase,
-    etlcreateddatetime timestamp(3) without time zone DEFAULT now()
-);
+    etlcreateddatetime timestamp(3) without time zone DEFAULT now(),
+    CONSTRAINT raw_wms_virtual_stockbal_lot_pkey PRIMARY KEY (raw_id)
+)
 
-ALTER TABLE raw.raw_wms_virtual_stockbal_lot ALTER COLUMN raw_id ADD GENERATED ALWAYS AS IDENTITY (
-    SEQUENCE NAME raw.raw_wms_virtual_stockbal_lot_raw_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1
-);
+TABLESPACE pg_default;
 
-ALTER TABLE ONLY raw.raw_wms_virtual_stockbal_lot
-    ADD CONSTRAINT raw_wms_virtual_stockbal_lot_pkey PRIMARY KEY (raw_id);
+ALTER TABLE IF EXISTS "raw".raw_wms_virtual_stockbal_lot
+    OWNER to proconnect;

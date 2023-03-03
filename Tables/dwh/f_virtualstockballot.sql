@@ -1,10 +1,14 @@
--- Table: stg.stg_wms_virtual_stockbal_lot
+-- Table: dwh.f_virtualstockballot
 
--- DROP TABLE IF EXISTS stg.stg_wms_virtual_stockbal_lot;	
-	
-CREATE TABLE IF NOT EXISTS stg.stg_wms_virtual_stockbal_lot
+-- DROP TABLE IF EXISTS dwh.f_virtualstockballot;
+
+CREATE TABLE IF NOT EXISTS dwh.f_virtualstockballot
 (
-    sbl_wh_code character varying(20) COLLATE pg_catalog."default",
+    virtualstockbal_key bigint NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 9223372036854775807 CACHE 1 ),
+    itm_hdr_key bigint,
+    loc_key bigint,
+    ref_doc_date_key bigint,
+    sbl_wh_loc_code character varying(20) COLLATE pg_catalog."default",
     sbl_ouinstid integer,
     sbl_line_no integer,
     sbl_item_code character varying(80) COLLATE pg_catalog."default",
@@ -34,20 +38,21 @@ CREATE TABLE IF NOT EXISTS stg.stg_wms_virtual_stockbal_lot
     sbl_to_zone character varying(20) COLLATE pg_catalog."default",
     sbl_to_bin character varying(20) COLLATE pg_catalog."default",
     sbl_reason_code character varying(80) COLLATE pg_catalog."default",
-    etlcreatedatetime timestamp(3) without time zone
+    etlactiveind integer,
+    etljobname character varying(200) COLLATE public.nocase,
+    envsourcecd character varying(50) COLLATE public.nocase,
+    datasourcecd character varying(50) COLLATE public.nocase,
+    etlcreatedatetime timestamp(3) without time zone,
+    etlupdatedatetime timestamp(3) without time zone,
+    CONSTRAINT f_virtualstockballot_pkey PRIMARY KEY (virtualstockbal_key),
+    CONSTRAINT f_virtualstockballot_ukey UNIQUE (sbl_wh_loc_code, sbl_ouinstid, sbl_line_no)
 )
 
 TABLESPACE pg_default;
 
-ALTER TABLE IF EXISTS stg.stg_wms_virtual_stockbal_lot
+ALTER TABLE IF EXISTS dwh.f_virtualstockballot
     OWNER to proconnect;
 
-CREATE INDEX IF NOT EXISTS stg_wms_virtual_stockbal_lot_idx
-    ON stg.stg_wms_virtual_stockbal_lot USING btree
-	(sbl_wh_code, sbl_ouinstid);
-CREATE INDEX IF NOT EXISTS stg_wms_virtual_stockbal_lot_idx1
-    ON stg.stg_wms_virtual_stockbal_lot USING btree
-	(sbl_item_code, sbl_ouinstid);
-CREATE INDEX IF NOT EXISTS stg_wms_virtual_stockbal_lot_idx2
-    ON stg.stg_wms_virtual_stockbal_lot USING btree
-	(sbl_wh_code, sbl_ouinstid, sbl_line_no);
+CREATE INDEX IF NOT EXISTS f_virtualstockballot_idx
+    ON dwh.f_virtualstockballot USING btree
+	(sbl_wh_loc_code, sbl_ouinstid, sbl_line_no);
