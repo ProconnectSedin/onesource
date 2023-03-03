@@ -14,6 +14,7 @@ DECLARE
 BEGIN
 
 --TRUNCATE ONLY click.f_shipment_details RESTART IDENTITY;
+
 DELETE FROM click.f_shipment_details
 WHERE trip_plan_createddate::DATE >= (CURRENT_DATE - INTERVAL '90 DAYS')::DATE;
 
@@ -29,7 +30,7 @@ INSERT INTO click.f_shipment_details
 	    Actual_TripEnd,		     	br_invoice_value,		    OnTime_Pickup_Delivery,	        ShipmentDays,					   createddatetime,					
 	  	trip_plan_DateKey,		    trip_Exec_DateKey,			Trip_Volume,					Trip_Volume_uom,
 		trip_plan_createddate,		from_pincode,				to_pincode,
- 		activeindicator,            consignee_name
+ 		activeindicator,            consignee_name,             br_customer_name,               br_order_type,                     br_created_date,     br_confirmation_date             
 )
  SELECT   
 		 br_key,					 br_loc_key,				br_customer_key,
@@ -44,7 +45,7 @@ INSERT INTO click.f_shipment_details
 		 NULL AS ShipmentDays,		 CURRENT_DATE AS CreatedDate,								trip_plan_DateKey,					COALESCE(TO_CHAR(Actual_TakenOver_HandedOver, 'YYYYMMDD')::INTEGER,-1) as trip_exec_DateKey,
 		 tltd_volume,				 tltd_volume_uom,			
 		 trip_plan_createddate,		 brsd_from_postal_code,		brsd_to_postal_code,
-		 activeindicator,            ccd_consignee_name
+		 activeindicator,            ccd_consignee_name,        customer_name,                  br_order_type,                      br_creation_date,           br_request_confirmation_date                       
 FROM(
 	SELECT 	 
 		 a.br_key,					 a.br_loc_key,				a.br_customer_key,
@@ -76,7 +77,7 @@ FROM(
 		tlog.tltd_volume,tlog.tltd_volume_uom,
 		COALESCE(plpth_last_modified_date,plpth_created_date) as trip_plan_createddate,
 		b.brsd_from_postal_code as brsd_from_postal_code	,	b.brsd_to_postal_code as brsd_to_postal_code,
-		(h.etlactiveind * D.etlactiveind * a.etlactiveind * b.etlactiveind * c.etlactiveind) as activeindicator, bcc.ccd_consignee_name
+		(h.etlactiveind * D.etlactiveind * a.etlactiveind * b.etlactiveind * c.etlactiveind) as activeindicator, bcc.ccd_consignee_name,cu.customer_name,a.br_order_type,a.br_creation_date,a.br_request_confirmation_date
 	FROM dwh.F_tripplanningheader H
 	INNER JOIN dwh.f_tripplanningdetail D
 	ON  D.plpth_hdr_key = H.plpth_hdr_key
@@ -90,8 +91,10 @@ FROM(
 	AND D.plptd_bk_req_id		=	c.ddh_reference_doc_no
     INNER JOIN dwh.f_brconsignmentconsigneedetail bcc
     ON a.br_key = bcc.br_key
+    INNER JOIN dwh.d_customer cu
+    ON a.br_customer_key = cu.customer_key
 	LEFT JOIN dwh.d_vehicle f 
-	ON  H.plpth_vehicle_key =  f.veh_key 			
+	ON  H.plpth_vehicle_key =  f.veh_key 
 	LEFT JOIN tmp.f_triplogthudetail_tmp tlog
 	ON	d.plptd_ouinstance 			=	tlog.tltd_ouinstance 
 	AND	d.plptd_trip_plan_id		=	tlog.tltd_trip_plan_id 
@@ -160,15 +163,18 @@ where COALESCE(vrve_confirm_qty,0)  <> 0
 AND   vrve_resp_for        = 'vehicle'
 and   trvr_ref_doc_type    in ('TP','Trip Plan')
 and	  service_type = 'FTL'
+""
+"C190016745"
 */
 
--- For Updating the shipment days 
+-- For Updating the shipment days
 	TRUNCATE TABLE tmp.f_shipment_details_pick_tmp;
+	
 	INSERT INTO tmp.f_shipment_details_pick_tmp(
-	ouinstance, trip_plan_id, trip_plan_seq, br_request_Id, Actual_Departed, agent_id, from_pincode, to_pincode
+	ouinstance, trip_plan_id, trip_plan_seq, br_request_Id, Actual_Departed, agent_id, from_pincode, to_pincode,br_customer_ref_no
 	)
-	SELECT ouinstance, trip_plan_id, trip_plan_seq, br_request_Id, Actual_Departed, agent_id, from_pincode, to_pincode
-	FROM click.f_shipment_details 
+	SELECT ouinstance, trip_plan_id, trip_plan_seq, br_request_Id, Actual_Departed, agent_id, from_pincode, to_pincode,br_customer_ref_no
+	FROM click.f_shipment_details
 	WHERE trip_plan_createddate::DATE >= (CURRENT_DATE - INTERVAL '90 DAYS')::DATE
 	--WHERE EXTRACT(YEAR FROM trip_plan_createddate::DATE) =  2019
 	AND leg_behaviour = 'pick'; 
@@ -176,7 +182,7 @@ and	  service_type = 'FTL'
 	UPDATE click.f_shipment_details d
 	SET ShipmentDays = DATE_PART('day', d.Actual_Departed::timestamp - a1.Actual_Departed::timestamp) + 1
 	FROM tmp.f_shipment_details_pick_tmp  a1
-	WHERE d.ouinstance		=	a1.ouinstance	
+	WHERE d.ouinstance		=	a1.ouinstance
 	AND   d.trip_plan_id	=	a1.trip_plan_id
 	AND   d.br_request_Id	=	a1.br_request_Id
 	AND   trip_plan_createddate::DATE >= (CURRENT_DATE - INTERVAL '90 DAYS')::DATE
@@ -218,7 +224,8 @@ SET draft_bill_total_value		=	e.draft_bill_total_value,
 	draft_bill_no				=	e.draft_bill_no,			
 	draft_bill_volume			=	e.draft_bill_volume,		
 	draft_bill_contract			=	f.draft_bill_contract_id,	
-	draft_bill_line_status		=	e.draft_bill_line_status
+	draft_bill_line_status		=	e.draft_bill_line_status,
+    docket_no                   =   a.tlad_ag_ref_doc_no
 FROM dwh.f_triplogagentdetail a
 	JOIN dwh.f_draftbilldetail e
 			ON	a.tlad_ag_ref_doc_no	=	e.draft_bill_triggerring_no
@@ -253,47 +260,73 @@ where podflag IS NULL
 AND trip_plan_createddate::DATE >= (CURRENT_DATE - INTERVAL '90 DAYS')::DATE;
 
 --UPDATING Expected_DatetoDeliver OPEN
-		
-	UPDATE	click.f_shipment_details sh
-	SET		Expected_DatetoDeliver	= a1.Actual_Departed + (interval '1' day * tms.tat) + (interval '1' day)
-	FROM	tmp.f_shipment_details_pick_tmp a1
-	INNER JOIN dwh.D_TMSDeliveryTAT tms
-	ON		a1.agent_id			= tms.agent_code
-	AND		a1.from_pincode		= tms.shipfrom_pincode
-	AND		a1.to_pincode		= tms.shipto_pincode
-	WHERE	a1.ouinstance		= sh.ouinstance
-	AND		a1.trip_plan_id		= sh.trip_plan_id
-	AND		a1.br_request_Id	= sh.br_request_Id
-	--AND EXTRACT(YEAR FROM trip_plan_createddate::DATE) = 2019
-	AND		sh.trip_plan_createddate::DATE >= (CURRENT_DATE - INTERVAL '90 DAYS')::DATE
-	AND		sh.leg_behaviour	= 'Dvry';
 
 	UPDATE	click.f_shipment_details sh
 	SET		Expected_DatetoDeliver	= a1.Actual_Departed + (interval '1' day * tms.tat) + (interval '1' day)
 	FROM	tmp.f_shipment_details_pick_tmp a1
 	INNER JOIN dwh.D_TMSDeliveryTAT tms
-	ON		a1.agent_id			= tms.agent_code
-	AND		a1.from_pincode		= tms.shipfrom_pincode::character varying
-	AND		a1.to_pincode		= tms.shipto_pincode::character varying
-	WHERE	a1.ouinstance		= sh.ouinstance
-	AND		a1.trip_plan_id		= sh.trip_plan_id
-	AND		a1.br_request_Id	= sh.br_request_Id
-	AND		tms.agent_code		= 'SCM00085'
-	AND		sh.Expected_DatetoDeliver is null
-	--AND EXTRACT(YEAR FROM trip_plan_createddate::DATE) = 2019
+	ON		a1.agent_id				= tms.agent_code
+	AND		a1.from_pincode			= tms.shipfrom_pincode
+	AND		a1.to_pincode			= tms.shipto_pincode
+	WHERE	a1.ouinstance			= sh.ouinstance
+-- 	AND		a1.trip_plan_id			= sh.trip_plan_id
+	AND		a1.br_customer_ref_no	= sh.br_customer_ref_no
+	AND		a1.br_request_Id		= sh.br_request_Id
+-- 	AND EXTRACT(YEAR FROM trip_plan_createddate::DATE) = 2019
 	AND		sh.trip_plan_createddate::DATE >= (CURRENT_DATE - INTERVAL '90 DAYS')::DATE
-	AND		sh.leg_behaviour	= 'Dvry';
-	
+	AND		sh.leg_behaviour	= 'Dvry'
+    And     sh.service_type <> 'DD';
+
+	UPDATE	click.f_shipment_details sh
+	SET		Expected_DatetoDeliver	= a1.Actual_Departed + (interval '1' day * tms.tat) + (interval '1' day)
+	FROM	tmp.f_shipment_details_pick_tmp a1
+	INNER JOIN dwh.D_TMSDeliveryTAT tms
+	ON		a1.agent_id				= tms.agent_code
+	AND		a1.from_pincode			= tms.shipfrom_pincode::character varying
+	AND		a1.to_pincode			= tms.shipto_pincode::character varying
+	WHERE	a1.ouinstance			= sh.ouinstance
+-- 	AND		a1.trip_plan_id			= sh.trip_plan_id
+	AND		a1.br_customer_ref_no	= sh.br_customer_ref_no
+	AND		a1.br_request_Id		= sh.br_request_Id
+	AND		tms.agent_code			= 'SCM00085'
+	AND		sh.Expected_DatetoDeliver is null
+-- 	AND EXTRACT(YEAR FROM trip_plan_createddate::DATE) = 2019
+	AND		sh.trip_plan_createddate::DATE >= (CURRENT_DATE - INTERVAL '90 DAYS')::DATE
+	AND		sh.leg_behaviour	= 'Dvry'
+    And     sh.service_type <> 'DD';
+
 	UPDATE	click.f_shipment_details sh
 	SET		Expected_DatetoDeliver		= a1.actual_departed + (interval '2' day)
 	FROM	tmp.f_shipment_details_pick_tmp a1
-	WHERE	a1.ouinstance		= sh.ouinstance
-	AND		a1.trip_plan_id		= sh.trip_plan_id
-	AND		a1.br_request_Id	= sh.br_request_Id
-	--AND EXTRACT(YEAR FROM trip_plan_createddate::DATE) = 2019
+	WHERE	a1.ouinstance			= sh.ouinstance
+-- 	AND		a1.trip_plan_id			= sh.trip_plan_id
+	AND		a1.br_customer_ref_no	= sh.br_customer_ref_no
+	AND		a1.br_request_Id		= sh.br_request_Id
+-- 	AND EXTRACT(YEAR FROM trip_plan_createddate::DATE) = 2019
 	AND		trip_plan_createddate::DATE >= (CURRENT_DATE - INTERVAL '90 DAYS')::DATE
 	AND		Expected_DatetoDeliver is null
-	AND		sh.leg_behaviour	= 'Dvry';
+	AND		sh.leg_behaviour	= 'Dvry'
+    And     sh.service_type <> 'DD';
+    
+    
+    UPDATE	click.f_shipment_details sh
+    SET		Expected_DatetoDeliver = (case 
+                                     when b.oub_orderdate	is not null
+                                  then
+                                     (b.oub_orderqualifieddate::timestamp + (interval '6 hours'))
+                                  else 
+                                     (sh1.br_confirmation_date::timestamp + (interval '6 hours'))
+                                     end)
+    FROM click.f_shipment_details sh1
+    LEFT JOIN click.f_outboundheader b
+    ON      sh1.ouinstance        = b.oub_ou
+    AND     sh1.loc               = left(b.oub_loc_code,6)
+    AND     sh1.br_customer_ref_no= b.oub_prim_rf_dc_no
+    AND     sh1.service_type = 'DD'
+    WHERE   sh1.shipment_dtl_key  = sh.shipment_dtl_key
+   -- AND     EXTRACT(YEAR FROM sh.trip_plan_createddate::DATE) = 2023
+    AND		sh.trip_plan_createddate::DATE >= (CURRENT_DATE - INTERVAL '90 DAYS')::DATE
+    AND		sh.service_type = 'DD' ;
 	
 --UPDATING Expected_DatetoDeliver CLOSED
 
@@ -311,7 +344,7 @@ AND trip_plan_createddate::DATE >= (CURRENT_DATE - INTERVAL '90 DAYS')::DATE;
 --ON_TIME_DELIVERY_FLAG UPDATE CLOSED
 
 	
-	EXCEPTION WHEN others THEN       
+    EXCEPTION WHEN others THEN       
        
     GET stacked DIAGNOSTICS p_errorid = returned_sqlstate, p_errordesc = message_text;
         
