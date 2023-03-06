@@ -15,6 +15,7 @@ CREATE OR REPLACE PROCEDURE dwh.usp_f_wavedetail(
 LANGUAGE 'plpgsql'
 AS $BODY$
 
+
 DECLARE
     p_etljobname VARCHAR(100);
     p_envsourcecd VARCHAR(50);
@@ -80,11 +81,14 @@ BEGIN
 	LEFT JOIN dwh.d_customer c
 	    ON s.wms_wave_customer_code         = c.customer_id
 		AND s.wms_wave_ou	        		= c.customer_ou
-    WHERE t.wave_ou                     = s.wms_wave_ou
-	 AND  t.wave_loc_code               = s.wms_wave_loc_code
-	 AND  t.wave_no                     = s.wms_wave_no
-	 AND  t.wave_lineno					= s.wms_wave_lineno;
-
+--     WHERE t.wave_ou                     = s.wms_wave_ou
+-- 	 AND  t.wave_loc_code               = s.wms_wave_loc_code
+-- 	 AND  t.wave_no                     = s.wms_wave_no
+-- 	 AND  t.wave_lineno					= s.wms_wave_lineno;
+	where  t.wave_lineno			   = s.wms_wave_lineno
+	AND    t.wave_no                   = s.wms_wave_no		
+	AND    t.wave_loc_code             = s.wms_wave_loc_code
+	AND    t.wave_ou                   = s.wms_wave_ou;
     GET DIAGNOSTICS updcnt = ROW_COUNT;
 
     INSERT INTO dwh.f_waveDetail
@@ -111,10 +115,14 @@ BEGIN
 	    ON s.wms_wave_customer_code         = c.customer_id
 		AND s.wms_wave_ou	        		= c.customer_ou
     LEFT JOIN dwh.f_waveDetail t
-    ON    s.wms_wave_lineno             = t.wave_lineno
-	 AND  s.wms_wave_ou                 = t.wave_ou 
-	 AND  s.wms_wave_loc_code           = t.wave_loc_code
-	 AND  s.wms_wave_no                 = t.wave_no
+--     ON    s.wms_wave_lineno             = t.wave_lineno
+-- 	 AND  s.wms_wave_ou                 = t.wave_ou 
+-- 	 AND  s.wms_wave_loc_code           = t.wave_loc_code
+-- 	 AND  s.wms_wave_no                 = t.wave_no
+	 ON    t.wave_lineno			   = s.wms_wave_lineno
+	AND    t.wave_no                   = s.wms_wave_no		
+	AND    t.wave_loc_code             = s.wms_wave_loc_code
+	AND    t.wave_ou                   = s.wms_wave_ou
     WHERE t.wave_no IS NULL;
 
     GET DIAGNOSTICS inscnt = ROW_COUNT;
