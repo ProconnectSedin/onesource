@@ -29,12 +29,12 @@ SELECT 	depsource
     DELETE FROM click.f_sla_shipment 
     WHERE trip_plan_createddate::DATE >= (CURRENT_DATE - INTERVAL '90 DAYS')::DATE;
 
-    create temp table f_sla_shipment_pick_tmp
-    as select ouinstance,trip_plan_id,br_customer_id,br_request_id,br_customer_ref_no,actual_departed,activeindicator
-    from click.f_shipment_details
-    where trip_plan_createddate::DATE >= (CURRENT_DATE - INTERVAL '90 DAYS')::DATE
-    and leg_behaviour = 'pick'
-    and actual_departed is not null;
+--     create temp table f_sla_shipment_pick_tmp
+--     as select ouinstance,trip_plan_id,br_customer_id,br_request_id,br_customer_ref_no,actual_departed,activeindicator
+--     from click.f_shipment_details
+--     where leg_behaviour = 'pick'
+--     and trip_plan_createddate::DATE >= (CURRENT_DATE - INTERVAL '90 DAYS')::DATE
+--     and actual_departed is not null;
      
     TRUNCATE TABLE tmp.f_sla_shipment_trackingstatus_tmp;
     
@@ -59,7 +59,7 @@ SELECT 	depsource
 		sla_service_type,               sla_sub_service_type,           sla_location,                   agent_id,                                          
 		agent_name,						opening_time,                   cutofftime,                     order_confirmed_date_time,
         dispatch_tat,                   actual_dispatched_date_time,    actual_delivered_date_time,     dispatch_exptd_date_time,       
-        delivery_exptd_date_time,		trip_plan_createddate,          tracking_status,                createddate
+        delivery_exptd_date_time,		trip_plan_createddate,          tracking_status,                br_order_type,    order_qualified_date,      podflag,      createddate
 	)
 	select 
 		coalesce(a.shipment_dtl_key,-1),coalesce(a.ship_customer_key,-1),coalesce(a.br_key,-1),			coalesce(a.ship_loc_key,-1),
@@ -67,7 +67,7 @@ SELECT 	depsource
 		a.ouinstance,					a.br_customer_id,				a.br_request_id,				a.br_customer_ref_no,
 		a.service_type,					a.sub_service_type,				a.loc,							a.agent_id,
 		e.vendor_name,					max(d.openingtime),				max(d.cutofftime),				max(coalesce(b.oub_modified_date , b.oub_orderdate))::timestamp,
-        max(c.disptat),                 tmp.actual_departed::timestamp, a.actual_departed::timestamp,
+        max(c.disptat),                 /*tmp.actual_departed::timestamp*/  NULL , a.actual_departed::timestamp,
 		(case 
 		when max(coalesce(b.oub_modified_date,b.oub_created_date))::time < max(d.cutofftime)
 		then 
@@ -76,17 +76,21 @@ SELECT 	depsource
 		((max(coalesce(b.oub_modified_date,b.oub_created_date))+ interval '1 day')::date ||' '||(max(d.openingtime)))::timestamp + (max(c.disptat) || ' minutes')::interval 
 		end 
 		),
-		a.expected_datetodeliver,       a.trip_plan_createddate,        tmp1.trackingstatus,
+		a.expected_datetodeliver,       a.trip_plan_createddate,        tmp1.trackingstatus,            a.br_order_type,    co.oub_orderqualifieddate,  a.podflag,
         now()::timestamp
 	from click.f_shipment_details a
-    join f_sla_shipment_pick_tmp tmp
-    on  a.ouinstance     = tmp.ouinstance
-    and a.trip_plan_id   = tmp.trip_plan_id
-    and a.br_request_id  = tmp.br_request_id
+--     join f_sla_shipment_pick_tmp tmp
+--     on  a.ouinstance     = tmp.ouinstance
+--     and a.trip_plan_id   = tmp.trip_plan_id
+--     and a.br_request_id  = tmp.br_request_id
 	left join dwh.f_outboundheader b
 	on  a.ouinstance        = b.oub_ou
 	and a.loc               = left(b.oub_loc_code,6)
 	and a.br_customer_ref_no= b.oub_prim_rf_dc_no
+    left join click.f_outboundheader co
+	on  a.ouinstance        = co.oub_ou
+	and a.loc               = left(co.oub_loc_code,6)
+	and a.br_customer_ref_no= co.oub_prim_rf_dc_no
 	left join dwh.d_outboundtat c
 	on  c.ou           = b.oub_ou
 	and c.locationcode = b.oub_loc_code
@@ -107,7 +111,7 @@ SELECT 	depsource
 	group by 	coalesce(a.shipment_dtl_key,-1),    coalesce(a.ship_customer_key,-1),   coalesce(a.br_key,-1),	coalesce(a.ship_loc_key,-1),    coalesce(e.vendor_key,-1),
                 a.ouinstance,				        a.br_customer_id,		            a.br_request_id,		a.br_customer_ref_no,		    a.service_type,
 				a.sub_service_type,			        a.loc,					            a.agent_id,				e.vendor_name,				    a.leg_behaviour,			
-				tmp.actual_departed,                a.actual_departed,			        a.expected_datetodeliver,a.trip_plan_createddate,       tmp1.trackingstatus;
+				/*tmp.actual_departed,*/                a.actual_departed,			        a.expected_datetodeliver,a.trip_plan_createddate,       tmp1.trackingstatus,         a.br_order_type,   co.oub_orderqualifieddate,  a.podflag;
 
 -----------------------------------------------------------------------------------------------------------------------------
 	
@@ -134,7 +138,7 @@ SELECT 	depsource
 										  else null
 									 end)
 	where trip_plan_createddate::DATE >= (CURRENT_DATE - INTERVAL '90 DAYS')::DATE;
--- 	where sla.order_date_time >= (now() - interval '3 months')::date;
+
 	
 	
     update click.f_sla_shipment sla
@@ -143,7 +147,7 @@ SELECT 	depsource
 						   end)
 	where sla_category is null
 	and trip_plan_createddate::DATE >= (CURRENT_DATE - INTERVAL '90 DAYS')::DATE;
-	--where sla.order_date_time >= (now() - interval '3 months')::date;
+	
 	
 
     update click.f_sla_shipment sla
@@ -152,7 +156,13 @@ SELECT 	depsource
 						   end)
 	where sla_category is null
 	and trip_plan_createddate::DATE >= (CURRENT_DATE - INTERVAL '90 DAYS')::DATE;
-	--where sla.sla_orderdate >= (now() - interval '3 months')::date;
+    
+    
+    update click.f_sla_shipment
+    set podflag = 0 
+    where podflag IS NULL
+    AND trip_plan_createddate::DATE >= (CURRENT_DATE - INTERVAL '90 DAYS')::DATE;
+	
     
 	ELSE	
 	p_errorid   := 0;
