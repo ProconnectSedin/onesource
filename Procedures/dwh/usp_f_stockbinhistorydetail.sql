@@ -1,6 +1,19 @@
-CREATE OR REPLACE PROCEDURE dwh.usp_f_stockbinhistorydetail(IN p_sourceid character varying, IN p_dataflowflag character varying, IN p_targetobject character varying, OUT srccnt integer, OUT inscnt integer, OUT updcnt integer, OUT dltcount integer, INOUT flag1 character varying, OUT flag2 character varying)
-    LANGUAGE plpgsql
-    AS $$
+-- PROCEDURE: dwh.usp_f_stockbinhistorydetail(character varying, character varying, character varying, character varying)
+
+-- DROP PROCEDURE IF EXISTS dwh.usp_f_stockbinhistorydetail(character varying, character varying, character varying, character varying);
+
+CREATE OR REPLACE PROCEDURE dwh.usp_f_stockbinhistorydetail(
+	IN p_sourceid character varying,
+	IN p_dataflowflag character varying,
+	IN p_targetobject character varying,
+	OUT srccnt integer,
+	OUT inscnt integer,
+	OUT updcnt integer,
+	OUT dltcount integer,
+	INOUT flag1 character varying,
+	OUT flag2 character varying)
+LANGUAGE 'plpgsql'
+AS $BODY$
 
 DECLARE
     p_etljobname VARCHAR(100);
@@ -79,10 +92,14 @@ BEGIN
 	AND t.stock_location					= s.wms_stock_location
 	AND t.stock_zone						= s.wms_stock_zone
 	AND t.stock_bin_type					= s.wms_stock_bin_type
-    AND t.stock_date						= s.wms_stock_date    
-    AND t.stock_item						= s.wms_stock_item
-    AND t.stock_thu_id						= s.wms_stock_thu_id
-    AND t.stock_su							= s.wms_stock_su;
+--     AND t.stock_date						= s.wms_stock_date    
+--     AND t.stock_item						= s.wms_stock_item
+--     AND t.stock_thu_id						= s.wms_stock_thu_id
+--     AND t.stock_su							= s.wms_stock_su;
+	 AND t.stock_item						= s.wms_stock_item
+	 AND t.stock_thu_id						= s.wms_stock_thu_id
+	 AND t.stock_date						= s.wms_stock_date
+	 AND t.stock_su							= s.wms_stock_su;
 
     GET DIAGNOSTICS updcnt = ROW_COUNT;
 
@@ -120,10 +137,14 @@ BEGIN
 		AND t.stock_location					= s.wms_stock_location
 		AND t.stock_zone						= s.wms_stock_zone
 		AND t.stock_bin_type					= s.wms_stock_bin_type
-    	AND t.stock_date						= s.wms_stock_date    
-    	AND t.stock_item						= s.wms_stock_item
-    	AND t.stock_thu_id						= s.wms_stock_thu_id
-    	AND t.stock_su							= s.wms_stock_su
+--     	AND t.stock_date						= s.wms_stock_date    
+--     	AND t.stock_item						= s.wms_stock_item
+--     	AND t.stock_thu_id						= s.wms_stock_thu_id
+--     	AND t.stock_su							= s.wms_stock_su
+	    AND t.stock_item						= s.wms_stock_item
+	    AND t.stock_thu_id						= s.wms_stock_thu_id
+	    AND t.stock_date						= s.wms_stock_date
+	    AND t.stock_su							= s.wms_stock_su
 	WHERE t.stock_ou IS NULL;
 
     GET DIAGNOSTICS inscnt = ROW_COUNT;
@@ -147,4 +168,6 @@ BEGIN
        select 0 into inscnt;
        select 0 into updcnt;
 END;
-$$;
+$BODY$;
+ALTER PROCEDURE dwh.usp_f_stockbinhistorydetail(character varying, character varying, character varying, character varying)
+    OWNER TO proconnect;

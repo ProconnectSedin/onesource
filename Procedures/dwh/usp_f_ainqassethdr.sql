@@ -72,8 +72,8 @@ BEGIN
         envsourcecd             = p_envsourcecd,
         datasourcecd            = p_datasourcecd,
         etlupdatedatetime       = NOW()
-    FROM stg.Stg_ainq_asset_hdr s
-	inner join dwh.d_location l
+     FROM stg.Stg_ainq_asset_hdr s
+	left join dwh.d_location l
 	on l.loc_code	= s.asset_location
 	and l.loc_ou	= s.ou_id
 	left join dwh.d_date d
@@ -82,6 +82,7 @@ BEGIN
     AND t.cap_number = s.cap_number
     AND t.asset_number = s.asset_number
     AND t.depr_book = s.depr_book;
+	
 
     GET DIAGNOSTICS updcnt = ROW_COUNT;
 
