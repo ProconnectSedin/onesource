@@ -91,8 +91,10 @@ BEGIN
 
     WHERE t.inb_loc_code = s.wms_inb_loc_code
     AND t.inb_orderno = s.wms_inb_orderno
-    AND t.inb_ou = s.wms_inb_ou
-    AND t.inb_amendno = s.wms_inb_amendno;
+    AND t.inb_ou = s.wms_inb_ou;
+   -- AND t.inb_amendno = s.wms_inb_amendno;
+   
+
 
     GET DIAGNOSTICS updcnt = ROW_COUNT;
 
@@ -116,7 +118,7 @@ BEGIN
     ON s.wms_inb_loc_code = t.inb_loc_code
     AND s.wms_inb_orderno = t.inb_orderno
     AND s.wms_inb_ou = t.inb_ou
-    AND s.wms_inb_amendno = t.inb_amendno
+    --AND s.wms_inb_amendno = t.inb_amendno
     WHERE t.inb_loc_code IS NULL;
 
     GET DIAGNOSTICS inscnt = ROW_COUNT;
