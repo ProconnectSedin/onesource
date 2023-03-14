@@ -43,6 +43,8 @@ BEGIN
 	UPDATE dwh.d_LocationCustomerMst t
 	SET 
 		location_key			= coalesce(l.loc_key,-1),
+		customer_key			= coalesce(c.customer_key,-1),
+		loccust_key				= coalesce(b.loc_key,-1),
 		TranOU					= s.TranOU,
 		TranOUName				= s.TranOUName,
 		CustomerCode			= s.CustomerCode,
@@ -90,6 +92,12 @@ BEGIN
 		LEFT JOIN dwh.d_location l
 		ON l.loc_code			= s.locationcode
 		AND l.loc_ou			= s.TranOU
+		LEFT JOIN dwh.d_customer c
+		ON c.customer_id		= s.customercode
+		AND c.customer_ou		= s.TranOU
+		left join  dwh.d_location b
+		on s.Locust_code=b.loc_code
+		and s.TranOU	=b.loc_ou
 		WHERE t.TranOU 			= s.TranOU
 		AND t.customercode		= s.customercode
 		AND t.locationcode		= s.locationcode;
@@ -98,7 +106,7 @@ BEGIN
 
 	INSERT INTO dwh.d_LocationCustomerMst
 		(
-		location_key			,
+		location_key			,customer_key,loccust_key,
 		TranOU					, TranOUName			, CustomerCode		, CustomerName			, LocationCode, 
 		LocationName			, FBID					, CostCenter		, OperationRegionID		, OperationRegion, 
 		SalesRegionID			, SalesRegion			, ActualCostCenter	, BusinessTypeID		, BusinessType, 
@@ -111,7 +119,7 @@ BEGIN
 		)
 	
 	SELECT
-		coalesce(l.loc_key,-1)		,
+		coalesce(l.loc_key,-1)		,coalesce(c.customer_key,-1),coalesce(b.loc_key,-1),
 		s.TranOU					, s.TranOUName				, s.CustomerCode		, s.CustomerName			, s.LocationCode, 
 		s.LocationName				, s.FBID					, s.CostCenter			, s.OperationRegionID		, s.OperationRegion, 
 		s.SalesRegionID				, s.SalesRegion				, s.ActualCostCenter	, s.BusinessTypeID			, s.BusinessType, 
@@ -125,11 +133,23 @@ BEGIN
 		LEFT JOIN dwh.d_location l
 		ON l.loc_code			= s.locationcode
 		AND l.loc_ou			= s.TranOU
+		LEFT JOIN dwh.d_customer c
+		ON c.customer_id		= s.customercode
+		AND c.customer_ou		= s.TranOU	
+		left join  dwh.d_location b
+		on s.Locust_code=b.loc_code
+		and s.TranOU	=b.loc_ou
 		LEFT JOIN dwh.d_LocationCustomerMst t
 		ON t.TranOU 			= s.TranOU
 		AND t.customercode		= s.customercode
 		AND t.locationcode		= s.locationcode
 		WHERE t.locationcode IS NULL;
+		--select * from dwh.d_location
+		
+-- 		select * from dwh.d_locationcustomermst a
+-- 		inner join  dwh.d_location b
+-- 		on a.Locust_code=b.loc_code
+-- 		and a.TranOU	=b.loc_ou
 
     GET DIAGNOSTICS inscnt = ROW_COUNT;
 
